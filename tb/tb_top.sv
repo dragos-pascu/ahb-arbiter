@@ -34,6 +34,7 @@ module top(
                             .s_hsel(vif.s_hsel),
                             .s_hrdata(vif.s_hrdata)
   );
+    
 
     initial begin
     clk <= 0;
@@ -41,19 +42,22 @@ module top(
     forever #5ns  clk = ~clk;
     end
 
-    
     initial begin
 
     
     /* Write */
 
-    // vif.m_busreq = 1;
-    // vif.m_hlock = 1;
+    
+    //vif.m_if[0].master.m_cb.drive_master(1,2,3,4,5,6,1);
+    
+    vif.m_if[0].master.m_cb.busreq <= 1;
+    
+//    vif.m_busreq = 1;
 
     // m_busreq= 'b000000100;
     // m_hlock = 'b000000100;
 
-    //#15ns;
+    // #15ns;
     // reset = 1;
     // vif.m_haddr = 50;
     // vif.s_hready = 1;

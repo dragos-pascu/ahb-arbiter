@@ -21,7 +21,7 @@ interface test_harness(input hclk, input  hreset);
     generate
     for(genvar i=0;i<master_number;i++)
     begin: m_if
-      arbiter_if master(.*);
+      master_if master(.*);
       assign m_if[i].master.hresp        =hresp;
       assign m_if[i].master.hready       =hready;
       assign m_if[i].master.hgrant       =hgrant[i];
@@ -54,7 +54,7 @@ interface test_harness(input hclk, input  hreset);
     generate
       for(genvar i=0;i<slave_number;i++)
       begin: s_if
-          arbiter_if slave(.*);
+          salve_if slave(.*);
           assign s_if[i].slave.hsel=s_hsel[i];
           assign s_if[i].slave.hwdata=s_hwdata;
           assign s_if[i].slave.haddr=s_haddr;

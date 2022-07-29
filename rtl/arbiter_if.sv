@@ -1,4 +1,4 @@
-interface arbiter_if(input hclk, input hreset);
+interface master_if(input hclk, input hreset);
     
     import integration_pkg::*;
     
@@ -11,22 +11,22 @@ interface arbiter_if(input hclk, input hreset);
     */
 
 
-    wire[31:0] haddr;         
-    wire[1:0] htrans;         
-    wire      hwrite;         
-    wire[2:0] hsize;          
-    wire[2:0] hburst;         
-    wire[31:0] hwdata;        
-    wire[31:0] hrdata;        
-    wire      hready;         
-    wire[1:0] hresp;          
-    wire[3:0] hmaster;        
-    wire      hsel;           
-    wire      hmastlock;      
-    wire      busreq;         
-    wire      hlock;          
-    wire      hgrant;         
-    wire      hsplit;         
+    logic[31:0] haddr;         
+    logic[1:0] htrans;         
+    logic      hwrite;         
+    logic[2:0] hsize;          
+    logic[2:0] hburst;         
+    logic[31:0] hwdata;        
+    logic[31:0] hrdata;        
+    logic      hready;         
+    logic[1:0] hresp;          
+    logic[3:0] hmaster;        
+    logic      hsel;           
+    logic      hmastlock;      
+    logic      busreq;         
+    logic      hlock;          
+    logic      hgrant;         
+    logic      hsplit;         
 
 
 
@@ -41,12 +41,79 @@ interface arbiter_if(input hclk, input hreset);
     // output hready,hresp,hrdata
     // );
 
+    
+
+
     clocking m_cb @(posedge hclk);
 
     input hgrant,hready,hresp,hrdata;
     output htrans,haddr,hsize,hburst,hwdata,busreq,hlock,hwrite;
 
+    // task drive_master(logic[31:0] haddr,         
+    // logic[1:0] htrans,         
+    // logic      hwrite,         
+    // logic[2:0] hsize,          
+    // logic[2:0] hburst,         
+    // logic[31:0] hwdata,                             
+    // logic[3:0] hmaster,        
+    // logic      hsel,           
+    // logic      hmastlock,      
+    // logic      busreq,         
+    // logic      hlock,                   
+    // logic      hsplit );
+
+    // m_cb.busreq = busreq ; 
+    // m_cb.htrans = htrans;         
+    // m_cb.hwrite = hwrite;        
+    // m_cb.hsize = hsize;          
+    // m_cb.hburst = hburst;         
+    // m_cb. hwdata = hwdata;                             
+    // m_cb.hmaster = hmaster;        
+    // m_cb.hsel = hsel;           
+    // m_cb.hmastlock = hmastlock;      
+    // m_cb.busreq = busreq;         
+    // m_cb.hlock = hlock;                   
+    // m_cb.hsplit = hsplit;
+
+        
+    // endtask
+
     endclocking
+
+
+
+endinterface : master_if
+
+
+interface salve_if(input hclk, input hreset);
+    
+    import integration_pkg::*;
+    
+    /* 
+    Voi grupa semnalele in asa fel incat cele corespunzatoare de master se vor conecta la un Agent de tip master, 
+    iar semnalele corespunzatoare de slave la Agentul de Slave
+    De exemplu, daca voi avea 3 slave si 11 masters, voi avea 14 interfete. 
+    unele semnale se repeta in dut ( acelasi semnal, dar pentru instanta de master/ slave) deci
+    pot reduce numarul de semnale din interfata.
+    */
+
+
+    logic[31:0] haddr;         
+    logic[1:0] htrans;         
+    logic      hwrite;         
+    logic[2:0] hsize;          
+    logic[2:0] hburst;         
+    logic[31:0] hwdata;        
+    logic[31:0] hrdata;        
+    logic      hready;         
+    logic[1:0] hresp;          
+    logic[3:0] hmaster;        
+    logic      hsel;           
+    logic      hmastlock;      
+    logic      busreq;         
+    logic      hlock;          
+    logic      hgrant;         
+    logic      hsplit;         
 
 
     clocking s_cb @(posedge hclk);
@@ -57,4 +124,4 @@ interface arbiter_if(input hclk, input hreset);
     endclocking
 
 
-endinterface : arbiter_if
+endinterface : salve_if
