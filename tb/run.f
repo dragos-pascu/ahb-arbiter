@@ -8,11 +8,14 @@
 
 // *** include compile files ***
 
--incdir ../rtl
+
+-incdir ../rtl  
+-incdir ../ahb_env
+-incdir ../ahb_test
 
 ../rtl/integration_pkg.sv
-../rtl/arbiter_if.sv
+../tb/arbiter_if.sv
 ../rtl/generic_arbiter_full.sv
-../rtl/test_harness.sv
+../tb/test_harness.sv
 
 tb_top.sv

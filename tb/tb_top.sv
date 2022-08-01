@@ -43,36 +43,8 @@ module top(
     end
 
     initial begin
-
-    
-    /* Write */
-
-    
-    //vif.m_if[0].master.m_cb.drive_master(1,2,3,4,5,6,1);
-    
-    vif.m_if[0].master.m_cb.busreq <= 1;
-    
-//    vif.m_busreq = 1;
-
-    // m_busreq= 'b000000100;
-    // m_hlock = 'b000000100;
-
-    // #15ns;
-    // reset = 1;
-    // vif.m_haddr = 50;
-    // vif.s_hready = 1;
-    // vif.m_hburst = 0;
-    // vif.m_htrans = 0;
-    // vif.m_hsize = 2;
-    // vif.m_hwrite = 1;
-    // vif.s_hresp = 0;
-    // vif.m_hwdata = 'd20;
-
+        run_test();
     end
 
-    initial begin
-        #100ns;
-        $finish();
-    end
 
 endmodule
