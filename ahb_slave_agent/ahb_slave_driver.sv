@@ -8,5 +8,11 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
         super.new(name, parent);
     endfunction
 
+    virtual function void build_phase(uvm_phase phase);
+        super.build_phase(phase);
+        //add virtual interface
+
+    endfunction
+
 
 endclass //ahb_slave_driver extends uvm_driver

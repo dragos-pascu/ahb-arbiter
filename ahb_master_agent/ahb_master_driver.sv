@@ -13,10 +13,22 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     function void build_phase(uvm_phase);
         `uvm_info(get_type_name(), "Build_phase for driver", UVM_DEBUG)
 
-        if(!uvm_config_db #(virtual arbiter_if)::get(this, "*", $psprintf("*master[%0d]*", agent_config.agent_id), vif)) 
-      
-            `uvm_fatal(get_type_name(), "Didn't get handle to virtual interface!")
+        //add virtual interface
 
     endfunction
+
+    task run_phase(uvm_phase phase);
+
+        forever begin
+            
+            @(vif.m_cb)
+            seq_item_port.get_next_item( req );
+            
+            seq_item_port.item_done( req );
+
+        end    
+
+    endtask
+
 
 endclass //ahb_master_driver extends superClass
