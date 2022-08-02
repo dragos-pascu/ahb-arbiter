@@ -47,6 +47,7 @@ class ahb_transaction extends uvm_sequence_item;
         transfer_type constraint
         boundries
         wait & idle states
+        master constraint
         */
 
         constraint rst { reset == 1;}
