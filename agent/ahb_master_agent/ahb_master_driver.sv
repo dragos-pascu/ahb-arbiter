@@ -2,8 +2,9 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
     `uvm_component_utils(ahb_master_driver)
 
-    virtual arbiter_if vif;
+    virtual master_if vif;
     
+    ahb_agent_config agent_config;
 
     function new(string name = "ahb_master_driver", uvm_component parent);
         super.new(name, parent);
@@ -11,9 +12,14 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
 
     function void build_phase(uvm_phase);
-        `uvm_info(get_type_name(), "Build_phase for driver", UVM_DEBUG)
+        super.build_phase(phase);
 
-        //add virtual interface
+
+        if(!uvm_config_db #(virtual master_if)::get(this, "*", $sformatf("*master[%0d]*", agent_config.agent_id), vif)) 
+      
+          `uvm_fatal(get_type_name(), "VIF failed")
+
+        `uvm_info(get_type_name(), "Finished build_phase for driver", UVM_MEDIUM)
 
     endfunction
 

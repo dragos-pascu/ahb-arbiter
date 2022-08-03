@@ -11,6 +11,7 @@
 
 -incdir ../agent
 
+../rtl/integration_pkg.sv
 ../agent/arbiter_if.sv
 ../rtl/generic_arbiter_full.sv
 

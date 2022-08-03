@@ -1,6 +1,6 @@
 interface master_if(input hclk, input hreset);
     
-    `include "../rtl/integration_def.sv"
+    import integration_pkg::*;
     
 
     logic[31:0] haddr;         
@@ -66,7 +66,7 @@ endinterface : master_if
 
 interface salve_if(input hclk, input hreset);
     
-    `include "../rtl/integration_def.sv"
+    import integration_pkg::*;
     
 
 

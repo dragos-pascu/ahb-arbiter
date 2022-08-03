@@ -1,6 +1,6 @@
 interface test_harness(input hclk, input  hreset);
     
-    `include "../rtl/integration_def.sv"
+    import integration_pkg::*;
     
     import uvm_pkg::*;
 
