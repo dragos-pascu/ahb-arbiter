@@ -1,5 +1,13 @@
 module top(
 );
+    // import the UVM library
+    import uvm_pkg::*;
+
+    // include the UVM macros
+    `include "uvm_macros.svh"
+    import ahb_agent_pkg::*;
+    import integration_pkg::*;
+    `include "ahb_test.sv"
 
     
     logic clk;

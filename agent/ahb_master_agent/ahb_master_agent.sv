@@ -7,17 +7,16 @@ class ahb_master_agent extends uvm_agent;
 
     
 
-    function new();
-        super.new(string name="ahb_master_agent",uvm_component parent = null);
-        this.is_active = 1;
+    function new(string name="ahb_master_agent",uvm_component parent = null);
+        super.new(name,parent);
     endfunction //new()
 
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
 
         if (is_active == UVM_ACTIVE) begin
-            sequencer = instr_register_sequencer::type_id::create("sequencer",this);
-            ahb_mdriver = instr_register_driver::type_id::create("ahb_mdriver",this);
+            sequencer = ahb_sequencer::type_id::create("sequencer",this);
+            ahb_mdriver = ahb_master_driver::type_id::create("ahb_mdriver",this);
         end
 
     endfunction

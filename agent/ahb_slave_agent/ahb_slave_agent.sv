@@ -1,5 +1,6 @@
 class ahb_slave_agent extends uvm_agent;
 
+    `uvm_component_utils(ahb_slave_agent)
 
     ahb_slave_driver ahb_sdriver;
     ahb_sequencer sequencer;
@@ -13,9 +14,10 @@ class ahb_slave_agent extends uvm_agent;
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
 
+        // config flags
         if (is_active == UVM_ACTIVE) begin
-            sequencer = instr_register_sequencer::type_id::create("sequencer",this);
-            ahb_sdriver = instr_register_driver::type_id::create("ahb_sdriver",this);
+            sequencer = ahb_sequencer::type_id::create("sequencer",this);
+            ahb_sdriver = ahb_slave_driver::type_id::create("ahb_sdriver",this);
         end
 
     endfunction

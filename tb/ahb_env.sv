@@ -2,6 +2,7 @@ class ahb_env extends uvm_env;
     
     `uvm_component_utils(ahb_env)
 
+
     env_config env_cfg;
 
     ahb_master_agent m_agent[master_number];
@@ -47,6 +48,8 @@ class ahb_env extends uvm_env;
             uvm_config_db#(ahb_sagent_config)::set(this, $sformatf("*slave[%0d]*", i), "ahb_sagent_config", env_cfg.sagt_cfg[i]);
      
         end
+
+        // should set agents to active / passive + monitor , scoreboard etc.
 
         vsequencer = ahb_vsequencer::type_id::create("vsequencer",this);
         

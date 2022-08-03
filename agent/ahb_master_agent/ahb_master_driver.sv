@@ -3,15 +3,16 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     `uvm_component_utils(ahb_master_driver)
 
     virtual master_if vif;
+
+    ahb_magent_config agent_config;
     
-    ahb_agent_config agent_config;
 
     function new(string name = "ahb_master_driver", uvm_component parent);
         super.new(name, parent);
     endfunction: new
 
 
-    function void build_phase(uvm_phase);
+    function void build_phase(uvm_phase phase);
         super.build_phase(phase);
 
 

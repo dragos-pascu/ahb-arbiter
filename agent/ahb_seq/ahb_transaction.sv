@@ -1,5 +1,7 @@
+import integration_pkg::*;
 class ahb_transaction extends uvm_sequence_item;
-    
+        
+
         rand bit reset;
 
         //transfer type
@@ -27,7 +29,7 @@ class ahb_transaction extends uvm_sequence_item;
           `uvm_field_array_enum(transfer_t, trans_type, UVM_ALL_ON)
           `uvm_field_array_int(address , UVM_ALL_ON)
           `uvm_field_enum(size_t, trans_size, UVM_ALL_ON)
-          `uvm_field_enum(burst_t, burst, UVM_ALL_ON)
+          `uvm_field_enum(burst_t, burst_mode, UVM_ALL_ON)
           `uvm_field_array_int(wdata, UVM_ALL_ON)
           `uvm_field_array_int(rdata, UVM_ALL_ON)
           `uvm_field_enum(rw_t,read_write,UVM_ALL_ON)
@@ -57,7 +59,7 @@ class ahb_transaction extends uvm_sequence_item;
                 trans_size < WORD; 
         }
 
-        constraint wdata
+        constraint write_data
         {
                 wdata.size == address.size;
         }
