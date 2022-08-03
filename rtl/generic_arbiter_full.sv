@@ -15,7 +15,7 @@ module generic_arbiter_full(m_busreq,m_hlock,hclk,hreset,s_hmaster_lock
                             m_haddr,s_addr_out,m_hburst,m_htrans,s_htrans_out,
                             s_hburst_out,s_hmaster,m_hwrite,s_hwrite,hgrant,s_hresp,m_hresp,m_hready,m_hsize,s_hsize,s_hsel,m_hrdata);
 
-  import integration_pkg::*;
+  `include "../rtl/integration_def.sv"
 
 
 	int i;

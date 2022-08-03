@@ -1,8 +1,9 @@
 interface test_harness(input hclk, input  hreset);
     
-    import integration_pkg::*;
-
+    `include "../rtl/integration_def.sv"
     
+    import uvm_pkg::*;
+
     //master signals
 
     wire[32*master_number-1:0] m_hwdata;
@@ -33,6 +34,11 @@ interface test_harness(input hclk, input  hreset);
       assign m_htrans[2*(i+1)-1:2*i]=m_if[i].master.htrans;
       assign m_busreq[(i+1)-1:i]    =m_if[i].master.busreq;
       assign m_hlock[(i+1)-1:i]     =m_if[i].master.hlock;
+
+      initial begin 
+      uvm_config_db #(virtual master_if)::set(null,"*", $psprintf("*master[%0d]*", i), master); 
+     end
+
     end
     endgenerate
 
@@ -67,6 +73,11 @@ interface test_harness(input hclk, input  hreset);
           assign s_hrdata[32*(i+1)-1:32*i]=s_if[i].slave.hrdata;
           assign s_hresp[2*(i+1)-1:2*i]=s_if[i].slave.hresp;
           assign s_hready[(i+1)-1:i]=s_if[i].slave.hready;
+
+        initial begin 
+        uvm_config_db #(virtual salve_if)::set(null,"*", $psprintf("*slave[%0d]*", i), slave); 
+     end 
+
       end
     endgenerate
 

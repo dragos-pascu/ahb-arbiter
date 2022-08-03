@@ -4,18 +4,16 @@
 -access +rw
 
 // *** include test ***
-//+UVM_TESTNAME=
+//+UVM_TESTNAME=../ahb_test/ahb_test.sv
 
 // *** include compile files ***
 
 
--incdir ../rtl  
--incdir ../ahb_env
--incdir ../ahb_test
+-incdir ../agent
 
-../rtl/integration_pkg.sv
-../tb/arbiter_if.sv
+../agent/arbiter_if.sv
 ../rtl/generic_arbiter_full.sv
-../tb/test_harness.sv
 
+
+test_harness.sv
 tb_top.sv
