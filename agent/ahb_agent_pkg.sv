@@ -20,7 +20,6 @@ package ahb_agent_pkg;
     `include "ahb_slave_agent/ahb_slave_driver.sv"
     `include "ahb_slave_agent/ahb_slave_agent.sv"
     
-    // `include "../tb/env_config.sv"
-    // `include "../tb/ahb_env.sv"
+    
 
 endpackage

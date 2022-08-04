@@ -20,11 +20,10 @@ class ahb_env extends uvm_env;
     endfunction
 
     virtual function void build_phase(uvm_phase phase);
-
+        super.build_phase(phase);
         if(!uvm_config_db#(env_config)::get(this, "", "env_config", env_cfg))
-                begin
                     `uvm_fatal(get_full_name(), "Can`t get env_config from db")
-                end
+
         
         //create masters and config items
         foreach (m_agent[i]) begin
@@ -33,7 +32,7 @@ class ahb_env extends uvm_env;
             magt_cfg[i] = ahb_magent_config::type_id::create($sformatf("magt_cfg[%0d]",i));
             magt_cfg[i].agent_id = i;
             env_cfg.magt_cfg[i] = magt_cfg[i];
-            uvm_config_db#(ahb_magent_config)::set(this, $sformatf("*master[%0d]*", i), "ahb_magent_config", env_cfg.magt_cfg[i]);
+            uvm_config_db#(ahb_magent_config)::set(null, $sformatf("master[%0d]", i), "ahb_magent_config", env_cfg.magt_cfg[i]);
      
         end
 
@@ -45,7 +44,7 @@ class ahb_env extends uvm_env;
             sagt_cfg[i] = ahb_sagent_config::type_id::create($sformatf("sagt_cfg[%0d]",i));
             sagt_cfg[i].agent_id = i;
             env_cfg.sagt_cfg[i] = sagt_cfg[i];
-            uvm_config_db#(ahb_sagent_config)::set(this, $sformatf("*slave[%0d]*", i), "ahb_sagent_config", env_cfg.sagt_cfg[i]);
+            uvm_config_db#(ahb_sagent_config)::set(null, $sformatf("slave[%0d]", i), "ahb_sagent_config", env_cfg.sagt_cfg[i]);
      
         end
 

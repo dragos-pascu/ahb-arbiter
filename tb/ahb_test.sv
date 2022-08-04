@@ -16,7 +16,7 @@ class ahb_test extends uvm_test;
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         env_cfg = env_config::type_id::create("env_cfg", this);
-        uvm_config_db#(env_config)::set(this, "env_cfg*", "env_config", env_cfg);
+        uvm_config_db#(env_config)::set(null, "", "env_config", env_cfg);
         env = ahb_env::type_id::create("env",this);
         `uvm_info("TEST","Build phase of test is executing",UVM_HIGH)
 
