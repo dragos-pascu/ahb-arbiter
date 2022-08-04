@@ -33,12 +33,17 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             
             @(vif.m_cb)
             seq_item_port.get_next_item( req );
-            
+            drive(req);
             seq_item_port.item_done( req );
 
         end    
 
     endtask
 
+    task drive(ahb_transaction req);
+        
+        
+
+    endtask
 
 endclass //ahb_master_driver extends superClass

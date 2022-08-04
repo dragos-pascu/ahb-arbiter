@@ -8,8 +8,8 @@ package ahb_agent_pkg;
     `include "ahb_seq/ahb_transaction.sv"
     `include "ahb_seq/ahb_sequencer.sv"
     `include "ahb_seq/ahb_vsequencer.sv"
-    `include "ahb_seq/ahb_vseq.sv"
     `include "ahb_seq/ahb_seq.sv"
+    `include "ahb_seq/ahb_vseq.sv"
 
     `include "ahb_master_agent/ahb_magent_config.sv"
     `include "ahb_master_agent/ahb_master_driver.sv"

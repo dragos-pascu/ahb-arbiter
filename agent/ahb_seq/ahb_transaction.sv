@@ -52,48 +52,48 @@ class ahb_transaction extends uvm_sequence_item;
         master constraint
         */
 
-        constraint rst { reset == 1;}
+        // constraint rst { reset == 1;}
         
-        constraint transfer_size_cons 
-        {
-                trans_size < WORD; 
-        }
+        // constraint transfer_size_cons 
+        // {
+        //         trans_size < WORD; 
+        // }
 
-        constraint write_data
-        {
-                wdata.size == address.size;
-        }
+        // constraint write_data
+        // {
+        //         wdata.size == address.size;
+        // }
 
-        constraint addr_val_incr 
-        {
-                if(burst_mode != 0){
-                        if(burst_mode == INCR || burst_mode == INCR4 || burst_mode == INCR8 || burst_mode == INCR16){
-                                        foreach(address[i]){
-                                                if(i != 0){
-                                                address [i] == address [i-1] + 2**trans_size;
-                                                }
-                                        }   
-                                }
-                        }
-        }
+        // constraint addr_val_incr 
+        // {
+        //         if(burst_mode != 0){
+        //                 if(burst_mode == INCR || burst_mode == INCR4 || burst_mode == INCR8 || burst_mode == INCR16){
+        //                                 foreach(address[i]){
+        //                                         if(i != 0){
+        //                                         address [i] == address [i-1] + 2**trans_size;
+        //                                         }
+        //                                 }   
+        //                         }
+        //                 }
+        // }
 
-        constraint addr {
-                    //Address Based on BURST Mode and HSIZE
-                    if(burst_mode == SINGLE)
-                            address.size == 1;
-                    if(burst_mode == INCR)
-                            address.size < (1024/(2^trans_size));
-                    if(burst_mode == WRAP4 || burst_mode == INCR4)
-                            address.size == 4;
-                    if(burst_mode == WRAP8 || burst_mode == INCR8)
-                            address.size == 8;
-                    if(burst_mode == WRAP16 || burst_mode == INCR16)
-                            address.size == 16;
-                    }
+        // constraint addr {
+        //             //Address Based on BURST Mode and HSIZE
+        //             if(burst_mode == SINGLE)
+        //                     address.size == 1;
+        //             if(burst_mode == INCR)
+        //                     address.size < (1024/(2^trans_size));
+        //             if(burst_mode == WRAP4 || burst_mode == INCR4)
+        //                     address.size == 4;
+        //             if(burst_mode == WRAP8 || burst_mode == INCR8)
+        //                     address.size == 8;
+        //             if(burst_mode == WRAP16 || burst_mode == INCR16)
+        //                     address.size == 16;
+        //             }
 
-        constraint min_addr_size {
-                                address.size > 0;
-                        }
+        // constraint min_addr_size {
+        //                         address.size > 0;
+        //                 }
     
 
 
