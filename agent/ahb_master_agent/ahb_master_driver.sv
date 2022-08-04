@@ -42,7 +42,17 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
     task drive(ahb_transaction req);
         
-        
+        req.print();
+        vif.m_cb.busreq  <= req.hbusreq;
+        vif.m_cb.hlock   <= req.hlock;
+        vif.m_cb.haddr   <= req.address;
+        vif.m_cb.hwdata  <= req.wdata;
+        vif.m_cb.hburst  <= req.burst_mode;
+        vif.m_cb.htrans  <= req.trans_type;
+        vif.m_cb.hsize   <= req.trans_size;
+        vif.m_cb.hwrite  <= req.read_write;
+        //vif.m_cb.hgrant  <= 1;
+
 
     endtask
 

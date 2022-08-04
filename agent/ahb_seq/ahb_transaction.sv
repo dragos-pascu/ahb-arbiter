@@ -5,35 +5,33 @@ class ahb_transaction extends uvm_sequence_item;
         rand bit reset;
 
         //transfer type
-        rand transfer_t trans_type[];
-
+        rand transfer_t trans_type;
         //address and control
-        rand bit [31:0] address  []; 
+        rand logic [31:0] address;
         rand size_t  trans_size;
         rand burst_t burst_mode;
         rand rw_t read_write;
-        bit[3:0] master;
-
-        //data 
-        rand bit [31:0] wdata [];
-        rand bit [31:0] rdata [];
+        rand logic [31:0] wdata;
+        rand logic  hlock;
+        rand logic  hbusreq;
+        rand logic hgrant;
 
         //slave response
         rand bit ready;
-        resp_t response;
+        resp_t response; 
+        rand logic [31:0] rdata;
 
 
     
         `uvm_object_utils_begin(ahb_transaction)
           `uvm_field_int(reset, UVM_ALL_ON)
-          `uvm_field_array_enum(transfer_t, trans_type, UVM_ALL_ON)
-          `uvm_field_array_int(address , UVM_ALL_ON)
+          `uvm_field_enum(transfer_t, trans_type, UVM_ALL_ON)
+          `uvm_field_int(address , UVM_ALL_ON)
           `uvm_field_enum(size_t, trans_size, UVM_ALL_ON)
           `uvm_field_enum(burst_t, burst_mode, UVM_ALL_ON)
-          `uvm_field_array_int(wdata, UVM_ALL_ON)
-          `uvm_field_array_int(rdata, UVM_ALL_ON)
+          `uvm_field_int(wdata, UVM_ALL_ON)
+          `uvm_field_int(rdata, UVM_ALL_ON)
           `uvm_field_enum(rw_t,read_write,UVM_ALL_ON)
-          `uvm_field_int(master,UVM_NOCOMPARE)
           `uvm_field_int(ready, UVM_ALL_ON)
           `uvm_field_enum(resp_t, response, UVM_ALL_ON)        
         `uvm_object_utils_end
@@ -42,6 +40,21 @@ class ahb_transaction extends uvm_sequence_item;
             super.new(name);
 
         endfunction
+
+      /*Simple transfer constraints*/
+      constraint transfertype{
+          trans_type == NONSEQ;
+          burst_mode == SINGLE;
+          hgrant == 1;
+          address == 50;
+          hbusreq == 0;
+          hlock == 0;
+          ready == 1;
+          response == OKAY;
+          trans_size == WORD; 
+      }
+          
+
 
         /*
         TODO:
@@ -80,16 +93,18 @@ class ahb_transaction extends uvm_sequence_item;
         // constraint addr {
         //             //Address Based on BURST Mode and HSIZE
         //             if(burst_mode == SINGLE)
-        //                     address.size == 1;
+        //                     trans_size == 1;
         //             if(burst_mode == INCR)
-        //                     address.size < (1024/(2^trans_size));
+        //                     trans_size < (1024/(2^trans_size));
         //             if(burst_mode == WRAP4 || burst_mode == INCR4)
-        //                     address.size == 4;
+        //                     trans_size == 4;
         //             if(burst_mode == WRAP8 || burst_mode == INCR8)
-        //                     address.size == 8;
+        //                     trans_size == 8;
         //             if(burst_mode == WRAP16 || burst_mode == INCR16)
-        //                     address.size == 16;
+        //                     trans_size == 16;
         //             }
+
+        
 
         // constraint min_addr_size {
         //                         address.size > 0;

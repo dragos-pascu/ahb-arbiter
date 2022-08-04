@@ -18,7 +18,10 @@ class ahb_vseq extends uvm_sequence;
     // Body task
     virtual task body();
 
-        simple_seq.start(p_sequencer.master_seqr[3]);
+        for (int i=0; i<master_number; ++i) begin
+            simple_seq.start(p_sequencer.master_seqr[i]);
+        end
+        
           `uvm_info(get_type_name(), "Executing virtual sequence body", UVM_MEDIUM)
 
           // Add more functionality here if needed

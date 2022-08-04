@@ -47,6 +47,8 @@ module top(
     initial begin
     clk <= 0;
     reset <= 0;
+    #15ns;
+    reset<=1;
     forever #5ns  clk = ~clk;
     end
 
