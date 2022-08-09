@@ -24,7 +24,6 @@ class ahb_vseq extends uvm_sequence;
         
           `uvm_info(get_type_name(), "Executing virtual sequence body", UVM_MEDIUM)
 
-          // Add more functionality here if needed
 
     endtask //body
 

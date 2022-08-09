@@ -66,6 +66,10 @@ class ahb_env extends uvm_env;
             vsequencer.slave_seqr[i] = s_agent[i].sequencer;
         end
 
+        //connect monitor
+        
+
+
     endfunction
 
 

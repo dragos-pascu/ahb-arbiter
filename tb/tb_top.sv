@@ -13,7 +13,7 @@ module top(
     logic clk;
     logic reset;
 
-    test_harness vif (.hclk(clk),.hreset(reset));
+    test_harness vif (.hclk(clk), .hreset(reset));
     
     generic_arbiter_full DUT( .m_busreq(vif.m_busreq),
                             .m_hlock(vif.m_hlock),

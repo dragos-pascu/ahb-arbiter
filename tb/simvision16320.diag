@@ -1,0 +1,101 @@
+*** Message Type: info ***
+When: Mon Aug 08 01:24:19 PM EEST 2022
+SimVision started.
+Version: TOOL:  simvision       20.09-s009
+User: dragos.pascu
+Host: dragos.pascu
+Platform: Linux/x86_64/3.10.0-1160.el7.x86_64
+Started: Mon Aug 08 01:24:19 PM EEST 2022
+Command: /sw/cadence/XCELIUM2009/tools.lnx86/simvision/bin/simvision.exe -connect dc:dragos.pascu:33230 -nocopyright
+Work Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/tb
+ 
+*** Message Type: info ***
+When: Mon Aug 08 01:24:20 PM EEST 2022
+Create browser window: "Design Browser 1"
+ 
+*** Message Type: info ***
+When: Mon Aug 08 01:24:24 PM EEST 2022
+Create console window: "Console"
+ 
+*** Message Type: info ***
+When: Mon Aug 08 01:24:27 PM EEST 2022
+Connect to Simulator
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:   xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Mon Aug 08 01:24:18 PM EEST 2022
+  Process ID: 16310
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/tb
+     Command: xrun -f run.f -gui
+
+ 
+*** Message Type: info ***
+When: Mon Aug 08 01:24:29 PM EEST 2022
+Create utility window: "Properties"
+ 
+*** Message Type: info ***
+When: Mon Aug 08 01:24:53 PM EEST 2022
+Create waveform window: "Waveform 1"
+ 
+*** Message Type: error ***
+When: Mon Aug 08 01:50:59 PM EEST 2022
+couldn't open "/home/dragos.pascu/Projects/ahb-arbiter-project/tb/.simvision/16320_dragos.pascu__autosave.tcl.svcf": no such file or directory
+    while executing
+"# Compiled -- no source code available
+error "called a copy of a compiled script""
+    (procedure "::savescript::autosave" line 1)
+    invoked from within
+"::savescript::autosave $filename"
+    (object "::application" method "::Application::auto-save" body line 18)
+    invoked from within
+"::application auto-save"
+    (in namespace inscope "::Application" script line 1)
+    invoked from within
+"namespace inscope ::Application {::application auto-save}"
+    ("after" script)
+ 
+*** Message Type: error ***
+When: Mon Aug 08 01:51:01 PM EEST 2022
+couldn't open "/home/dragos.pascu/Projects/ahb-arbiter-project/tb/.simvision/16320_dragos.pascu__autosave.tcl.svcf": no such file or directory
+    while executing
+"# Compiled -- no source code available
+error "called a copy of a compiled script""
+    (procedure "::savescript::autosave" line 1)
+    invoked from within
+"::savescript::autosave $filename"
+    (object "::application" method "::Application::auto-save" body line 18)
+    invoked from within
+"::application auto-save"
+    (in namespace inscope "::Application" script line 1)
+    invoked from within
+"namespace inscope ::Application {::application auto-save}"
+    ("after" script)
+ 
+*** Message Type: error ***
+When: Mon Aug 08 01:51:01 PM EEST 2022
+couldn't open "/home/dragos.pascu/Projects/ahb-arbiter-project/tb/.simvision/16320_dragos.pascu__autosave.tcl.svcf": no such file or directory
+    while executing
+"# Compiled -- no source code available
+error "called a copy of a compiled script""
+    (procedure "::savescript::autosave" line 1)
+    invoked from within
+"::savescript::autosave $filename"
+    (object "::application" method "::Application::auto-save" body line 18)
+    invoked from within
+"::application auto-save"
+    (in namespace inscope "::Application" script line 1)
+    invoked from within
+"namespace inscope ::Application {::application auto-save}"
+    ("after" script)
+ 
+*** Message Type: info ***
+When: Mon Aug 08 01:51:45 PM EEST 2022
+Delete waveform window: "Waveform 1"
+ 
+*** Message Type: info ***
+When: Mon Aug 08 03:20:00 PM EEST 2022
+SimVision Exit.
+ 

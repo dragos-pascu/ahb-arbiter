@@ -15,7 +15,7 @@
 ../rtl/integration_pkg.sv
 ../agent/ahb_agent_pkg.sv
 ../agent/arbiter_if.sv
-../rtl/generic_arbiter_full.sv
+../rtl/generic_arbiter_full_v2.sv
 
 env_config.sv
 ahb_env.sv
