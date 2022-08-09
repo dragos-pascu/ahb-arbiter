@@ -18,6 +18,7 @@ package ahb_agent_pkg;
     
     
     `include "ahb_slave_agent/ahb_sagent_config.sv"
+    `include "ahb_slave_agent/ahb_slave_monitor.sv"
     `include "ahb_slave_agent/ahb_slave_driver.sv"
     `include "ahb_slave_agent/ahb_slave_agent.sv"
     

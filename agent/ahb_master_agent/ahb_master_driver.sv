@@ -17,13 +17,13 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         $display(get_parent().get_name());
         if(!uvm_config_db #(ahb_magent_config)::get(null,get_parent().get_name(), "ahb_magent_config", agent_config)) 
 
-          `uvm_fatal(get_type_name(), "Master Agent config failed")
+          `uvm_fatal(get_type_name(), "Failed to get config inside Master Driver")
 
         if(!uvm_config_db #(virtual master_if)::get(this, "", $sformatf("master[%0d]", agent_config.agent_id), vif)) 
 
-          `uvm_fatal(get_type_name(), "VIF failed")
+          `uvm_fatal(get_type_name(), "Failed to get VIF inside Master Driver")
 
-        `uvm_info(get_type_name(), "Finished build_phase for driver", UVM_MEDIUM)
+        //`uvm_info(get_type_name(), "Finished build_phase for driver", UVM_MEDIUM)
 
     endfunction
 

@@ -25,11 +25,11 @@ class ahb_master_monitor extends uvm_monitor;
 
         if(!uvm_config_db #(ahb_magent_config)::get(null,get_parent().get_name(), "ahb_magent_config", agent_config)) 
 
-          `uvm_fatal(get_type_name(), "Master Agent config failed")
+          `uvm_fatal(get_type_name(), "Failed to get config inside Master Monitor")
 
         if(!uvm_config_db #(virtual master_if)::get(this, "", $sformatf("master[%0d]", agent_config.agent_id), vif)) 
 
-          `uvm_fatal(get_type_name(), "VIF failed")
+          `uvm_fatal(get_type_name(), "Failed to get VIF inside Master Monitor")
     endfunction
 
     virtual task run_phase(uvm_phase phase);

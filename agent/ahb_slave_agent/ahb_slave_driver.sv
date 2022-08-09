@@ -14,12 +14,12 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
         //add virtual interface
         if(!uvm_config_db #(ahb_sagent_config)::get(null,get_parent().get_name(), "ahb_sagent_config", agent_config)) 
 
-          `uvm_fatal(get_type_name(), "Master Agent config failed")
+          `uvm_fatal(get_type_name(), "Failed to get config inside Slave Driver")
 
 
         if (!uvm_config_db #(virtual salve_if)::get(null, "", $sformatf("slave[%0d]", agent_config.agent_id), vif))
       
-          `uvm_fatal(get_type_name(), "VIF failed in slave driver!");
+          `uvm_fatal(get_type_name(), "Failed to get VIF inside Slave Driver");
 
     endfunction
 
