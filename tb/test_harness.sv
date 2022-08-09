@@ -11,7 +11,7 @@ interface test_harness(input hclk, input  hreset);
 	  wire[32*master_number-1:0] m_haddr;
 	  wire[3*master_number-1:0] m_hburst;
 	  wire[2*master_number-1:0] m_htrans;
-    wire[master_number-1:0] m_busreq;
+    wire[master_number-1:0] m_hbusreq;
     wire[master_number-1:0] m_hlock;
     wire[1:0] hresp;
     wire hready;
@@ -32,7 +32,7 @@ interface test_harness(input hclk, input  hreset);
       assign m_haddr[32*(i+1)-1:32*i] =m_if[i].master.haddr;
       assign m_hburst[3*(i+1)-1:3*i]=m_if[i].master.hburst;
       assign m_htrans[2*(i+1)-1:2*i]=m_if[i].master.htrans;
-      assign m_busreq[(i+1)-1:i]    =m_if[i].master.busreq;
+      assign m_hbusreq[(i+1)-1:i]    =m_if[i].master.hbusreq;
       assign m_hlock[(i+1)-1:i]     =m_if[i].master.hlock;
 
       initial begin 

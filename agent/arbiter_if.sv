@@ -15,7 +15,7 @@ interface master_if(input hclk, input hreset);
     logic[3:0] hmaster;        
     logic      hsel;           
     logic      hmastlock;      
-    logic      busreq;         
+    logic      hbusreq;         
     logic      hlock;          
     logic      hgrant;              
 
@@ -26,7 +26,7 @@ interface master_if(input hclk, input hreset);
     clocking m_cb @(posedge hclk);
 
     input hgrant,hready,hresp,hrdata;
-    output htrans,haddr,hsize,hburst,hwdata,busreq,hlock,hwrite;
+    output htrans,haddr,hsize,hburst,hwdata,hbusreq,hlock,hwrite;
 
 
     endclocking
@@ -54,7 +54,7 @@ interface salve_if(input hclk, input hreset);
     logic[3:0] hmaster;        
     logic      hsel;           
     logic      hmastlock;      
-    logic      busreq;         
+    logic      hbusreq;         
     logic      hlock;          
     logic      hgrant;               
 

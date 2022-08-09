@@ -1,7 +1,7 @@
 class ahb_master_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_master_monitor)
 
-    
+
     uvm_analysis_port #(ahb_transaction) item_collect_port;
 
     virtual master_if vif;
@@ -15,6 +15,7 @@ class ahb_master_monitor extends uvm_monitor;
     function new(string name, uvm_component parent);
         super.new(name,parent);
         data_packet = ahb_transaction::type_id::create("data_packet",this);
+
     endfunction
 
     virtual function void build_phase(uvm_phase phase);
@@ -35,14 +36,28 @@ class ahb_master_monitor extends uvm_monitor;
 
         forever begin
             @vif.m_cb;
+
+            data_packet = ahb_transaction::type_id::create("data_packet",this);
+            data_packet.hbusreq =  vif.hbusreq;
+            data_packet.hlock =  vif.hlock ;
+            data_packet.haddr =  vif.haddr ;
+            data_packet.hwdata =  vif.hwdata;
+            data_packet.hburst =  burst_t'(vif.hburst);
+            data_packet.htrans =  transfer_t'(vif.htrans);
+            data_packet.hsize =   size_t'(vif.hsize) ;
+            data_packet.hwrite =  rw_t'(vif.hwrite);     
             
-            $display("Inside Monitor");
+            //$display("Inside Monitor") ;
+            data_packet.print();
             item_collect_port.write(data_packet);
 
         end
 
     endtask
 
+    task collect_transaction();
+        
+    endtask
 
 
 endclass
