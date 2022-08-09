@@ -1,6 +1,6 @@
-class ahb_seq extends uvm_sequence #(ahb_transaction);
+class ahb_base_seq extends uvm_sequence #(ahb_transaction);
     
-    `uvm_object_utils(ahb_seq)
+    `uvm_object_utils(ahb_base_seq)
 
     function new(string name = "ahb_seq");
         super.new(name);
@@ -14,5 +14,9 @@ class ahb_seq extends uvm_sequence #(ahb_transaction);
         end
     endtask
 
+    
+endclass
+
+class simple_write_sequence extends ahb_base_seq;
     
 endclass

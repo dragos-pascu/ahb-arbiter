@@ -3,8 +3,9 @@ class ahb_vseq extends uvm_sequence;
     `uvm_object_utils(ahb_vseq)
     `uvm_declare_p_sequencer(ahb_vsequencer)	
 
-    ahb_seq simple_seq;
+    ahb_base_seq simple_seq;
     // sequences handles
+    //as putea sa dau aici start la sequence lib.
 
     function new(string name="ahb_vseq");
         super.new(name);
@@ -12,7 +13,15 @@ class ahb_vseq extends uvm_sequence;
 
 
     virtual task pre_body();
-        simple_seq = ahb_seq::type_id::create("simple_seq");
+        simple_seq = ahb_base_seq::type_id::create("simple_seq");
+        if(starting_phase !=null)
+            starting_phase.raise_objection(this, get_type_name());
+    endtask
+
+    virtual task post_body();
+        if (starting_phase != null) begin
+            starting_phase.drop_objection(this, get_type_name());
+        end
     endtask
 
     virtual task body();
