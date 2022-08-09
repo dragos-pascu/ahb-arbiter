@@ -52,7 +52,6 @@ class ahb_env extends uvm_env;
 
         vsequencer = ahb_vsequencer::type_id::create("vsequencer",this);
         
-        // create a sequence in run_phase( seq.start(env.agent.sequencer) );
     endfunction
 
     virtual function void connect_phase(uvm_phase phase);
@@ -66,9 +65,7 @@ class ahb_env extends uvm_env;
             vsequencer.slave_seqr[i] = s_agent[i].sequencer;
         end
 
-        //connect monitor
-        
-
+ 
 
     endfunction
 

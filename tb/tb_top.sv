@@ -7,7 +7,7 @@ module top(
     `include "uvm_macros.svh"
     import ahb_agent_pkg::*;
     import integration_pkg::*;
-    `include "ahb_test.sv"
+    `include "ahb_base_test.sv"
 
     
     logic clk;

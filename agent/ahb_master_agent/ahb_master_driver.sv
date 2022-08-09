@@ -14,7 +14,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        $display(get_parent().get_name());
         if(!uvm_config_db #(ahb_magent_config)::get(null,get_parent().get_name(), "ahb_magent_config", agent_config)) 
 
           `uvm_fatal(get_type_name(), "Failed to get config inside Master Driver")

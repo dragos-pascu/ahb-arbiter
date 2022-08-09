@@ -5,7 +5,7 @@
 -access +rw
 
 // *** include test ***
-+UVM_TESTNAME=ahb_test
++UVM_TESTNAME=ahb_base_test
 
 // *** include compile files ***
 
