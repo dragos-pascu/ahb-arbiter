@@ -1,3 +1,10 @@
+`ifndef CYCLE
+    `define CYCLE 10
+`endif
+`ifndef Tdrive
+    `define Tdrive #(0.2*`CYCLE)
+`endif
+
 interface master_if(input hclk, input hreset);
     
     import integration_pkg::*;
@@ -24,7 +31,7 @@ interface master_if(input hclk, input hreset);
 
 
     clocking m_cb @(posedge hclk);
-
+    default input #1step output `Tdrive;
     input hgrant,hready,hresp,hrdata;
     output htrans,haddr,hsize,hburst,hwdata,hbusreq,hlock,hwrite;
 
@@ -60,7 +67,7 @@ interface salve_if(input hclk, input hreset);
 
 
     clocking s_cb @(posedge hclk);
-
+    default input #1step output `Tdrive;
     input haddr,hwrite,htrans,hsize,hburst,hwdata,hmaster,hmastlock,hsel;
     output hready,hresp,hrdata;
 
