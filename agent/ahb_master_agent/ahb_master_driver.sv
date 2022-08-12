@@ -27,13 +27,13 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     endfunction
 
     task run_phase(uvm_phase phase);
-
+        initialize();
         forever begin
             
             @(vif.m_cb)
             seq_item_port.get_next_item( req );
             drive(req);
-            seq_item_port.item_done( req );
+            seq_item_port.item_done();
 
         end    
 
@@ -51,6 +51,18 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         vif.m_cb.hsize   <= req.hsize;
         vif.m_cb.hwrite  <= req.hwrite;
 
+    endtask
+
+    task initialize();
+
+        vif.m_cb.hbusreq <= 0;
+        vif.m_cb.hlock   <= 0;
+        vif.m_cb.haddr   <= 0;
+        vif.m_cb.hwdata  <= 0;
+        vif.m_cb.hburst  <= 0;
+        vif.m_cb.htrans  <= 0;
+        vif.m_cb.hsize   <= 0;
+        vif.m_cb.hwrite  <= 0;
     endtask
 
 endclass //ahb_master_driver extends superClass

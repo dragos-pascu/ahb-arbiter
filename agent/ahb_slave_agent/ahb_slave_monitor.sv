@@ -3,6 +3,7 @@ class ahb_slave_monitor extends uvm_monitor;
 
 
     uvm_analysis_port #(ahb_transaction) item_collect_port;
+    uvm_analysis_port #(ahb_transaction) m_req_port; // port for requests
 
     virtual salve_if vif;
     ahb_transaction data_packet;
@@ -15,6 +16,7 @@ class ahb_slave_monitor extends uvm_monitor;
     function new(string name, uvm_component parent);
         super.new(name,parent);
         data_packet = ahb_transaction::type_id::create("data_packet",this);
+        
 
     endfunction
 
@@ -22,6 +24,7 @@ class ahb_slave_monitor extends uvm_monitor;
         super.build_phase(phase);
 
         item_collect_port = new("item_collected_port",this);
+        m_req_port = new("m_req_port",this);
 
         if(!uvm_config_db #(ahb_sagent_config)::get(null,get_parent().get_name(), "ahb_sagent_config", agent_config)) 
 
@@ -32,5 +35,6 @@ class ahb_slave_monitor extends uvm_monitor;
           `uvm_fatal(get_type_name(), "Failed to get VIF inside Slave Monitor")
     endfunction
 
+    //write task inside the run_phase to write to m_req_port.
 
 endclass

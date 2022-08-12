@@ -3,7 +3,7 @@ class ahb_slave_agent extends uvm_agent;
     `uvm_component_utils(ahb_slave_agent)
 
     ahb_slave_driver ahb_sdriver;
-    ahb_sequencer sequencer;
+    slave_sequencer sequencer;
     ahb_slave_monitor ahb_smonitor;
 
     function new(string name="ahb_slave_agent",uvm_component parent=null);
@@ -17,7 +17,7 @@ class ahb_slave_agent extends uvm_agent;
         ahb_smonitor = ahb_slave_monitor::type_id::create("ahb_smonitor",this);
         // config flags
         if (is_active == UVM_ACTIVE) begin
-            sequencer = ahb_sequencer::type_id::create("sequencer",this);
+            sequencer = slave_sequencer::type_id::create("sequencer",this);
             ahb_sdriver = ahb_slave_driver::type_id::create("ahb_sdriver",this);
         end
 
@@ -26,6 +26,7 @@ class ahb_slave_agent extends uvm_agent;
     virtual function void connect_phase(uvm_phase phase);
         if (is_active == UVM_ACTIVE) begin
             ahb_sdriver.seq_item_port.connect(sequencer.seq_item_export);
+            ahb_smonitor.m_req_port.connect(sequencer.m_request_export);
         end
     endfunction
 
