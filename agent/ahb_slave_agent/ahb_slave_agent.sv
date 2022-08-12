@@ -25,7 +25,9 @@ class ahb_slave_agent extends uvm_agent;
 
     virtual function void connect_phase(uvm_phase phase);
         if (is_active == UVM_ACTIVE) begin
+            //connect driver to sequencer port
             ahb_sdriver.seq_item_port.connect(sequencer.seq_item_export);
+            //connect monitor port to export port
             ahb_smonitor.m_req_port.connect(sequencer.m_request_export);
         end
     endfunction

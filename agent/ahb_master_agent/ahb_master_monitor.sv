@@ -34,14 +34,13 @@ class ahb_master_monitor extends uvm_monitor;
     virtual task run_phase(uvm_phase phase);
 
         collect_transaction();
-
     endtask
 
     task collect_transaction();
         ahb_transaction data_packet;
         forever begin
             @(vif.m_cb)
-            data_packet = ahb_transaction::type_id::create("data_packet",this);
+            data_packet = ahb_transaction::type_id::create("data_packet");
             data_packet.hbusreq =  vif.hbusreq;
             data_packet.hlock =  vif.hlock ;
             data_packet.haddr =  vif.haddr ;
@@ -51,7 +50,7 @@ class ahb_master_monitor extends uvm_monitor;
             data_packet.hsize =   size_t'(vif.hsize) ;
             data_packet.hwrite =  rw_t'(vif.hwrite);     
             
-            data_packet.print();
+            //data_packet.print();
             item_collect_port.write(data_packet);
 
         end

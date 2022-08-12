@@ -5,7 +5,6 @@ class ahb_vseq extends uvm_sequence;
 
     ahb_base_seq simple_seq;
     // sequences handles
-    //as putea sa dau aici start la sequence lib.
 
     function new(string name="ahb_vseq");
         super.new(name);
@@ -29,8 +28,9 @@ class ahb_vseq extends uvm_sequence;
         // for (int i=0; i<master_number; ++i) begin
         //     simple_seq.start(p_sequencer.master_seqr[i]);
         // end
+
         simple_seq.start(p_sequencer.master_seqr[1]);
-          `uvm_info(get_type_name(), "Executing virtual sequence body", UVM_MEDIUM)
+        `uvm_info(get_type_name(), "Executing virtual sequence body", UVM_MEDIUM)
 
 
     endtask 
