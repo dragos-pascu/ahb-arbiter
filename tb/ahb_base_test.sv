@@ -31,7 +31,13 @@ class ahb_base_test extends uvm_test;
 
     
     virtual task run_phase(uvm_phase phase);
-   
+        
+        begin
+            phase.raise_objection(this);
+            vseq_h.start(env.vsequencer);           
+            phase.drop_objection(this);
+        end
+
         for (int i=0; i<slave_number; i++) begin
             int j=i;
             fork
@@ -41,21 +47,11 @@ class ahb_base_test extends uvm_test;
         end
         
 
-            begin
-        phase.raise_objection(this);
-        vseq_h.start(env.vsequencer); 
-        phase.drop_objection(this);
-        //slave_seq.start(env.s_agent[1].sequencer);
-            end
-
-        
-        
-
     endtask
 
-    virtual function void end_of_elaboration_phase(uvm_phase phase);
-        uvm_top.print_topology();
-    endfunction
+    // virtual function void end_of_elaboration_phase(uvm_phase phase);
+    //     uvm_top.print_topology();
+    // endfunction
 
 
 endclass
