@@ -9,7 +9,6 @@ class simple_write_sequence extends uvm_sequence#(ahb_transaction);
 
     
     virtual task body();
-        super.body();
         req = ahb_transaction::type_id::create("req");
         repeat(1)begin
         start_item(req);

@@ -6,7 +6,6 @@ class virtual_simple_write_sequence extends virtual_base_sequence;
     endfunction
 
     virtual task body();
-        super.body();
         `uvm_info(get_type_name(), "Executing virtual_simple_write_sequence", UVM_MEDIUM)
 
         //create sequences before fork?

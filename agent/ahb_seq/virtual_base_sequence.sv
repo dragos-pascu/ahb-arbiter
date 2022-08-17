@@ -21,6 +21,10 @@ class virtual_base_sequence extends uvm_sequence;
         end
     endtask
 
+    virtual task body();
+        `uvm_info(get_type_name(),"Inside body of virtual base seq.",UVM_MEDIUM)
+
+    endtask
     
 
 endclass
