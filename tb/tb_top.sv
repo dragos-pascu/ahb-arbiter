@@ -5,9 +5,9 @@ module top(
 
     // include the UVM macros
     `include "uvm_macros.svh"
-    import ahb_agent_pkg::*;
+    //import ahb_agent_pkg::*;
     import integration_pkg::*;
-    `include "ahb_base_test.sv"
+    import tests_pkg::*;
 
     
     logic clk;

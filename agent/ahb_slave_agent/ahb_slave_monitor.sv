@@ -45,9 +45,10 @@ class ahb_slave_monitor extends uvm_monitor;
     task collect_transaction();
       ahb_transaction data_packet;
       forever begin
-
+        data_packet = ahb_transaction::type_id::create("data_packet");
           @(vif.s_cb)
-            data_packet = ahb_transaction::type_id::create("data_packet");
+            $display("Time to slave sample:%t",$time);
+            $display(vif.haddr);
             data_packet.hbusreq =  vif.hbusreq;
             data_packet.hlock =  vif.hlock ;
             data_packet.haddr =  vif.haddr ;

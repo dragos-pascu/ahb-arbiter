@@ -31,7 +31,7 @@ interface master_if(input hclk, input hreset);
 
 
     clocking m_cb @(posedge hclk);
-    default input #1step output `Tdrive;
+    //default input #1step output `Tdrive;
     input hgrant,hready,hresp,hrdata;
     output htrans,haddr,hsize,hburst,hwdata,hbusreq,hlock,hwrite;
 
@@ -67,7 +67,7 @@ interface salve_if(input hclk, input hreset);
 
 
     clocking s_cb @(posedge hclk);
-    default input #1step output `Tdrive;
+    //default input #1step output `Tdrive;
     input haddr,hwrite,htrans,hsize,hburst,hwdata,hmaster,hmastlock,hsel;
     output hready,hresp,hrdata;
 

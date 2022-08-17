@@ -24,7 +24,7 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
     endfunction
 
     task run_phase(uvm_phase phase);
-      //add init function
+      initialize();
       forever begin
         seq_item_port.get_next_item(req);
         drive(req);
@@ -37,6 +37,12 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       // drive response signals to DUT in accordance with protocol
       // based on response item fields, e.g. sync to clock edge,
       // wait for delay, drive signal <= item field
+    endtask
+
+    task initialize();
+      vif.s_cb.hready <= 0;
+      vif.s_cb.hresp <= 0;
+      vif.s_cb.hrdata <= 0;
     endtask
 
 endclass //ahb_slave_driver extends uvm_driver

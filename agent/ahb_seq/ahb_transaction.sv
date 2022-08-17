@@ -53,6 +53,7 @@ class ahb_transaction extends uvm_sequence_item;
         resp_t hresp; 
         rand logic [31:0] hrdata;
 
+        rand int wait_cycles;
     
         `uvm_object_utils_begin(ahb_transaction)
           `uvm_field_enum(transfer_t, htrans, UVM_ALL_ON)

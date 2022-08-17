@@ -42,6 +42,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     task drive(ahb_transaction req);
         
         req.print();
+        $display("%t",$time);
         vif.m_cb.hbusreq <= req.hbusreq;
         vif.m_cb.hlock   <= req.hlock;
         vif.m_cb.haddr   <= req.haddr;

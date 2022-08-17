@@ -5,7 +5,7 @@
 -access +rw
 
 // *** include test ***
-+UVM_TESTNAME=ahb_base_test
++UVM_TESTNAME=simple_write_test
 
 // *** include compile files ***
 
@@ -14,6 +14,7 @@
 
 ../rtl/integration_pkg.sv
 ../agent/ahb_agent_pkg.sv
+tests_pkg.sv
 ../agent/arbiter_if.sv
 ../rtl/generic_arbiter_full_v5.sv
 
