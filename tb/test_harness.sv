@@ -36,7 +36,7 @@ interface test_harness(input hclk, input  hreset);
       assign m_hlock[(i+1)-1:i]     =m_if[i].master.hlock;
 
       initial begin 
-      uvm_config_db #(virtual master_if)::set(null,"*", $sformatf("master[%0d]", i), master); 
+      uvm_config_db #(virtual master_if)::set(null,"", $sformatf("master[%0d]", i), master); 
      end
 
     end
@@ -75,7 +75,7 @@ interface test_harness(input hclk, input  hreset);
           assign s_hready[(i+1)-1:i]=s_if[i].slave.hready;
 
         initial begin 
-        uvm_config_db #(virtual salve_if)::set(null,"*", $psprintf("slave[%0d]", i), slave); 
+        uvm_config_db #(virtual salve_if)::set(null,"", $psprintf("slave[%0d]", i), slave); 
      end 
 
       end

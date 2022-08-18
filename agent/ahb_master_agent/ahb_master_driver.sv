@@ -64,6 +64,9 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         vif.m_cb.htrans  <= 0;
         vif.m_cb.hsize   <= 0;
         vif.m_cb.hwrite  <= 0;
+        repeat (1) begin
+            @(vif.m_cb);
+        end
     endtask
 
 endclass //ahb_master_driver extends superClass

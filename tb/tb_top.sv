@@ -50,10 +50,12 @@ module top(
     end
 
     initial begin
-    reset <= 0;
-    #5ns;
-    reset <= 1;
+        reset <= 0;
+        #5ns
+        reset <= 1;
     end
+
+
 
     initial begin
         run_test();
