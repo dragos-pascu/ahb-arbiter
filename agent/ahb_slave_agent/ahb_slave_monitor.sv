@@ -47,23 +47,20 @@ class ahb_slave_monitor extends uvm_monitor;
       forever begin
         data_packet = ahb_transaction::type_id::create("data_packet");
           @(vif.s_cb)
-            $display("Time to slave sample:%t",$time);
-            $display(vif.haddr);
-            data_packet.hbusreq =  vif.hbusreq;
-            data_packet.hlock =  vif.hlock ;
-            data_packet.haddr =  vif.haddr ;
-            data_packet.hwdata =  vif.hwdata;
-            data_packet.hburst =  burst_t'(vif.hburst);
-            data_packet.htrans =  transfer_t'(vif.htrans);
-            data_packet.hsize =   size_t'(vif.hsize) ;
-            data_packet.hwrite =  rw_t'(vif.hwrite);     
+            // data_packet.hbusreq =  vif.hbusreq;
+            // data_packet.hlock =  vif.hlock ;
+            // data_packet.haddr =  vif.haddr ;
+            // data_packet.hwdata =  vif.hwdata;
+            // data_packet.hburst =  burst_t'(vif.hburst);
+            // data_packet.htrans =  transfer_t'(vif.htrans);
+            // data_packet.hsize =   size_t'(vif.hsize) ;
+            // data_packet.hwrite =  rw_t'(vif.hwrite);     
 
             if (data_packet.hwrite == WRITE ) begin
-                storage.write(data_packet.haddr, data_packet.hwdata);
+                //storage.write(data_packet.haddr, data_packet.hwdata);
                 $display("Data written");
             end
-            $display("Print packet");
-            data_packet.print();
+            
             m_req_port.write(data_packet);
       end
       
