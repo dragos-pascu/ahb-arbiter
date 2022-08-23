@@ -12,7 +12,7 @@ class ahb_slave_base_seq extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Call ahb_slave_base_seq", UVM_MEDIUM)
         temp_item = ahb_transaction::type_id::create("temp_item");
         start_item(temp_item);
-        assert(temp_item.randomize() with {
+        if(!temp_item.randomize() with {
             (temp_item.hresp == OKAY);
             (temp_item.hready == 1);
         } )

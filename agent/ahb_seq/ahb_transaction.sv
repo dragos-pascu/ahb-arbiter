@@ -46,7 +46,7 @@ class ahb_transaction extends uvm_sequence_item;
 
         //inputs AHB master
         rand bit hready;
-        resp_t hresp; 
+        rand resp_t hresp; 
         bit [31:0] hrdata;
 
         /*****Add other signals for sampling******/
