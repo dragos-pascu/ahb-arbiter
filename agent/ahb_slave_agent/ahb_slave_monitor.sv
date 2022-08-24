@@ -46,7 +46,8 @@ class ahb_slave_monitor extends uvm_monitor;
       data_packet = ahb_transaction::type_id::create("data_packet");
       forever begin
         @(vif.s_cb)
-        $display(vif.s_cb.hwdata[0]);
+        if(vif.s_cb.hsel == 1)
+        $display("hwdata : %h",vif.s_cb.hwdata);
           // @(vif.s_cb)
           // foreach (vif.s_cb.haddr[i]) begin
           //   $display("%d",vif.s_cb.haddr[i]);

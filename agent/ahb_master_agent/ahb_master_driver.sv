@@ -44,7 +44,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         
 
         //req.print();
-        $display("%t",$time);
+        $display("time: %t",$time);
         @(vif.m_cb);
         //drive control signals
         vif.m_cb.hsize   <= req.hsize;
