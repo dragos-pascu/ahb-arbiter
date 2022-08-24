@@ -49,7 +49,6 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
 
     task drive(ahb_transaction req);
       vif.s_cb.hresp <= req.hresp;
-      @(vif.s_cb);
       vif.s_cb.hready <= req.hready;
       vif.s_cb.hrdata <= 44;
 

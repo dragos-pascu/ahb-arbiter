@@ -44,7 +44,7 @@ class base_test extends uvm_test;
         
         phase.raise_objection(this);
         vseq_h.start(env.vsequencer);
-        phase.phase_done.set_drain_time(this, 100ns);          
+        phase.phase_done.set_drain_time(this, 50ns);          
         phase.drop_objection(this);
         
 

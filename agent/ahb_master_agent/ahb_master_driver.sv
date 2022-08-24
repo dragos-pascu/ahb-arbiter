@@ -30,7 +30,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         initialize();
         forever begin
             
-            
             seq_item_port.get_next_item( req );
             fork
             drive(req);
@@ -46,28 +45,37 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
         req.print();
         $display("%t",$time);
-
+        @(vif.m_cb);
         //drive control signals
         vif.m_cb.hsize   <= req.hsize;
         vif.m_cb.hwrite  <= req.hwrite;
         vif.m_cb.hburst  <= req.hburst;
 
         //drive aribter signals
-        vif.m_cb.hbusreq <= req.hbusreq;
-        vif.m_cb.hlock   <= req.hlock;
+        //vif.m_cb.hbusreq <= req.hbusreq;
+        //vif.m_cb.hlock   <= req.hlock;
+        vif.m_cb.hbusreq <= 1;
 
         //drive addr, transaction type and data
         foreach (req.haddr[i]) begin
             vif.m_cb.haddr <= req.haddr[i];
             vif.m_cb.htrans <= req.htrans[i];
             $display("Inside");
-            while(vif.m_cb.hready) 
+            if(req.hwrite == WRITE)
                 @(vif.m_cb);
-                if(req.hwrite == WRITE)
                 begin
                         vif.m_cb.hwdata <= req.hwdata[i];
                 end
+            // while(vif.m_cb.hready) 
+            //     //@(vif.m_cb);
+            //     if(req.hwrite == WRITE)
+            //     begin
+            //             vif.m_cb.hwdata <= req.hwdata[i];
+            //     end
         end
+        #1ns vif.m_cb.hbusreq <= 0;
+        //@(vif.m_cb);
+        
 
     endtask
 
