@@ -86,6 +86,11 @@ class ahb_transaction extends uvm_sequence_item;
                         haddr.size == 16;
         }        
 
+        constraint addr_size_max_limit {
+                foreach(haddr[i])
+                        haddr[i] < 350;
+                
+        }  
         constraint addr_size_limit {
                 haddr.size > 0;
         }

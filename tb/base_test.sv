@@ -36,10 +36,10 @@ class base_test extends uvm_test;
 
         for (int i=0; i<slave_number; i++) begin
             int j=i;
-            fork
+            //fork
             slave_seq = ahb_slave_base_seq::type_id::create("slave_seq");
             slave_seq.start(env.s_agent[j].sequencer);
-            join_none
+            //join_none
         end
         
         phase.raise_objection(this);

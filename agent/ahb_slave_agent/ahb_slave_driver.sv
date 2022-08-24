@@ -4,7 +4,8 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
 
     virtual salve_if vif;
     ahb_sagent_config agent_config;
-
+    memory storage;
+    
     function new(string name = "ahb_slave_driver", uvm_component parent = null);
         super.new(name, parent);
     endfunction
@@ -27,10 +28,7 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       initialize();
       forever begin
         seq_item_port.get_next_item(req);
-        fork
-          // @vif.s_cb;
-          drive(req);
-        join
+        drive(req);
         seq_item_port.item_done();
 
       end
@@ -42,16 +40,13 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       vif.s_cb.hready <= 0;
       vif.s_cb.hresp <= 0;
       vif.s_cb.hrdata <= 0;
-      // repeat (1) begin
-      //       @(vif.s_cb);
-      //   end
+
     endtask
 
     task drive(ahb_transaction req);
       vif.s_cb.hresp <= req.hresp;
       vif.s_cb.hready <= req.hready;
       vif.s_cb.hrdata <= 44;
-
       
     endtask
 

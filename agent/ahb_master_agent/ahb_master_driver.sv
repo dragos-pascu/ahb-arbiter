@@ -43,7 +43,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     task drive(ahb_transaction req);
         
 
-        req.print();
+        //req.print();
         $display("%t",$time);
         @(vif.m_cb);
         //drive control signals
@@ -60,7 +60,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         foreach (req.haddr[i]) begin
             vif.m_cb.haddr <= req.haddr[i];
             vif.m_cb.htrans <= req.htrans[i];
-            $display("Inside");
             if(req.hwrite == WRITE)
                 @(vif.m_cb);
                 begin
