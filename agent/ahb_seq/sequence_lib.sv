@@ -22,16 +22,17 @@ class simple_write_sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of simple_write_sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(1)begin
+        repeat(2)begin
         start_item(req);
         // if(!req.randomize())
         //     `uvm_fatal(get_type_name(), "Single write randomize failed!")
         if(!req.randomize() with {
-            (req.hburst == SINGLE);
-            (req.hwrite==WRITE); 
-            (req.htrans[0] == NONSEQ); 
+            (hburst == SINGLE);
+            (hwrite==WRITE); 
+            (htrans[0] == NONSEQ); 
             } )
             `uvm_fatal(get_type_name(), "Single write randomize failed!")
+            req.hwdata[0] = $urandom();
         finish_item(req);
         end
         `uvm_info(get_type_name(), "sequence finished", UVM_MEDIUM)
