@@ -54,21 +54,15 @@ class ahb_slave_monitor extends uvm_monitor;
           // end
             // data_packet.hbusreq =  vif.hbusreq;
             // data_packet.hlock =  vif.hlock ;
-            // data_packet.haddr[0] =  vif.haddr[0] ;
-            // data_packet.hwdata[0] =  vif.hwdata[0];
             // data_packet.hburst =  burst_t'(vif.hburst);
             // data_packet.htrans[0] =  transfer_t'(vif.htrans[0]);
             // data_packet.hsize =   size_t'(vif.hsize) ;
             // data_packet.hwrite =  rw_t'(vif.hwrite);     
         
         
-            // if (data_packet.hwrite == WRITE ) begin
-            //     foreach (vif.addr[i]) begin
-            //       $display("it works");
-            //     end
-            //     storage.write(data_packet.haddr[0], data_packet.hwdata[0]);
-            //     $display("Data written");
-            // end
+            if (vif.s_cb.hwrite == WRITE ) begin
+                storage.write(vif.s_cb.haddr, vif.s_cb.hwdata);
+            end
             
             // m_req_port.write(data_packet);
       end

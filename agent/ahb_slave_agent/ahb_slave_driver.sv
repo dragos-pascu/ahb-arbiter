@@ -20,8 +20,9 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
 
         if (!uvm_config_db #(virtual salve_if)::get(null, "", $sformatf("slave[%0d]", agent_config.agent_id), vif))
       
-          `uvm_fatal(get_type_name(), "Failed to get VIF inside Slave Driver");
-
+        `uvm_fatal(get_type_name(), "Failed to get VIF inside Slave Driver");
+        storage = memory::type_id::create("storage",this);
+        uvm_config_db #(memory)::set(null,"", "storage", storage);
     endfunction
 
     task run_phase(uvm_phase phase);
@@ -46,8 +47,9 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
     task drive(ahb_transaction req);
       vif.s_cb.hresp <= req.hresp;
       vif.s_cb.hready <= req.hready;
-      vif.s_cb.hrdata <= 44;
-      
+      //@vif.s_cb;
+      // if(vif.s_cb.hwrite == READ)
+        //vif.s_cb.hrdata <= storage.read(vif.s_cb.haddr);
     endtask
 
 endclass //ahb_slave_driver extends uvm_driver

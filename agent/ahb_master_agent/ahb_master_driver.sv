@@ -5,6 +5,8 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     virtual master_if vif;
 
     ahb_magent_config agent_config;
+
+    mailbox mbx = new();
     
 
     function new(string name = "ahb_master_driver", uvm_component parent);
@@ -33,6 +35,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             seq_item_port.get_next_item( req );
             fork
             drive(req);
+
             join
             seq_item_port.item_done();
 
@@ -43,7 +46,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     task drive(ahb_transaction req);
         
 
-        //req.print();
+        req.print();
         $display("time: %t",$time);
         @(vif.m_cb);
         //drive control signals
@@ -52,16 +55,18 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         vif.m_cb.hburst  <= req.hburst;
 
         //drive aribter signals
-        //vif.m_cb.hbusreq <= req.hbusreq;
-        //vif.m_cb.hlock   <= req.hlock;
+        vif.m_cb.hbusreq <= req.hbusreq;
+        vif.m_cb.hlock   <= req.hlock;
         vif.m_cb.hbusreq <= 1;
-
+        
+       
         //drive addr, transaction type and data
         foreach (req.haddr[i]) begin
             vif.m_cb.haddr <= req.haddr[i];
             vif.m_cb.htrans <= req.htrans[i];
             if(req.hwrite == WRITE)
                 @(vif.m_cb);
+                vif.m_cb.hbusreq <= 0;
                 begin
                         vif.m_cb.hwdata <= req.hwdata[i];
                 end
@@ -72,11 +77,13 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             //             vif.m_cb.hwdata <= req.hwdata[i];
             //     end
         end
-        #1ns vif.m_cb.hbusreq <= 0;
-        //@(vif.m_cb);
+        
+        
+        @(vif.m_cb);
         
 
     endtask
+
 
     task initialize();
 
@@ -92,5 +99,8 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             @(vif.m_cb);
         end
     endtask
+
+
+
 
 endclass //ahb_master_driver extends superClass

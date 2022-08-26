@@ -41,7 +41,7 @@ class ahb_transaction extends uvm_sequence_item;
         rand rw_t hwrite; // read/write
         rand logic [31:0] hwdata[]; // 
 
-        logic  hlock; // m signal to arbiter
+        rand logic  hlock; // m signal to arbiter
         rand logic  hbusreq; // m signal to arbiter
 
         //inputs AHB master
