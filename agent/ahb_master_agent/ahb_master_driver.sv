@@ -33,9 +33,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         forever begin
             
             seq_item_port.get_next_item( req );
-            //fork
             drive(req);
-            //join_none
             seq_item_port.item_done();
 
         end    
@@ -61,23 +59,18 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
        
         //drive addr, transaction type and data
         
-            foreach (req.haddr[i]) begin
-                vif.m_cb.haddr <= req.haddr[i];
-                vif.m_cb.htrans <= req.htrans[i];
-
-                @vif.m_cb;
-
-                while(!vif.m_cb.hready) @(vif.m_cb);
-                if(req.hwrite == WRITE)
-                begin
-                        vif.m_cb.hwdata <= req.hwdata[i];
-                end
+        foreach (req.haddr[i]) begin
+            vif.m_cb.haddr <= req.haddr[i];
+            vif.m_cb.htrans <= req.htrans[i];
+            @vif.m_cb;
+            //while(!vif.m_cb.hready) @(vif.m_cb);
+            if(req.hwrite == WRITE)
+            begin
+                    vif.m_cb.hwdata <= req.hwdata[i];
+            end
         end
         
-        
-        
-        
-        #1ns;        
+                
         vif.m_cb.hbusreq <= 0;
         
 
