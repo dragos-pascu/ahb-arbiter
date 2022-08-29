@@ -134,7 +134,7 @@ class ahb_transaction extends uvm_sequence_item;
                 }
         }        
 
-        constraint burst_transfer {
+        constraint burst_transfer { 
                 // Single transfer with no busy 
                 if((haddr.size == 1) && (hburst == INCR)){
                         htrans[0] == NONSEQ; 

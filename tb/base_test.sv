@@ -27,7 +27,7 @@ class base_test extends uvm_test;
         `uvm_info(get_type_name(),"Build phase of test is executing",UVM_HIGH)
 
         //make changes to env here? 
-
+                                                                                                                  
     endfunction
 
     
@@ -44,7 +44,7 @@ class base_test extends uvm_test;
         
         phase.raise_objection(this);
         vseq_h.start(env.vsequencer);
-        phase.phase_done.set_drain_time(this, 50ns);          
+        phase.phase_done.set_drain_time(this, 100ns);          
         phase.drop_objection(this);
         
 
