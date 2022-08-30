@@ -1,0 +1,71 @@
+*** Message Type: info ***
+When: Mon Aug 29 05:34:16 PM EEST 2022
+SimVision started.
+Version: TOOL:  simvision(64)   20.09-s009
+User: dragos.pascu
+Host: dragos.pascu
+Platform: Linux/x86_64/3.10.0-1160.el7.x86_64
+Started: Mon Aug 29 05:34:16 PM EEST 2022
+Command: /sw/cadence/XCELIUM2009/tools.lnx86/simvision/bin/64bit/simvision.exe -connect dc:dragos.pascu:51045 -64BIT -nocopyright
+Work Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/tb
+ 
+*** Message Type: info ***
+When: Mon Aug 29 05:34:20 PM EEST 2022
+Create browser window: "Design Browser 1"
+ 
+*** Message Type: info ***
+When: Mon Aug 29 05:34:41 PM EEST 2022
+Create console window: "Console"
+ 
+*** Message Type: info ***
+When: Mon Aug 29 05:34:57 PM EEST 2022
+Connect to Simulator
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:   xmsim(64)       20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Mon Aug 29 05:34:07 PM EEST 2022
+  Process ID: 21052
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/tb
+     Command: xrun -f run.f -uvm -sv -access rwc -64bit -gui -linedebug -uvmlinedebug
+
+ 
+*** Message Type: info ***
+When: Mon Aug 29 05:35:04 PM EEST 2022
+Create utility window: "Properties"
+ 
+*** Message Type: info ***
+When: Mon Aug 29 05:37:04 PM EEST 2022
+Create source window: "Source Browser 1"
+ 
+*** Message Type: info ***
+When: Mon Aug 29 05:38:09 PM EEST 2022
+Create waveform window: "Waveform 1"
+ 
+*** Message Type: info ***
+When: Mon Aug 29 05:38:34 PM EEST 2022
+Delete waveform window: "Waveform 1"
+ 
+*** Message Type: error ***
+When: Mon Aug 29 05:38:34 PM EEST 2022
+bad window path name ".waveWindow0.tba"
+    while executing
+"winfo width $container"
+    (object "::toolbarManager0" method "::toolbar::ToolbarManager::fixLayout" body line 2)
+    invoked from within
+"::toolbarManager0 fixLayout .waveWindow0.tba"
+    (in namespace inscope "::toolbar::ToolbarManager" script line 1)
+    invoked from within
+"namespace inscope ::toolbar::ToolbarManager {::toolbarManager0 fixLayout .waveWindow0.tba}"
+    ("after" script)
+ 
+*** Message Type: info ***
+When: Mon Aug 29 05:45:44 PM EEST 2022
+Create waveform window: "Waveform 2"
+ 
+*** Message Type: info ***
+When: Mon Aug 29 06:05:12 PM EEST 2022
+Delete waveform window: "Waveform 2"
+ 

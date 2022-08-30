@@ -28,53 +28,53 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
     endfunction
 
-    task run_phase(uvm_phase phase);
-        initialize();
-        forever begin
+    // task run_phase(uvm_phase phase);
+    //     initialize();
+    //     forever begin
             
-            seq_item_port.get_next_item( req );
-            drive(req);
-            seq_item_port.item_done();
+    //         seq_item_port.get_next_item( req );
+    //         drive(req);
+    //         seq_item_port.item_done();
 
-        end    
+    //     end    
 
-    endtask
+    // endtask
 
-    task drive(ahb_transaction req);
+    // task drive(ahb_transaction req);
         
 
-        req.print();
-        $display("time: %t",$time);
-        //@(vif.m_cb);
-        //drive control signals
-        vif.m_cb.hsize   <= req.hsize;
-        vif.m_cb.hwrite  <= req.hwrite;
-        vif.m_cb.hburst  <= req.hburst;
+    //     req.print();
+    //     $display("time: %t",$time);
+    //     //@(vif.m_cb);
+    //     //drive control signals
+    //     vif.m_cb.hsize   <= req.hsize;
+    //     vif.m_cb.hwrite  <= req.hwrite;
+    //     vif.m_cb.hburst  <= req.hburst;
 
-        //drive aribter signals
-        //vif.m_cb.hbusreq <= req.hbusreq;
-        //vif.m_cb.hlock   <= req.hlock;
-        vif.m_cb.hbusreq <= 1;
-        
+    //     //drive aribter signals
+    //     //vif.m_cb.hbusreq <= req.hbusreq;
+    //     //vif.m_cb.hlock   <= req.hlock;
+    //     vif.m_cb.hbusreq <= 1;
+    //     vif.m_cb.hlock <= 1;
        
-        //drive addr, transaction type and data
-        
-        foreach (req.haddr[i]) begin
-            vif.m_cb.haddr <= req.haddr[i];
-            vif.m_cb.htrans <= req.htrans[i];
-            @vif.m_cb;
-            //while(!vif.m_cb.hready) @(vif.m_cb);
-            if(req.hwrite == WRITE)
-            begin
-                    vif.m_cb.hwdata <= req.hwdata[i];
-            end
-        end
+    //     //drive addr, transaction type and data
+    //     wait(vif.m_cb.hgrant);
+    //     foreach (req.haddr[i]) begin
+    //         vif.m_cb.haddr <= req.haddr[i];
+    //         vif.m_cb.htrans <= req.htrans[i];
+    //         //while(!vif.m_cb.hready) @(vif.m_cb);
+    //         if(req.hwrite == WRITE)
+    //         begin
+    //             @vif.m_cb;
+    //             vif.m_cb.hwdata <= req.hwdata[i];
+    //         end
+    //     end
         
                 
-        vif.m_cb.hbusreq <= 0;
-        
+    //     vif.m_cb.hbusreq <= 0;
+    //     vif.m_cb.hlock <= 0;
 
-    endtask
+    // endtask
 
 
     task initialize();
@@ -92,62 +92,77 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         end
     endtask
 
-    // virtual task run_phase(uvm_phase phase);
-    //     initialize();
-    //     fork
-    //         address_phase();
-    //         data_phase();
-    //     join_none
-    // endtask
+    virtual task run_phase(uvm_phase phase);
+        initialize();
+        fork
+            address_phase();
+            data_phase();
+        join_none
+    endtask
 
-    // task address_phase();
-    //     forever begin                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-    //         seq_item_port.get(req);
-    //         req.print();
-    //         mbx.put(req);
-    //         //send control signals
+    task address_phase();
+        forever begin                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+            seq_item_port.get(req);
+            //seq_item_port.get_next_item(req);
+            req.print();
+            
 
-    //         //vif.m_cb.hlock   <= req.hlock;
-    //         vif.m_cb.hbusreq <= 1;
+            //vif.m_cb.hlock   <= req.hlock;
+            vif.m_cb.hbusreq <= 1;
+            vif.m_cb.hlock <= 1;
             
-    //         //wait(vif.m_cb.hgrant);
-            
-    //         //drive address
-    //         foreach (req.haddr[i]) begin
-    //         @(vif.m_cb);
-    //         vif.m_cb.haddr  <= req.haddr[i];
-    //         vif.m_cb.htrans <= req.htrans[i];
-        
-    //         //drive control signals
-    //         vif.m_cb.hsize   <= req.hsize;
-    //         vif.m_cb.hwrite  <= req.hwrite;
-    //         vif.m_cb.hburst  <= req.hburst;
-    //         #1ns
-    //         vif.m_cb.hbusreq <= 0;  
-            
-    //         end
-            
-            
-             
-    //     end
-    // endtask
+            //drive address
+            foreach (req.haddr[i]) begin
+                
+                wait(vif.m_cb.hgrant & vif.m_cb.hready);
 
-    // task data_phase();
+                if (i == req.haddr.size() - 1) begin
+                    vif.m_cb.hbusreq <= 0;  
+                    vif.m_cb.hlock <= 0;
+                end
+
+                vif.m_cb.haddr  <= req.haddr[i];
+                vif.m_cb.htrans <= req.htrans[i];
+
+                //drive control signals
+                vif.m_cb.hsize   <= req.hsize;
+                vif.m_cb.hwrite  <= req.hwrite;
+                vif.m_cb.hburst  <= req.hburst;
+                
+                mbx.put(req);
+                $display("Time after put : %t",$time);
+                
+            end
+            
+
+        end
+    endtask
+
+    task data_phase();
         
-    //     ahb_transaction item;
-    //     @(vif.m_cb);
-    //     forever begin
-    //         mbx.get(item);
-    //         foreach (item.haddr[i]) begin
-    //             if(item.hwrite == WRITE)
-    //             begin
-    //                     @(vif.m_cb);
-    //                     vif.m_cb.hwdata <= item.hwdata[i];
-    //             end
-    //         end
-    //         seq_item_port.put(item);
-    //     end
+        ahb_transaction item;
+        forever begin
+            mbx.get(item);
+
+            
+            foreach (item.haddr[i]) begin
+                #1;
+                $display("Time before wait : %t",$time);
+                wait(vif.m_cb.hready);
+                $display("Time after wait : %t",$time);
+                if(item.hwrite == WRITE)
+                begin
+
+                    vif.m_cb.hwdata <= item.hwdata[i];
+                    
+                end
+            end
+
+            
+            seq_item_port.put(item);
+            //seq_item_port.item_done();
+        end
         
-    // endtask
+    endtask
 
 endclass //ahb_master_driver extends superClass
