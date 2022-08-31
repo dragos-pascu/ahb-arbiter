@@ -19,6 +19,7 @@ package ahb_agent_pkg;
     
 
     `include "ahb_master_agent/ahb_magent_config.sv"
+    `include "ahb_coverage.sv"
     `include "ahb_master_agent/ahb_master_monitor.sv"
     `include "ahb_master_agent/ahb_master_driver.sv"
     `include "ahb_master_agent/ahb_master_agent.sv"

@@ -38,7 +38,7 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
         
     endfunction //new()
 
-    function void write(ahb_item t);
+    function void write(ahb_transaction t);
         item = t;
         ahb_cg.sample();
 
