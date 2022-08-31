@@ -84,6 +84,7 @@ class ahb_master_monitor extends uvm_monitor;
                 item.hwdata[0] = vif.hwdata;
             end
 
+            item.print();
             item_collect_port.write(item);
             //`uvm_info(get_type_name(), "Item written to analysis port.", UVM_MEDIUM)
         end
