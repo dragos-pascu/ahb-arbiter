@@ -38,7 +38,7 @@ class ahb_slave_monitor extends uvm_monitor;
 
     virtual task run_phase(uvm_phase phase);
         //write task inside the run_phase to write to m_req_port.
-        collect_transaction();
+        //collect_transaction();
     endtask
 
     task collect_transaction();

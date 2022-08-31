@@ -6,6 +6,7 @@
 
 -linedebug
 -uvmlinedebug
+-cov_cgsample
 
 // *** include test ***
 +UVM_TESTNAME=simple_write_test
