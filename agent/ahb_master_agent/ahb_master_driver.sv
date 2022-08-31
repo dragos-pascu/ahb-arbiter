@@ -28,54 +28,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
     endfunction
 
-    // task run_phase(uvm_phase phase);
-    //     initialize();
-    //     forever begin
-            
-    //         seq_item_port.get_next_item( req );
-    //         drive(req);
-    //         seq_item_port.item_done();
-
-    //     end    
-
-    // endtask
-
-    // task drive(ahb_transaction req);
-        
-
-    //     req.print();
-    //     $display("time: %t",$time);
-    //     //@(vif.m_cb);
-    //     //drive control signals
-    //     vif.m_cb.hsize   <= req.hsize;
-    //     vif.m_cb.hwrite  <= req.hwrite;
-    //     vif.m_cb.hburst  <= req.hburst;
-
-    //     //drive aribter signals
-    //     //vif.m_cb.hbusreq <= req.hbusreq;
-    //     //vif.m_cb.hlock   <= req.hlock;
-    //     vif.m_cb.hbusreq <= 1;
-    //     vif.m_cb.hlock <= 1;
-       
-    //     //drive addr, transaction type and data
-    //     wait(vif.m_cb.hgrant);
-    //     foreach (req.haddr[i]) begin
-    //         vif.m_cb.haddr <= req.haddr[i];
-    //         vif.m_cb.htrans <= req.htrans[i];
-    //         //while(!vif.m_cb.hready) @(vif.m_cb);
-    //         if(req.hwrite == WRITE)
-    //         begin
-    //             @vif.m_cb;
-    //             vif.m_cb.hwdata <= req.hwdata[i];
-    //         end
-    //     end
-        
-                
-    //     vif.m_cb.hbusreq <= 0;
-    //     vif.m_cb.hlock <= 0;
-
-    // endtask
-
 
     task initialize();
 
@@ -130,7 +82,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                 vif.m_cb.hburst  <= req.hburst;
                 
                 mbx.put(req);
-                $display("Time after put : %t",$time);
                 
             end
             
@@ -147,9 +98,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             
             foreach (item.haddr[i]) begin
                 #1;
-                $display("Time before wait : %t",$time);
                 wait(vif.m_cb.hready);
-                $display("Time after wait : %t",$time);
                 if(item.hwrite == WRITE)
                 begin
 
