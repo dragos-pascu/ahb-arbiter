@@ -55,11 +55,9 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     task address_phase();
         forever begin                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
             seq_item_port.get(req);
-            //seq_item_port.get_next_item(req);
             req.print();
             
 
-            //vif.m_cb.hlock   <= req.hlock;
             vif.m_cb.hbusreq <= 1;
             vif.m_cb.hlock <= 1;
             
@@ -68,10 +66,10 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                 
                 wait(vif.m_cb.hgrant & vif.m_cb.hready);
 
-                if (i == req.haddr.size() - 1) begin
-                    vif.m_cb.hbusreq <= 0;  
-                    vif.m_cb.hlock <= 0;
-                end
+                // if (i == req.haddr.size() - 1) begin
+                //     vif.m_cb.hbusreq <= 0;  
+                //     vif.m_cb.hlock <= 0;
+                // end
 
                 vif.m_cb.haddr  <= req.haddr[i];
                 vif.m_cb.htrans <= req.htrans[i];
@@ -84,7 +82,12 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                 mbx.put(req);
                 
             end
-            
+
+            #1;
+            @(vif.m_cb iff(vif.m_cb.hready == 1))
+            vif.m_cb.htrans <= 0;
+            vif.m_cb.hbusreq <= 0;  
+            vif.m_cb.hlock <= 0;
 
         end
     endtask
@@ -95,9 +98,10 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         forever begin
             mbx.get(item);
 
-            
+            //drive data items
             foreach (item.haddr[i]) begin
                 #1;
+                @vif.m_cb;
                 wait(vif.m_cb.hready);
                 if(item.hwrite == WRITE)
                 begin
@@ -109,7 +113,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
             
             seq_item_port.put(item);
-            //seq_item_port.item_done();
         end
         
     endtask

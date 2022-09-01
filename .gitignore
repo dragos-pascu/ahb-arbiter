@@ -17,3 +17,7 @@ waves.shm
 *.shm
 
 .simvision
+
+*.diag
+
+/tb/.bpad

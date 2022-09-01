@@ -20,7 +20,7 @@
 ../agent/ahb_agent_pkg.sv
 tests_pkg.sv
 ../agent/arbiter_if.sv
-../rtl/generic_arbiter_full_v5.sv
+../rtl/generic_arbiter_full_v6.sv
 
 env_config.sv
 ahb_env.sv

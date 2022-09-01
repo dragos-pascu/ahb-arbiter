@@ -50,7 +50,9 @@ class ahb_master_monitor extends uvm_monitor;
         ahb_transaction item;
 
         forever begin
-            @(posedge vif.hclk iff(vif.hready));
+            @(vif.m_cb iff(vif.m_cb.hready == 1 & vif.m_cb.hgrant == 1));
+            `uvm_info(get_type_name(), $sformatf("After clocking block hready: %b , hgrant: %b",vif.m_cb.hready,vif.m_cb.hgrant), UVM_LOW)
+            //wait(vif.m_cb.hgrant & vif.m_cb.hready);
             if (vif.htrans == NONSEQ || vif.htrans == SEQ) begin
                 //`uvm_info(get_type_name(), "Inside monitor address phase.", UVM_MEDIUM)
                 item = ahb_transaction::type_id::create("item");
@@ -86,30 +88,9 @@ class ahb_master_monitor extends uvm_monitor;
 
             item.print();
             item_collect_port.write(item);
-            //`uvm_info(get_type_name(), "Item written to analysis port.", UVM_MEDIUM)
+            `uvm_info(get_type_name(), "Item written to analysis port.", UVM_MEDIUM)
         end
     endtask
     
-
-    // task collect_transaction();
-    //     ahb_transaction data_packet;
-    //     forever begin
-    //         @(vif.m_cb)
-    //         data_packet = ahb_transaction::type_id::create("data_packet");
-    //         // data_packet.hbusreq =  vif.hbusreq;
-    //         // data_packet.hlock =  vif.hlock ;
-    //         // data_packet.haddr =  vif.haddr ;
-    //         // data_packet.hwdata =  vif.hwdata;
-    //         // data_packet.hburst =  burst_t'(vif.hburst);
-    //         // data_packet.htrans =  transfer_t'(vif.htrans);
-    //         // data_packet.hsize =   size_t'(vif.hsize) ;
-    //         // data_packet.hwrite =  rw_t'(vif.hwrite);     
-            
-    //         //data_packet.print();
-    //         item_collect_port.write(data_packet);
-
-    //     end
-    // endtask
-
 
 endclass
