@@ -38,20 +38,10 @@ class ahb_slave_monitor extends uvm_monitor;
     endfunction
 
 
-
-
-            // if (vif.s_cb.hwrite == WRITE ) begin
-            //     storage.write(vif.s_cb.haddr, vif.s_cb.hwdata);
-            // end
-            
-            // m_req_port.write(data_packet);
-
-
-
     virtual task run_phase(uvm_phase phase);
           super.run_phase(phase);
           forever begin
-              `uvm_info(get_type_name(), "Monitor run phase", UVM_MEDIUM)
+              `uvm_info(get_type_name(), "Slave monitor run phase", UVM_MEDIUM)
               @(vif.hclk)
               fork
                   monitor_addr_phase();
@@ -62,40 +52,67 @@ class ahb_slave_monitor extends uvm_monitor;
 
       endtask
 
-    task monitor_addr_phase();
+    // task monitor_data_phase();
+    //     ahb_transaction item;
+    //     forever begin
+    //         mbx.get(item);
+
+    //         @(posedge vif.hclk iff(vif.hready));
+    //         if(item.hwrite == WRITE) begin
+    //             item.hwdata[0] = vif.hwdata;
+    //         end
+    //         else if (item.hwrite == READ) begin
+    //             item.hrdata[0] = vif.hrdata;
+    //         end
+
+    //         // if ((!$isunknown(item.haddr) && !$isunknown(item.hwdata)) && item.htrans[0] != IDLE) begin
+    //         //   `uvm_info(get_type_name(), "Item monitored by slave.", UVM_MEDIUM)
+    //         //   item.print();
+    //         //   m_req_port.write(item);
+    //         // end
+    //           item.print();
+    //           m_req_port.write(item);
+            
+    //     end
+    // endtask
+
+      task monitor_addr_phase();
         ahb_transaction item;
 
         forever begin
-            @(vif.s_cb iff(vif.s_cb.hsel == 1));
-            
-            item = ahb_transaction::type_id::create("item");
-            item.htrans = new[1];
-            item.haddr = new[1];
-            item.hwdata = new[1];
-            begin
-            //address and control signals
-            item.haddr[0] =  vif.haddr ;
-            item.hburst =  burst_t'(vif.hburst);
-            item.htrans[0] =  transfer_t'(vif.htrans);
-            item.hsize =   size_t'(vif.hsize) ;
-            item.hwrite =  rw_t'(vif.hwrite);   
-            // slave response
-            item.hready = vif.hready;
-            item.hresp = vif.hresp;
-            item.hrdata = vif.hrdata;
-            mbx.put(item);
-            
+        @(vif.s_cb iff(vif.s_cb.hsel == 1 /*&& vif.hready == 1*/));
+
+        $display("time is: %t",$time);
+        //wait(vif.m_cb.hgrant & vif.m_cb.hready);
+        
+        //`uvm_info(get_type_name(), "Inside monitor address phase.", UVM_MEDIUM)
+        item = ahb_transaction::type_id::create("item");
+        item.htrans = new[1];
+        item.haddr = new[1];
+        item.hwdata = new[1];
+          begin
+              //address and control signals
+              item.haddr[0] =  vif.haddr ;
+              item.hburst =  burst_t'(vif.hburst);
+              item.htrans[0] =  transfer_t'(vif.htrans);
+              item.hsize =   size_t'(vif.hsize) ;
+              item.hwrite =  rw_t'(vif.hwrite);   
+              // slave response
+              item.hready = vif.hready;
+              item.hresp = vif.hresp;
+              item.hrdata = vif.hrdata;
+              mbx.put(item);
             end
         end
 
-    endtask
+      endtask
 
     task monitor_data_phase();
         ahb_transaction item;
         forever begin
             mbx.get(item);
 
-            @(posedge vif.hclk iff(vif.hready));
+            @(vif.s_cb iff(vif.hready));
             if(item.hwrite == WRITE) begin
                 item.hwdata[0] = vif.hwdata;
             end
@@ -103,14 +120,14 @@ class ahb_slave_monitor extends uvm_monitor;
                 item.hrdata[0] = vif.hrdata;
             end
 
+            
             if ((!$isunknown(item.haddr) && !$isunknown(item.hwdata)) && item.htrans[0] != IDLE) begin
-              `uvm_info(get_type_name(), "Item monitored by slave.", UVM_MEDIUM)
               item.print();
               m_req_port.write(item);
+              `uvm_info(get_type_name(), "Item by slave.", UVM_MEDIUM)
             end
-            
-            
         end
     endtask
+    
     
 endclass

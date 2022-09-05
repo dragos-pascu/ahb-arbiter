@@ -75,8 +75,8 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                 vif.m_cb.htrans <= req.htrans[i];
 
                 //drive control signals
-                vif.m_cb.hsize   <= req.hsize;
                 vif.m_cb.hwrite  <= req.hwrite;
+                vif.m_cb.hsize   <= req.hsize;
                 vif.m_cb.hburst  <= req.hburst;
                 
                 mbx.put(req);
