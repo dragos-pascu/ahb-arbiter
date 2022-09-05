@@ -7,18 +7,23 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
 
         option.per_instance = 1;
 
-        //add reset, hlock , hmaster covergroup
+        //add reset
+
+
+        hbusreq: coverpoint item.hbusreq;
+        hlock: coverpoint item.hlock;
+
         read_write: coverpoint item.hwrite;
         htrans: coverpoint item.htrans[0];
         haddr : coverpoint item.haddr[0] {option.auto_bin_max = 32;}
         hburst : coverpoint item.hburst;
         hsize: coverpoint item.hsize {bins word_bin = {WORD};}
 
-        wdata: coverpoint item.hwdata[0] {option.auto_bin_max = 32;}
+        hwdata: coverpoint item.hwdata[0] {option.auto_bin_max = 32;}
         hrdata: coverpoint item.hrdata {option.auto_bin_max = 32;}
 
         hready: coverpoint item.hready;
-        hresp: coverpoint item.hresp {bins rsp[] = {OKAY, ERROR};}
+        hresp: coverpoint item.hresp {bins rsp = {OKAY, ERROR};}
 
         //cross cov
         read_writeXhsize: cross read_write, hsize;
@@ -46,6 +51,11 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
 
     function void report_phase(uvm_phase phase);
                 `uvm_info(get_type_name(), $sformatf("Coverage is: %f", ahb_cg.get_coverage()), UVM_MEDIUM)
+                
+                // `uvm_info(get_type_name(), $sformatf("wdata coverage is: %f", ahb_cg.hwdata.get_coverage()), UVM_MEDIUM)
+                // `uvm_info(get_type_name(), $sformatf("hresp coverage is: %f", ahb_cg.hresp.get_coverage()), UVM_MEDIUM)
+                // `uvm_info(get_type_name(), $sformatf("busreq coverage is: %f", ahb_cg.hbusreq.get_coverage()), UVM_MEDIUM)
+
     endfunction
 
 

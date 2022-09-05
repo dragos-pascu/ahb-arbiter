@@ -1,3 +1,4 @@
+// import integration_pkg::*;
 class ahb_slave_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_slave_monitor)
 
@@ -11,6 +12,7 @@ class ahb_slave_monitor extends uvm_monitor;
 
     memory storage;
 
+    mailbox mbx = new();
     
     function new(string name, uvm_component parent);
         super.new(name,parent);
@@ -36,37 +38,79 @@ class ahb_slave_monitor extends uvm_monitor;
     endfunction
 
 
-    virtual task run_phase(uvm_phase phase);
-        //write task inside the run_phase to write to m_req_port.
-        //collect_transaction();
-    endtask
 
-    task collect_transaction();
-      ahb_transaction data_packet;
-      data_packet = ahb_transaction::type_id::create("data_packet");
-      forever begin
-        @(vif.s_cb)
-        if(vif.s_cb.hsel == 1)
-        $display("hwdata : %h",vif.s_cb.hwdata);
-          // @(vif.s_cb)
-          // foreach (vif.s_cb.haddr[i]) begin
-          //   $display("%d",vif.s_cb.haddr[i]);
-          // end
-            // data_packet.hbusreq =  vif.hbusreq;
-            // data_packet.hlock =  vif.hlock ;
-            // data_packet.hburst =  burst_t'(vif.hburst);
-            // data_packet.htrans[0] =  transfer_t'(vif.htrans[0]);
-            // data_packet.hsize =   size_t'(vif.hsize) ;
-            // data_packet.hwrite =  rw_t'(vif.hwrite);     
-        
-        
-            if (vif.s_cb.hwrite == WRITE ) begin
-                storage.write(vif.s_cb.haddr, vif.s_cb.hwdata);
-            end
+
+            // if (vif.s_cb.hwrite == WRITE ) begin
+            //     storage.write(vif.s_cb.haddr, vif.s_cb.hwdata);
+            // end
             
             // m_req_port.write(data_packet);
-      end
-      
+
+
+
+    virtual task run_phase(uvm_phase phase);
+          super.run_phase(phase);
+          forever begin
+              `uvm_info(get_type_name(), "Monitor run phase", UVM_MEDIUM)
+              @(vif.hclk)
+              fork
+                  monitor_addr_phase();
+                  monitor_data_phase();
+              join
+
+          end
+
+      endtask
+
+    task monitor_addr_phase();
+        ahb_transaction item;
+
+        forever begin
+            @(vif.s_cb iff(vif.s_cb.hsel == 1));
+            
+            item = ahb_transaction::type_id::create("item");
+            item.htrans = new[1];
+            item.haddr = new[1];
+            item.hwdata = new[1];
+            begin
+            //address and control signals
+            item.haddr[0] =  vif.haddr ;
+            item.hburst =  burst_t'(vif.hburst);
+            item.htrans[0] =  transfer_t'(vif.htrans);
+            item.hsize =   size_t'(vif.hsize) ;
+            item.hwrite =  rw_t'(vif.hwrite);   
+            // slave response
+            item.hready = vif.hready;
+            item.hresp = vif.hresp;
+            item.hrdata = vif.hrdata;
+            mbx.put(item);
+            
+            end
+        end
+
     endtask
 
+    task monitor_data_phase();
+        ahb_transaction item;
+        forever begin
+            mbx.get(item);
+
+            @(posedge vif.hclk iff(vif.hready));
+            if(item.hwrite == WRITE) begin
+                item.hwdata[0] = vif.hwdata;
+            end
+            else if (item.hwrite == READ) begin
+                item.hrdata[0] = vif.hrdata;
+            end
+
+            if ((!$isunknown(item.haddr) && !$isunknown(item.hwdata)) && item.htrans[0] != IDLE) begin
+              `uvm_info(get_type_name(), "Item monitored by slave.", UVM_MEDIUM)
+              item.print();
+              m_req_port.write(item);
+            end
+            
+            
+        end
+    endtask
+    
 endclass

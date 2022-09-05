@@ -32,6 +32,7 @@ import integration_pkg::*;
 class ahb_transaction extends uvm_sequence_item;
         
 
+        int id;
         //transfer type 
         rand transfer_t htrans[];
         //haddr and control
@@ -43,6 +44,7 @@ class ahb_transaction extends uvm_sequence_item;
 
         rand logic  hlock; // m signal to arbiter
         rand logic  hbusreq; // m signal to arbiter
+        logic hgrant;
 
         //inputs AHB master
         rand bit hready;
@@ -63,7 +65,8 @@ class ahb_transaction extends uvm_sequence_item;
           `uvm_field_int(hready, UVM_ALL_ON)
           `uvm_field_enum(resp_t, hresp, UVM_ALL_ON)
           `uvm_field_int(hlock , UVM_ALL_ON)
-          `uvm_field_int(hbusreq , UVM_ALL_ON)        
+          `uvm_field_int(hbusreq , UVM_ALL_ON)
+          `uvm_field_int(id,UVM_NOCOMPARE)        
         `uvm_object_utils_end
 
         function new(string name = "ahb_transaction");

@@ -51,7 +51,7 @@ class ahb_master_monitor extends uvm_monitor;
 
         forever begin
             @(vif.m_cb iff(vif.m_cb.hready == 1 & vif.m_cb.hgrant == 1));
-            `uvm_info(get_type_name(), $sformatf("After clocking block hready: %b , hgrant: %b",vif.m_cb.hready,vif.m_cb.hgrant), UVM_LOW)
+            //`uvm_info(get_type_name(), $sformatf("After clocking block hready: %b , hgrant: %b",vif.m_cb.hready,vif.m_cb.hgrant), UVM_LOW)
             //wait(vif.m_cb.hgrant & vif.m_cb.hready);
             if (vif.htrans == NONSEQ || vif.htrans == SEQ) begin
                 //`uvm_info(get_type_name(), "Inside monitor address phase.", UVM_MEDIUM)
@@ -60,14 +60,17 @@ class ahb_master_monitor extends uvm_monitor;
                 item.haddr = new[1];
                 item.hwdata = new[1];
                 begin
+                //bus signals
                 item.hbusreq =  vif.hbusreq;
                 item.hlock =  vif.hlock ;
+                item.hgrant = vif.hgrant;
+                //address and control signals
                 item.haddr[0] =  vif.haddr ;
-                //item.hwdata =  vif.hwdata;
                 item.hburst =  burst_t'(vif.hburst);
                 item.htrans[0] =  transfer_t'(vif.htrans);
                 item.hsize =   size_t'(vif.hsize) ;
                 item.hwrite =  rw_t'(vif.hwrite);   
+                item.id = agent_config.agent_id;
                 end
 
                 mbx.put(item);
@@ -86,9 +89,9 @@ class ahb_master_monitor extends uvm_monitor;
                 item.hwdata[0] = vif.hwdata;
             end
 
-            item.print();
+            //item.print();
             item_collect_port.write(item);
-            `uvm_info(get_type_name(), "Item written to analysis port.", UVM_MEDIUM)
+            //`uvm_info(get_type_name(), "Item written to analysis port.", UVM_MEDIUM)
         end
     endtask
     
