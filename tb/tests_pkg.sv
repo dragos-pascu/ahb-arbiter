@@ -8,5 +8,6 @@ package tests_pkg;
     `include "ahb_env.sv"
     `include "base_test.sv"
     `include "simple_write_test.sv"
+    `include "incr_write_4_test.sv"
 
 endpackage

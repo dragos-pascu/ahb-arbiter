@@ -110,7 +110,6 @@ class ahb_transaction extends uvm_sequence_item;
                         (hready   === tx_rhs.hready) &&
                         (hresp    === tx_rhs.hresp) &&
                         (hrdata   === tx_rhs.hrdata);
-                $display("salut");
                 return res;
                 
         endfunction
