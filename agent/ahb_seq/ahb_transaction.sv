@@ -90,6 +90,29 @@ class ahb_transaction extends uvm_sequence_item;
                 return s;
         endfunction 
 
+        virtual function bit do_compare(uvm_object rhs, uvm_comparer comparer);
+                bit res;
+                ahb_transaction tx_rhs;
+                if(!$cast(tx_rhs,rhs))
+                        `uvm_fatal(get_type_name(),"Illegal rhs argument")
+
+                res = super.do_compare(rhs,comparer) &&
+                        (id ===       tx_rhs.id) &&
+                        (hbusreq  === tx_rhs.hbusreq) &&
+                        (hlock    === tx_rhs.hlock) &&
+                        (haddr    === tx_rhs.haddr ) &&
+                        (hwdata   === tx_rhs.hwdata) &&
+                        (hburst   === tx_rhs.hburst) &&
+                        (htrans   === tx_rhs.htrans) &&
+                        (hsize    === tx_rhs.hsize ) &&
+                        (hwrite   === tx_rhs.hwrite) &&
+                        (hready   === tx_rhs.hready) &&
+                        (hresp    === tx_rhs.hresp) &&
+                        (hrdata   === tx_rhs.hrdata);
+
+                return res;
+                
+        endfunction
 
 
         constraint address_size {

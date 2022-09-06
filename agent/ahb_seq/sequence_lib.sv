@@ -28,7 +28,7 @@ class simple_write_sequence extends uvm_sequence#(ahb_transaction);
         //     `uvm_fatal(get_type_name(), "Single write randomize failed!")
         if(!req.randomize() with {
             (hburst == SINGLE);
-            (hwrite==WRITE); 
+            (hwrite == WRITE); 
             (htrans[0] == NONSEQ); 
             } )
             `uvm_fatal(get_type_name(), "Single write randomize failed!")

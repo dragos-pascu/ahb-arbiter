@@ -32,12 +32,10 @@ class ahb_scoreboard extends uvm_scoreboard;
     function void write_predictor(ahb_transaction master_item);
         `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_MEDIUM);
         expected_transactions[master_item.id].push_back(master_item);
-        foreach (actual_transactions[i]) begin
-            $display("%d",actual_transactions[i].size());
-            foreach (actual_transactions[i][j]) begin
+            foreach (actual_transactions[master_item.id][i]) begin
             `uvm_info(get_type_name(),"???", UVM_MEDIUM);
 
-                temp_tx = actual_transactions[i][j];
+                temp_tx = actual_transactions[master_item.id][i];
                 if (temp_tx.compare(master_item)) begin
                     match++;
                     actual_transactions[master_item.id].delete(i); 
@@ -49,7 +47,6 @@ class ahb_scoreboard extends uvm_scoreboard;
                 end
                 
             end
-        end
 
         predictor_transactions++;
     endfunction
@@ -57,10 +54,10 @@ class ahb_scoreboard extends uvm_scoreboard;
     function void write_evaluator(ahb_transaction slave_item);
         `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_MEDIUM);
         actual_transactions[slave_item.id].push_back(slave_item);
-        foreach (expected_transactions[i]) begin
-            foreach (expected_transactions[i][j]) begin
+            foreach (expected_transactions[slave_item.id][i]) begin
                 ahb_transaction temp_tx = ahb_transaction::type_id::create("temp_tx");
-                temp_tx = expected_transactions[i][j];
+                temp_tx = expected_transactions[slave_item.id][i];
+                //$display("%s",temp_tx.convert2string());
                 if (temp_tx.compare(slave_item)) begin
                     match++;
                     expected_transactions[slave_item.id].delete(i); 
@@ -73,7 +70,6 @@ class ahb_scoreboard extends uvm_scoreboard;
                 end
                 
             end
-        end
 
         evaluator_transactions++;
     endfunction
