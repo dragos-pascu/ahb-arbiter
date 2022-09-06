@@ -96,10 +96,11 @@ class ahb_transaction extends uvm_sequence_item;
                 if(!$cast(tx_rhs,rhs))
                         `uvm_fatal(get_type_name(),"Illegal rhs argument")
 
+                
                 res = super.do_compare(rhs,comparer) &&
                         (id ===       tx_rhs.id) &&
-                        (hbusreq  === tx_rhs.hbusreq) &&
-                        (hlock    === tx_rhs.hlock) &&
+                        // (hbusreq  === tx_rhs.hbusreq) &&
+                        // (hlock    === tx_rhs.hlock) &&
                         (haddr    === tx_rhs.haddr ) &&
                         (hwdata   === tx_rhs.hwdata) &&
                         (hburst   === tx_rhs.hburst) &&
@@ -109,7 +110,7 @@ class ahb_transaction extends uvm_sequence_item;
                         (hready   === tx_rhs.hready) &&
                         (hresp    === tx_rhs.hresp) &&
                         (hrdata   === tx_rhs.hrdata);
-
+                $display("salut");
                 return res;
                 
         endfunction
@@ -138,16 +139,6 @@ class ahb_transaction extends uvm_sequence_item;
                 haddr.size > 0;
         }
         
-        // constraint kb_boundry {
-        // if(burst_mode == 1)
-        //         address[0][10:0] <= (1024 - ((address.size)*(2**trans_size)));
-        // if((burst_mode == 2) || (burst_mode == 3))
-        //         address[0][10:0] <= (1024 - 4*(2**trans_size));
-        // if((burst_mode == 4) || (burst_mode == 5))
-        //         address[0][10:0] <= (1024 - 8*(2**trans_size));
-        // if((burst_mode == 6) || (burst_mode == 7))
-        //                 address[0][10:0] <= (1024 - 16*(2**trans_size));
-        // }
 
         constraint word_boundary{
                 if(hsize == HALFWORD){

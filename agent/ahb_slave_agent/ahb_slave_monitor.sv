@@ -93,7 +93,9 @@ class ahb_slave_monitor extends uvm_monitor;
                 item.hrdata[0] = vif.hrdata;
             end
 
-        
+            //added to check scoreboard
+            item.hlock = 1;
+            item.hbusreq = 1;
             // item.print();
             m_req_port.write(item);
             

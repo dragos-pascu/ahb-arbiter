@@ -51,10 +51,7 @@ class ahb_master_monitor extends uvm_monitor;
 
         forever begin
             @(vif.m_cb iff(vif.m_cb.hready == 1 & vif.m_cb.hgrant == 1));
-            //`uvm_info(get_type_name(), $sformatf("After clocking block hready: %b , hgrant: %b",vif.m_cb.hready,vif.m_cb.hgrant), UVM_LOW)
-            //wait(vif.m_cb.hgrant & vif.m_cb.hready);
             if (vif.htrans == NONSEQ || vif.htrans == SEQ) begin
-                //`uvm_info(get_type_name(), "Inside monitor address phase.", UVM_MEDIUM)
                 item = ahb_transaction::type_id::create("item");
                 item.htrans = new[1];
                 item.haddr = new[1];
@@ -71,6 +68,7 @@ class ahb_master_monitor extends uvm_monitor;
                 item.hsize =   size_t'(vif.hsize) ;
                 item.hwrite =  rw_t'(vif.hwrite);   
                 item.id = agent_config.agent_id;
+                item.hready = vif.hready; 
                 end
 
                 mbx.put(item);
