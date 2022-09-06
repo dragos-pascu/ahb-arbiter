@@ -1,46 +1,98 @@
 class ahb_scoreboard extends uvm_scoreboard;
     
     `uvm_component_utils(ahb_scoreboard)
-    `uvm_analysis_imp_decl(_master)
-    `uvm_analysis_imp_decl(_slave)
+    `uvm_analysis_imp_decl(_predictor)
+    `uvm_analysis_imp_decl(_evaluator)
 
-    uvm_analysis_imp_master #(ahb_transaction,ahb_scoreboard) item_collect_master;
-    uvm_analysis_imp_slave #(ahb_transaction,ahb_scoreboard) item_collect_slave;
-    ahb_transaction item_q[master_number][$];
-    
+    uvm_analysis_imp_predictor #(ahb_transaction,ahb_scoreboard) item_collect_predictor;
+    uvm_analysis_imp_evaluator #(ahb_transaction,ahb_scoreboard) item_collect_evaluator;
+    ahb_transaction expected_transactions[master_number][$];
+    ahb_transaction actual_transactions[master_number][$];
+
+
+    ahb_transaction expected_tx;
+    ahb_transaction temp_tx;
+    int match, mismatch;
+    int predictor_transactions;
+    int evaluator_transactions;
     function new(string name = "ahb_scoreboard", uvm_component parent);
         super.new(name, parent);
-        item_collect_master = new("item_collect_master",this);
-        item_collect_slave =  new("item_collect_slave",this);
+        item_collect_predictor = new("item_collect_predictor",this);
+        item_collect_evaluator =  new("item_collect_evaluator",this);
+        match = 0;
+        mismatch = 0;
+        predictor_transactions = 0;
+        evaluator_transactions = 0;
     endfunction 
 
     function void build_phase(uvm_phase phase);
     super.build_phase(phase);
     endfunction
 
-    function void write_master(ahb_transaction req);
-        `uvm_info(get_type_name(), $sformatf("Received transaction from master[%0d] =", req.id), UVM_MEDIUM);
-        req.print();
-        item_q[req.id].push_back(req);
+    function void write_predictor(ahb_transaction master_item);
+        `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_MEDIUM);
+        expected_transactions[master_item.id].push_back(master_item);
+        foreach (actual_transactions[i]) begin
+            $display("%d",actual_transactions[i].size());
+            foreach (actual_transactions[i][j]) begin
+            `uvm_info(get_type_name(),"???", UVM_MEDIUM);
+
+                temp_tx = actual_transactions[i][j];
+                if (temp_tx.compare(master_item)) begin
+                    match++;
+                    actual_transactions[master_item.id].delete(i); 
+                    // if match found between refrence model ( master_item) and DUT output, delete from actual
+                    //else push the item in expected
+                end
+                else begin
+                    mismatch++;
+                end
+                
+            end
+        end
+
+        predictor_transactions++;
     endfunction
 
-    function void write_slave(ahb_transaction req);
+    function void write_evaluator(ahb_transaction slave_item);
+        `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_MEDIUM);
+        actual_transactions[slave_item.id].push_back(slave_item);
+        foreach (expected_transactions[i]) begin
+            foreach (expected_transactions[i][j]) begin
+                ahb_transaction temp_tx = ahb_transaction::type_id::create("temp_tx");
+                temp_tx = expected_transactions[i][j];
+                if (temp_tx.compare(slave_item)) begin
+                    match++;
+                    expected_transactions[slave_item.id].delete(i); 
+                    // if match found between DUT actual transaction (slave_item) and refrence model transaction,
+                    //delete from expected transactions
+                    //else push it in actual transactions
+                end
+                else begin                    
+                    mismatch++;
+                end
+                
+            end
+        end
+
+        evaluator_transactions++;
     endfunction
     
-    // task run_phase(uvm_phase phase);
+    // virtual function void run_phase(uvm_phase phase);
         
-    //     ahb_transaction item;
 
-    //     forever begin
-    //         wait(item_q.size() > 0);
-            
-    //         if(item_q.size > 0) begin
-    //         item = item_q.pop_front();
-    //         end
-            
+    // endfunction 
 
-    //     end
+    virtual function void check_phase(uvm_phase phase);
+        
+        if (predictor_transactions!=evaluator_transactions) begin
+            `uvm_error(get_type_name(),$sformatf(" Number of master/slave transactions mismatch; nr of master_tx = [%0d] , nr of slave_tx = [%0d] ",predictor_transactions, evaluator_transactions));
+        end else begin
+            `uvm_info(get_type_name(),$sformatf("Scb recived %0d transactions",predictor_transactions),UVM_MEDIUM);
+        end
 
-    // endtask
+        `uvm_info(get_type_name(),$sformatf("Matches: %0d ",match),UVM_MEDIUM);
+        `uvm_info(get_type_name(),$sformatf("Mismatches: %0d ",mismatch),UVM_MEDIUM);
 
+    endfunction
 endclass

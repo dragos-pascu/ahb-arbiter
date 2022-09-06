@@ -62,13 +62,13 @@ class ahb_env extends uvm_env;
         //connect vsequencer handles to master sequencers and monitors to scoreboard
         for (int i=0; i<master_number; ++i) begin
             vsequencer.master_seqr[i] = m_agent[i].sequencer;
-            m_agent[i].ahb_mmonitor.item_collect_port.connect(scoreboard_h.item_collect_master);
+            m_agent[i].ahb_mmonitor.item_collect_port.connect(scoreboard_h.item_collect_predictor);
         end
 
         //connect vsequencer handles to slave sequencers and monitors to scoreboard
         for (int i=0; i<slave_number; ++i) begin
             //vsequencer.slave_seqr[i] = s_agent[i].sequencer;
-            s_agent[i].ahb_smonitor.m_req_port.connect(scoreboard_h.item_collect_slave);
+            s_agent[i].ahb_smonitor.m_req_port.connect(scoreboard_h.item_collect_evaluator);
         end
 
  

@@ -73,6 +73,23 @@ class ahb_transaction extends uvm_sequence_item;
             super.new(name);
 
         endfunction
+        
+        virtual function string convert2string();
+                string s = super.convert2string();
+                $sformat (s, "%s\n   ahb_transaction with id = %0d :", s,id);
+                $sformat (s, "%s\n   hbusreq = %0d", s, hbusreq);
+                $sformat (s, "%s\n   hlock   = %0d", s, hlock);
+                $sformat (s, "%s\n   haddr   = %p", s, haddr);
+                $sformat (s, "%S\n   hwdata  = %p", s, hwdata);
+                $sformat (s, "%S\n   hburst  = %0d", s, hburst);
+                $sformat (s, "%S\n   htrans  = %p", s, htrans);
+                $sformat (s, "%S\n   hsize   = %0d", s, hsize);
+                $sformat (s, "%S\n   hready  = %0d", s, hready);
+                $sformat (s, "%S\n   hresp   = %0d", s, hresp);
+                $sformat (s, "%S\n   hrdata  = %0d", s, hrdata);
+                return s;
+        endfunction 
+
 
 
         constraint address_size {
@@ -97,6 +114,17 @@ class ahb_transaction extends uvm_sequence_item;
         constraint addr_size_limit {
                 haddr.size > 0;
         }
+        
+        // constraint kb_boundry {
+        // if(burst_mode == 1)
+        //         address[0][10:0] <= (1024 - ((address.size)*(2**trans_size)));
+        // if((burst_mode == 2) || (burst_mode == 3))
+        //         address[0][10:0] <= (1024 - 4*(2**trans_size));
+        // if((burst_mode == 4) || (burst_mode == 5))
+        //         address[0][10:0] <= (1024 - 8*(2**trans_size));
+        // if((burst_mode == 6) || (burst_mode == 7))
+        //                 address[0][10:0] <= (1024 - 16*(2**trans_size));
+        // }
 
         constraint word_boundary{
                 if(hsize == HALFWORD){
@@ -122,8 +150,10 @@ class ahb_transaction extends uvm_sequence_item;
                 }
         }          
 
+        constraint wdata_solve {solve hburst before hwdata;}
+
         constraint transfer_size {
-                hsize == WORD;
+                hsize == BYTE;
         }
                     
         constraint write_data {

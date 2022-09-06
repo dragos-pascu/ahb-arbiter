@@ -56,8 +56,7 @@ class ahb_slave_monitor extends uvm_monitor;
     task monitor_addr_phase();
       ahb_transaction item;
       forever begin
-      @(vif.s_cb iff(vif.s_cb.hsel == 1 /*&& vif.hready == 1*/));
-      $display("time is: %t",$time);
+      @(vif.s_cb iff(vif.s_cb.hsel == 1 && vif.hready == 1));
       if (vif.htrans == NONSEQ || vif.htrans == SEQ) begin
       item = ahb_transaction::type_id::create("item");
       item.htrans = new[1];
@@ -74,6 +73,7 @@ class ahb_slave_monitor extends uvm_monitor;
             item.hready = vif.hready;
             item.hresp = vif.hresp;
             item.hrdata = vif.hrdata;
+            item.id = vif.hmaster;
             mbx.put(item);
           end
       end
@@ -93,10 +93,9 @@ class ahb_slave_monitor extends uvm_monitor;
                 item.hrdata[0] = vif.hrdata;
             end
 
-            
-            item.print();
+        
+            // item.print();
             m_req_port.write(item);
-            `uvm_info(get_type_name(), "Item by slave.", UVM_MEDIUM)
             
         end
     endtask
