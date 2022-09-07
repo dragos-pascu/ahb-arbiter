@@ -8,6 +8,9 @@
 -uvmlinedebug
 -cov_cgsample
 
++UVM_PHASE_TRACE
++UVM_OBJECTION_TRACE
+
 // *** include test ***
 //+UVM_TESTNAME=simple_write_test
 +UVM_TESTNAME=incr_write_4_test
