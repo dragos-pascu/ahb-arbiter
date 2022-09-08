@@ -26,7 +26,7 @@ class simple_write_sequence extends uvm_sequence#(ahb_transaction);
         finish_item(req);
         get_response(req);
         end
-        `uvm_info(get_type_name(), "sequence finished", UVM_MEDIUM)
+        `uvm_info(get_type_name(), "Single write sequence finished", UVM_MEDIUM)
 
     endtask
 
@@ -42,16 +42,6 @@ class incr_write_4sequence extends uvm_sequence#(ahb_transaction);
         super.new(name);
     endfunction
 
-    virtual task pre_body();
-        if(starting_phase !=null)
-            starting_phase.raise_objection(this, get_type_name());
-    endtask
-
-    virtual task post_body();
-        if (starting_phase != null) begin
-            starting_phase.drop_objection(this, get_type_name());
-        end
-    endtask
     
     virtual task body();
         `uvm_info(get_type_name(),"Inside body of incr_write_4sequence.",UVM_MEDIUM)
@@ -59,18 +49,47 @@ class incr_write_4sequence extends uvm_sequence#(ahb_transaction);
         req = ahb_transaction::type_id::create("req");
         repeat(1)begin
         start_item(req);
-        // if(!req.randomize())
-        //     `uvm_fatal(get_type_name(), "Single write randomize failed!")
         if(!req.randomize() with {
             (hburst == INCR4);
             (hwrite == WRITE); 
             (htrans[0] == NONSEQ); 
             } )
-            `uvm_fatal(get_type_name(), "Single write randomize failed!")
+            `uvm_fatal(get_type_name(), "INCR4 write randomize failed!")
         finish_item(req);
         get_response(req);
         end
-        `uvm_info(get_type_name(), "sequence finished", UVM_MEDIUM)
+        `uvm_info(get_type_name(), "INCR4 sequence finished", UVM_MEDIUM)
+
+    endtask
+
+
+endclass
+
+class wrap_write_4sequence extends uvm_sequence#(ahb_transaction);
+    
+    `uvm_object_utils(wrap_write_4sequence)
+
+    function new(string name="wrap_write_4sequence");
+        super.new(name);
+    endfunction
+
+    
+    virtual task body();
+        `uvm_info(get_type_name(),"Inside body of wrap_write_4sequence.",UVM_MEDIUM)
+
+        req = ahb_transaction::type_id::create("req");
+        repeat(1)begin
+        start_item(req);
+        if(!req.randomize() with {
+            (hburst == WRAP4);
+            (hwrite == WRITE); 
+            (htrans[0] == NONSEQ); 
+            } )
+            `uvm_fatal(get_type_name(), "Wrap4 write randomize failed!")
+        finish_item(req);
+        get_response(req);
+        end
+        `uvm_info(get_type_name(), "Wrap4 write sequence finished", UVM_MEDIUM)
 
     endtask
 
