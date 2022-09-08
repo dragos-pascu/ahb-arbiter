@@ -36,25 +36,19 @@ class base_test extends uvm_test;
 
         for (int i=0; i<slave_number; i++) begin
             int j=i;
-            //fork
             slave_seq = ahb_slave_base_seq::type_id::create("slave_seq");
             slave_seq.start(env.s_agent[j].sequencer);
-            //join_none
         end
         
         phase.raise_objection(this);
-        vseq_h.starting_phase = phase;
+        //vseq_h.starting_phase = phase;
         vseq_h.start(env.vsequencer);
-        phase.phase_done.set_drain_time(this, 100ns);          
+        phase.phase_done.set_drain_time(this, 1000ns);          
         phase.drop_objection(this);
         
 
 
     endtask
-
-    // virtual function void end_of_elaboration_phase(uvm_phase phase);
-    //     uvm_top.print_topology();
-    // endfunction
 
 
 endclass

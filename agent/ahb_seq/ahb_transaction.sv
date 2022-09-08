@@ -164,7 +164,8 @@ class ahb_transaction extends uvm_sequence_item;
         }          
 
         constraint wdata_solve {solve hburst before hwdata;
-                                solve haddr before hwdata;}
+                                //solve haddr before hwdata;
+                                }
 
         constraint transfer_size {
                 hsize == BYTE;

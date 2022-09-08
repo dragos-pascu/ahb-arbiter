@@ -8,8 +8,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
     mailbox mbx = new();
 
-    int counter1;
-    int counter2;
     int flag= 0;
 
     function new(string name = "ahb_master_driver", uvm_component parent);
@@ -58,23 +56,27 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     task address_phase();
         forever begin                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
             seq_item_port.get(req);
-            //set_item_port.get_next_item(req);
             req.print();
             flag=0;
-
+            
             vif.m_cb.hbusreq <= 1;
             vif.m_cb.hlock <= 1;
             
-            counter1++;
-            $display("counter1 is %d at $time",counter1,$time);
             //drive address
+
+            if(flag==0) begin
+                    mbx.put(req);
+                    flag=1;
+                    end
+            
             foreach (req.haddr[i]) begin
                 
                 
-                // if (i == req.haddr.size() - 1) begin
-                //     vif.m_cb.hbusreq <= 0;  
-                //     vif.m_cb.hlock <= 0;
-                // end
+                if (i == req.haddr.size() - 1) begin
+                    @(vif.m_cb iff(vif.m_cb.hready));
+                    vif.m_cb.hbusreq <= 0;  
+                    vif.m_cb.hlock <= 0;
+                end
 
                 vif.m_cb.haddr  <= req.haddr[i];
                 vif.m_cb.htrans <= req.htrans[i];
@@ -89,22 +91,17 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                 
                 if (i != req.haddr.size()-1) begin
                     @(vif.m_cb iff(vif.m_cb.hgrant & vif.m_cb.hready));
-                    //mbx.put(req);
-                    if(flag==0) begin
-                    mbx.put(req);
-                    flag=1;
-                    end
+                    
                 end
 
             end
 
             
             //#1; este in for each de la ultima iteratie
-            @(vif.m_cb iff(vif.m_cb.hready == 1));
-            vif.m_cb.htrans <= 0;
-            vif.m_cb.hbusreq <= 0;  
-            vif.m_cb.hlock <= 0;
-            //mbx.put(req);
+            // @(vif.m_cb iff(vif.m_cb.hready == 1));
+            // vif.m_cb.htrans <= 0;
+            // vif.m_cb.hbusreq <= 0;  
+            // vif.m_cb.hlock <= 0;
             
         end
     endtask
@@ -117,15 +114,8 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
             //drive data items
             foreach (item.haddr[i]) begin
-                #1;
-                // @vif.m_cb;
-                // wait(vif.m_cb.hready);
-                counter2++;
-                $display("counter2 is %d at $time",counter2,$time);
+            
                 @(vif.m_cb iff(vif.m_cb.hready == 1));
-                counter2++;
-                $display("counter2 is %d at $time",counter2,$time);
-                $display("am trecut de wait");
                 if(item.hwrite == WRITE)
                 begin
 
@@ -133,7 +123,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                     
                 end
             end
-            $display("counter2 is %d at $time",counter2,$time);
             seq_item_port.put(item);
         end
         
