@@ -13,8 +13,8 @@
 
 // *** include test ***
 //+UVM_TESTNAME=simple_write_test
-//+UVM_TESTNAME=incr_write_4_test
-+UVM_TESTNAME=wrap_write_4_test
++UVM_TESTNAME=incr_write_4_test
+//+UVM_TESTNAME=wrap_write_4_test
 
 
 // *** include compile files ***
