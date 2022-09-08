@@ -61,31 +61,27 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             vif.m_cb.hlock <= 1;
             
             //drive address
-
+            @(vif.m_cb iff(vif.m_cb.hgrant));
+            // while(!vif.m_cb.hgrant)
+            //     @vif.m_cb;
             foreach (req.haddr[i]) begin
                 
-                
-
+                while (!vif.m_cb.hgrant) @vif.m_cb;
+                    
                 vif.m_cb.haddr  <= req.haddr[i];
                 vif.m_cb.htrans <= req.htrans[i];
-
                 //drive control signals
                 vif.m_cb.hwrite  <= req.hwrite;
                 vif.m_cb.hsize   <= req.hsize;
                 vif.m_cb.hburst  <= req.hburst;
                 
-                
-                
+
                 //wait(vif.m_cb.hgrant & vif.m_cb.hready); expresia se executa in timp 0 daca expresia este true
-                if (i != req.haddr.size()-1) begin
-                    @(vif.m_cb iff(vif.m_cb.hgrant & vif.m_cb.hready));                    
-                end
-                else begin
-                    if (vif.m_cb.hready==1) begin
+                if (i == req.haddr.size()-1) begin
                         vif.m_cb.hbusreq <= 0;  
-                        vif.m_cb.hlock <= 0;
-                    end
+                        vif.m_cb.hlock <= 0;                  
                 end
+
                 // @(vif.m_cb iff(vif.m_cb.hgrant & vif.m_cb.hready));  
                 // if (i == req.haddr.size()-1) begin
                 //       if (vif.m_cb.hready==1) begin
@@ -93,10 +89,12 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                 //         vif.m_cb.hlock <= 0;
                 //     end                
                 // end
-                              
-                if (i==0) begin
-                    mbx.put(req);
-                end
+
+                @vif.m_cb;
+                //@(vif.m_cb iff(vif.m_cb.hready)); 
+                while(!vif.m_cb.hready) @vif.m_cb; 
+                mbx.put(req);
+                
                 // if (i == req.haddr.size()-1) begin
                 //     @(vif.m_cb iff(vif.m_cb.hready == 1));
                     
@@ -104,6 +102,8 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                 
 
             end
+
+            vif.m_cb.htrans <= 0;
 
 
             //#1; este in for each de la ultima iteratie
@@ -119,24 +119,25 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     task data_phase();
         
         ahb_transaction item;
+        int i = 0;
         forever begin
-            mbx.get(item);
-
-            //drive data items
-            foreach (item.haddr[i]) begin
             
+            //drive data items
+            
+                mbx.get(item);
                 //@(vif.m_cb iff(vif.m_cb.hready == 1));
-                if (vif.m_cb.hready == 1) begin
-                    if(item.hwrite == WRITE)
-                    begin
-
-                    vif.m_cb.hwdata <= item.hwdata[i];
-                    @vif.m_cb;
-                    end
+                if(item.hwrite == WRITE)
+                begin
+                vif.m_cb.hwdata <= item.hwdata[i];
+                //@vif.m_cb;
                 end
-                
-            end
-            seq_item_port.put(item);
+                i++;
+                //while(!vif.m_cb.hready) @vif.m_cb; 
+            if(item.haddr.size() == i)  begin
+                seq_item_port.put(item);
+                i=0;
+            end  
+            
         end
         
     endtask
