@@ -67,6 +67,11 @@ class ahb_master_monitor extends uvm_monitor;
                 item.hsize =   size_t'(vif.hsize) ;
                 item.hwrite =  rw_t'(vif.hwrite);   
                 item.id = agent_config.agent_id;
+
+                // slave response
+                item.hready = vif.hready;
+                item.hresp = resp_t'(vif.hresp);
+                
                 end
 
                 mbx.put(item);
@@ -83,10 +88,11 @@ class ahb_master_monitor extends uvm_monitor;
             @(posedge vif.hclk iff(vif.hready));
             if(item.hwrite == WRITE) begin
                 item.hwdata[0] = vif.hwdata;
+            end else if (item.hwrite == READ) begin
+                item.hready = vif.hready;
             end
 
             //`uvm_info(get_type_name(), "Item written to analysis port.", UVM_MEDIUM)
-            //item.print();
             item_collect_port.write(item);
         end
     endtask

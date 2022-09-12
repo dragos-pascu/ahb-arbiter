@@ -84,13 +84,19 @@ class ahb_transaction extends uvm_sequence_item;
 
                 
                 res = super.do_compare(rhs,comparer) &&
+                        //the master that initiates the transaction
                         (id ===       tx_rhs.id) &&
+                        //data that was sent by master vs received by slave
                         (haddr    === tx_rhs.haddr ) &&
                         (hwdata   === tx_rhs.hwdata) &&
                         (hburst   === tx_rhs.hburst) &&
                         (htrans   === tx_rhs.htrans) &&
                         (hsize    === tx_rhs.hsize ) &&
-                        (hwrite   === tx_rhs.hwrite);
+                        (hwrite   === tx_rhs.hwrite) &&
+                        //the slave response vs what master received
+                        (hready   === tx_rhs.hready) &&
+                        (hresp   === tx_rhs.hresp) &&
+                        (hrdata   === tx_rhs.hrdata);
                 $display("comparation done");
                 return res;
                 

@@ -71,7 +71,7 @@ class ahb_slave_monitor extends uvm_monitor;
             item.hwrite =  rw_t'(vif.hwrite);   
             // slave response
             item.hready = vif.hready;
-            item.hresp = vif.hresp;
+            item.hresp = resp_t'(vif.hresp);
             item.hrdata = vif.hrdata;
             item.id = vif.hmaster;
             mbx.put(item);
