@@ -93,10 +93,8 @@ class ahb_slave_monitor extends uvm_monitor;
                 item.hrdata[0] = vif.hrdata;
             end
 
-            //added to check scoreboard
-            item.hlock = 1;
-            item.hbusreq = 1;
-            // item.print();
+
+            //`uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_MEDIUM);
             m_req_port.write(item);
             
         end

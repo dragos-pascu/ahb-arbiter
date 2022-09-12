@@ -12,11 +12,13 @@ class simple_write_sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of simple_write_sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(1)begin
+        repeat(2)begin
         start_item(req);
         // if(!req.randomize())
         //     `uvm_fatal(get_type_name(), "Single write randomize failed!")
         if(!req.randomize() with {
+            (hbusreq == 1);
+            (hlock == 1);
             (hburst == SINGLE);
             (hwrite == WRITE); 
             (htrans[0] == NONSEQ); 
@@ -50,6 +52,8 @@ class incr_write_4sequence extends uvm_sequence#(ahb_transaction);
         repeat(1)begin
         start_item(req);
         if(!req.randomize() with {
+            (hbusreq == 1);
+            (hlock == 1);
             (hburst == INCR4);
             (hwrite == WRITE); 
             (htrans[0] == NONSEQ); 

@@ -60,7 +60,6 @@ class ahb_master_monitor extends uvm_monitor;
                 //bus signals
                 item.hbusreq =  vif.hbusreq;
                 item.hlock =  vif.hlock ;
-                item.hgrant = vif.hgrant;
                 //address and control signals
                 item.haddr[0] =  vif.haddr ;
                 item.hburst =  burst_t'(vif.hburst);
@@ -68,7 +67,6 @@ class ahb_master_monitor extends uvm_monitor;
                 item.hsize =   size_t'(vif.hsize) ;
                 item.hwrite =  rw_t'(vif.hwrite);   
                 item.id = agent_config.agent_id;
-                item.hready = vif.hready; 
                 end
 
                 mbx.put(item);

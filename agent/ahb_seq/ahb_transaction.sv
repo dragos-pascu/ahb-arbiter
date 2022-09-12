@@ -53,21 +53,7 @@ class ahb_transaction extends uvm_sequence_item;
 
         /*****Add other signals for sampling******/
 
-    
-        `uvm_object_utils_begin(ahb_transaction)
-          `uvm_field_array_enum(transfer_t, htrans, UVM_ALL_ON)
-          `uvm_field_array_int(haddr , UVM_ALL_ON)
-          `uvm_field_enum(size_t, hsize, UVM_ALL_ON)
-          `uvm_field_enum(burst_t, hburst, UVM_ALL_ON)
-          `uvm_field_array_int(hwdata, UVM_ALL_ON)
-          `uvm_field_int(hrdata, UVM_ALL_ON)
-          `uvm_field_enum(rw_t,hwrite,UVM_ALL_ON)
-          `uvm_field_int(hready, UVM_ALL_ON)
-          `uvm_field_enum(resp_t, hresp, UVM_ALL_ON)
-          `uvm_field_int(hlock , UVM_ALL_ON)
-          `uvm_field_int(hbusreq , UVM_ALL_ON)
-          `uvm_field_int(id,UVM_NOCOMPARE)        
-        `uvm_object_utils_end
+        `uvm_object_utils(ahb_transaction)
 
         function new(string name = "ahb_transaction");
             super.new(name);
@@ -99,17 +85,13 @@ class ahb_transaction extends uvm_sequence_item;
                 
                 res = super.do_compare(rhs,comparer) &&
                         (id ===       tx_rhs.id) &&
-                        // (hbusreq  === tx_rhs.hbusreq) &&
-                        // (hlock    === tx_rhs.hlock) &&
                         (haddr    === tx_rhs.haddr ) &&
                         (hwdata   === tx_rhs.hwdata) &&
                         (hburst   === tx_rhs.hburst) &&
                         (htrans   === tx_rhs.htrans) &&
                         (hsize    === tx_rhs.hsize ) &&
-                        (hwrite   === tx_rhs.hwrite) &&
-                        (hready   === tx_rhs.hready) &&
-                        (hresp    === tx_rhs.hresp) &&
-                        (hrdata   === tx_rhs.hrdata);
+                        (hwrite   === tx_rhs.hwrite);
+                $display("comparation done");
                 return res;
                 
         endfunction

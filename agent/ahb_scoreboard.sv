@@ -106,34 +106,29 @@ class ahb_scoreboard extends uvm_scoreboard;
     // endfunction
 
     function void write_predictor(ahb_transaction master_item);
-        // `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_MEDIUM);
-        // expected_transactions[master_item.id].push_back(master_item);
-        // predictor_transactions++;
+        `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_MEDIUM);
+        expected_transactions[master_item.id].push_back(master_item);
+        predictor_transactions++;
     endfunction
 
     function void write_evaluator(ahb_transaction slave_item);
-        // `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_MEDIUM);
+        `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_MEDIUM);
         
-        // temp_tx1 =  expected_transactions[slave_item.id].pop_front();
-        // assert (temp_tx1 != null);
+        temp_tx1 =  expected_transactions[slave_item.id].pop_front();
+        assert (temp_tx1 != null);
+        
+        if (slave_item.compare(temp_tx1)) begin
+            match++;
+        end
+        else begin
 
-        // if (slave_item.compare(temp_tx1)) begin
-        //     match++;
-        // end
-        // else begin
-
-        //     mismatch++;
+            mismatch++;
             
-        // end
+        end
         
-        // evaluator_transactions++;
+        evaluator_transactions++;
     endfunction
 
-
-    // virtual function void run_phase(uvm_phase phase);
-        
-
-    // endfunction 
 
     virtual function void check_phase(uvm_phase phase);
         
