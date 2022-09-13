@@ -5,6 +5,7 @@
 -access +rw
 
 -linedebug
+-debug
 -uvmlinedebug
 -cov_cgsample
 

@@ -42,34 +42,23 @@ class virtual_incr_write_4sequence extends virtual_base_sequence;
     //   end
     //   wait fork;
 
-        fork
+        
             begin
                 for(int i=0;i<master_number;i++)begin
-                automatic int j=i;
-                fork begin
-                    incr_write_4sequence wr_seq_h;
-                    wr_seq_h = incr_write_4sequence::type_id::create("incr_write_4sequence");
-                    //wr_seq_h.starting_phase=starting_phase;
-                    wr_seq_h.start(p_sequencer.master_seqr[j]);
+                    automatic int j=i;
+                    fork begin
+                        incr_write_4sequence wr_seq_h;
+                        wr_seq_h = incr_write_4sequence::type_id::create("incr_write_4sequence");
+                        //wr_seq_h.starting_phase=starting_phase;
+                        wr_seq_h.start(p_sequencer.master_seqr[j]);
+                    end
+                    join_none
                 end
-                join_none
-            end
-            end
-            wait fork;
-            begin
-                fork
-            
-            for (int i=0; i<slave_number; i++) begin
-            automatic int j=i;
-            ahb_slave_base_seq slave_seq;
-            slave_seq = ahb_slave_base_seq::type_id::create("slave_seq");
-            slave_seq.start(p_sequencer.slave_seqr[j]);
+                wait fork;
             end
             
-            join_none
-            end
-            wait fork;
-        join_none
+    
+    
     endtask
 
 endclass

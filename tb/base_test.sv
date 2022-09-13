@@ -46,10 +46,29 @@ class base_test extends uvm_test;
         //     slave_seq.start(env.s_agent[j].sequencer);
         //     end
             
-            
+        fork
+            begin
+                for (int i=0; i<slave_number; i++) begin
+                    automatic int j=i;
+                    fork begin
+                        ahb_slave_base_seq slave_seq;
+                        slave_seq = ahb_slave_base_seq::type_id::create("slave_seq");
+                        `uvm_info(get_type_name(), $sformatf("j : %d",j), UVM_MEDIUM)
+                        slave_seq.start(env.s_agent[j].sequencer);
+                    end    
+                    join_none
+                end
+                // wait fork; don`t wait for the slave seq to finish
+
+            end
+            begin
+                vseq_h.start(env.vsequencer);
+            end
+
+        join    
             
         // join_none
-        vseq_h.start(env.vsequencer);
+       
         phase.phase_done.set_drain_time(this, 1000ns);          
         phase.drop_objection(this);
         
