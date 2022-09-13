@@ -15,7 +15,6 @@ class ahb_slave_base_seq extends uvm_sequence#(ahb_transaction);
         start_item(temp_item);
         if(!temp_item.randomize() with {
             (temp_item.hresp == OKAY);
-            (temp_item.no_of_waits.size == 2);
         } )
         `uvm_fatal(get_type_name(), "Can't randomize the item!")
         finish_item(temp_item);

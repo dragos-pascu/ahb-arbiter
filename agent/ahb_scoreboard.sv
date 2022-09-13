@@ -114,17 +114,20 @@ class ahb_scoreboard extends uvm_scoreboard;
     function void write_evaluator(ahb_transaction slave_item);
         `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_MEDIUM);
         
-        temp_tx1 =  expected_transactions[slave_item.id].pop_front();
-        assert (temp_tx1 != null);
-        
-        if (slave_item.compare(temp_tx1)) begin
+        if (expected_transactions[slave_item.id].size == 0) begin
+            `uvm_info(get_type_name(),"Queue is empty",UVM_MEDIUM)
+        end else begin
+            temp_tx1 =  expected_transactions[slave_item.id].pop_front();
+            if (slave_item.compare(temp_tx1)) begin
             match++;
-        end
-        else begin
+            end
+            else begin
 
-            mismatch++;
-            
+                mismatch++;
+
+            end
         end
+        
         
         evaluator_transactions++;
     endfunction
