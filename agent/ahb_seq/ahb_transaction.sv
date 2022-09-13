@@ -46,11 +46,12 @@ class ahb_transaction extends uvm_sequence_item;
         rand logic  hbusreq; // m signal to arbiter
         logic hgrant;
 
-        //inputs AHB master
+        
         rand bit hready;
         rand resp_t hresp; 
         bit [31:0] hrdata;
 
+        rand bit no_of_waits[];
         /*****Add other signals for sampling******/
 
         `uvm_object_utils(ahb_transaction)
@@ -73,6 +74,7 @@ class ahb_transaction extends uvm_sequence_item;
                 $sformat (s, "%S\n   hready  = %0d", s, hready);
                 $sformat (s, "%S\n   hresp   = %0d", s, hresp);
                 $sformat (s, "%S\n   hrdata  = %0d", s, hrdata);
+                $sformat (s, "%S\n   no_of_waits  = %p", s, no_of_waits);
                 return s;
         endfunction 
 
@@ -97,11 +99,30 @@ class ahb_transaction extends uvm_sequence_item;
                         (hready   === tx_rhs.hready) &&
                         (hresp   === tx_rhs.hresp) &&
                         (hrdata   === tx_rhs.hrdata);
-                $display("comparation done");
                 return res;
                 
         endfunction
 
+        constraint wait_size{
+                no_of_waits.size >= 0;
+                no_of_waits.size <= 17;
+                
+        }
+        constraint number_of_waits_values{
+                foreach (no_of_waits[i]) {
+                        if (i == no_of_waits.size - 1) {
+                                no_of_waits[i]==1;
+                        }
+                                
+                        else {
+                                no_of_waits[i]==0;
+                        }
+                                
+                }
+        }
+
+        // constraint wait_solve {solve wait_size before number_of_waits_values;
+        //                         }
 
         constraint address_size {
                 //haddr Based on hburst and hsize
