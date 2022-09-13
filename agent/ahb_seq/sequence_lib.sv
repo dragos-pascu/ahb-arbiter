@@ -14,8 +14,8 @@ class ahb_slave_base_seq extends uvm_sequence#(ahb_transaction);
         temp_item = ahb_transaction::type_id::create("temp_item");
         start_item(temp_item);
         if(!temp_item.randomize() with {
-            (temp_item.hresp == OKAY);
-            (temp_item.no_of_waits.size == 2);
+            (hresp == OKAY);
+            (no_of_waits.size == 3);
         } )
         `uvm_fatal(get_type_name(), "Can't randomize the item!")
         finish_item(temp_item);
@@ -48,7 +48,7 @@ class simple_write_sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of simple_write_sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(1)begin
         start_item(req);
         // if(!req.randomize())
         //     `uvm_fatal(get_type_name(), "Single write randomize failed!")
@@ -95,10 +95,46 @@ class incr_write_4sequence extends uvm_sequence#(ahb_transaction);
             (htrans[0] == NONSEQ); 
             } )
             `uvm_fatal(get_type_name(), "INCR4 write randomize failed!")
+        foreach (req.haddr[i]) begin
+            req.post_randomize(req.haddr[i]);
+        end
         finish_item(req);
         get_response(req);
         end
         `uvm_info(get_type_name(), "INCR4 sequence finished", UVM_MEDIUM)
+
+    endtask
+
+
+endclass
+
+class incr_read_4sequence extends uvm_sequence#(ahb_transaction);
+    
+    `uvm_object_utils(incr_read_4sequence)
+
+    function new(string name="incr_read_4sequence");
+        super.new(name);
+    endfunction
+
+    
+    virtual task body();
+        `uvm_info(get_type_name(),"Inside body of incr_read_4sequence.",UVM_MEDIUM)
+
+        req = ahb_transaction::type_id::create("req");
+        repeat(1)begin
+        start_item(req);
+        if(!req.randomize() with {
+            (hbusreq == 1);
+            (hlock == 1);
+            (hburst == INCR4);
+            (hwrite == READ); 
+            (htrans[0] == NONSEQ); 
+            } )
+            `uvm_fatal(get_type_name(), "INCR4 read randomize failed!")
+        finish_item(req);
+        get_response(req);
+        end
+        `uvm_info(get_type_name(), "INCR4 read sequence finished", UVM_MEDIUM)
 
     endtask
 

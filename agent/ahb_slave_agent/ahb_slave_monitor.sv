@@ -88,6 +88,7 @@ class ahb_slave_monitor extends uvm_monitor;
             @(vif.s_cb iff(vif.hready));
             if(item.hwrite == WRITE) begin
                 item.hwdata[0] = vif.hwdata;
+                storage.write(item.haddr[0],item.hwdata[0]);
             end
             else if (item.hwrite == READ) begin
                 item.hrdata[0] = vif.hrdata;

@@ -10,6 +10,9 @@ package tests_pkg;
     
     `include "simple_write_test.sv"
     `include "incr_write_4_test.sv"
+    `include "incr_read_4_test.sv"
+
     `include "wrap_write_4_test.sv"
+    
 
 endpackage

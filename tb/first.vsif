@@ -1,0 +1,13 @@
+session block_level {
+    top_dir                     : /home/$USER/regression_results;
+    output_mode                 : terminal;    // [log_only, terminal]
+    run_mode                    : batch;       // [batch, batch_debug, interactive]
+    drm                         : serial local;
+    master_submission_policy    : execute_locally;
+    max_runs_in_parallel        : 1;
+};
+
+group tests {
+    scan_script: "vm_scan.pl ius.flt vm.flt shell.flt uvm.flt";
+    test test1 {run_script: "pwd;~/SV_training/first_vsif/my_run.sh -f run.f top_file1 -seed random";count: 3;};
+};//tests

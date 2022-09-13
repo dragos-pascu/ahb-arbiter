@@ -54,6 +54,8 @@ class ahb_transaction extends uvm_sequence_item;
         rand bit no_of_waits[];
         /*****Add other signals for sampling******/
 
+        logic [31:0] address_list[$];
+
         `uvm_object_utils(ahb_transaction)
 
         function new(string name = "ahb_transaction");
@@ -102,6 +104,20 @@ class ahb_transaction extends uvm_sequence_item;
                 return res;
                 
         endfunction
+
+        function void post_randomize(int address);
+                address_list.push_back(address);       
+        endfunction
+
+        constraint read_address{
+                if (hwrite==READ) {
+                      foreach (haddr[i]) {
+                        haddr[i] inside {address_list};
+                      }   
+                }
+       
+        }
+
 
         constraint wait_size{
                 no_of_waits.size >= 0;
