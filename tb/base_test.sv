@@ -34,15 +34,19 @@ class base_test extends uvm_test;
     virtual task run_phase(uvm_phase phase);
         vseq_h = virtual_base_sequence::type_id::create("vseq_h");
 
-        for (int i=0; i<slave_number; i++) begin
-            int j=i;
-            slave_seq = ahb_slave_base_seq::type_id::create("slave_seq");
-            slave_seq.start(env.s_agent[j].sequencer);
-        end
+        
         
         phase.raise_objection(this);
         //vseq_h.starting_phase = phase;
-        vseq_h.start(env.vsequencer);
+        fork
+            vseq_h.start(env.vsequencer);
+            for (int i=0; i<slave_number; i++) begin
+            int j=i;
+            slave_seq = ahb_slave_base_seq::type_id::create("slave_seq");
+            slave_seq.start(env.s_agent[j].sequencer);
+            end
+        join_none
+        
         phase.phase_done.set_drain_time(this, 1000ns);          
         phase.drop_objection(this);
         

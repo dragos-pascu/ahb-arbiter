@@ -45,8 +45,17 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
     endtask
 
     task drive(ahb_transaction req);
-      vif.s_cb.hresp <= req.hresp;
-      vif.s_cb.hready <= req.hready;
+      //vif.s_cb.hresp <= req.hresp;
+      //vif.s_cb.hready <= req.hready;
+      
+      `uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s",req.convert2string()), UVM_MEDIUM);
+      
+      @(vif.s_cb iff(vif.s_cb.hsel && vif.s_cb.hmaster ));
+      foreach (req.no_of_waits[i]) begin
+        vif.s_cb.hready <= req.no_of_waits[i];
+        vif.s_cb.hresp <= req.hresp;
+      end
+      
       //@vif.s_cb;
       // if(vif.s_cb.hwrite == READ)
         //vif.s_cb.hrdata <= storage.read(vif.s_cb.haddr);
