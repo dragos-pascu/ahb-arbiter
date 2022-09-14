@@ -15,7 +15,7 @@ class ahb_slave_base_seq extends uvm_sequence#(ahb_transaction);
         start_item(temp_item);
         if(!temp_item.randomize() with {
             (hresp == OKAY);
-            (no_of_waits.size == 3);
+            //(no_of_waits.size == 2);
         } )
         `uvm_fatal(get_type_name(), "Can't randomize the item!")
         finish_item(temp_item);
@@ -190,7 +190,7 @@ class incr_write_16sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of incr_write_16sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(1)begin
+        repeat(2)begin
         start_item(req);
         if(!req.randomize() with {
             (hbusreq == 1);
@@ -319,7 +319,7 @@ class wrap_write_16sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of wrap_write_16sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(1)begin
+        repeat(2)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == WRAP16);

@@ -190,7 +190,7 @@ class ahb_transaction extends uvm_sequence_item;
                 }
         }          
 
-        constraint wdata_solve {solve hburst before hwdata;
+        constraint wdata_solve {//solve hburst before hwdata;
                                 solve hburst before haddr;
                                 solve haddr before hwdata;
                                 solve haddr before htrans;

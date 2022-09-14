@@ -233,7 +233,7 @@ class virtual_wrap_write_8sequence extends virtual_base_sequence;
         join_none
         
       end
-      //wait fork;
+      wait fork;
     endtask
 
 endclass
@@ -258,7 +258,7 @@ class virtual_wrap_write_16sequence extends virtual_base_sequence;
         join_none
         
       end
-      //wait fork;
+    //   wait fork;
     endtask
 
 endclass

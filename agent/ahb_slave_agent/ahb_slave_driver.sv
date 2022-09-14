@@ -29,8 +29,8 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       initialize();
       forever begin
         
-        //@(vif.s_cb iff vif.s_cb.hsel );
-        wait(vif.s_cb.hsel);
+        @(vif.s_cb iff vif.s_cb.hsel );
+        //wait(vif.s_cb.hsel);
         seq_item_port.get_next_item(req);
         drive(req);
         seq_item_port.item_done();
@@ -44,9 +44,11 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       vif.s_cb.hready <= 1;
       vif.s_cb.hresp <= OKAY;
       vif.s_cb.hrdata <= 0;
-      repeat (1) begin
-            @(vif.s_cb);
-        end
+      repeat(1)begin
+        @(vif.s_cb);
+      end
+      
+      
 
     endtask
 
@@ -55,9 +57,9 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       `uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s",req.convert2string()), UVM_MEDIUM);
       
       foreach (req.no_of_waits[i]) begin
-        @vif.s_cb;
-        vif.s_cb.hready <= req.no_of_waits[i];
         
+        vif.s_cb.hready <= req.no_of_waits[i];
+        @vif.s_cb;
         
       end
 

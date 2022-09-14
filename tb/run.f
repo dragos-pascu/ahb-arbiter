@@ -18,8 +18,8 @@
 //+UVM_TESTNAME=incr_write_test
 
 //+UVM_TESTNAME=incr_write_4_test
-//+UVM_TESTNAME=incr_write_8_test
-+UVM_TESTNAME=incr_write_16_test
++UVM_TESTNAME=incr_write_8_test
+//+UVM_TESTNAME=incr_write_16_test
 
 //+UVM_TESTNAME=wrap_write_4_test
 //+UVM_TESTNAME=wrap_write_8_test
@@ -37,7 +37,7 @@
 ../agent/ahb_agent_pkg.sv
 tests_pkg.sv
 ../agent/arbiter_if.sv
-../rtl/generic_arbiter_full_v6.sv
+../rtl/generic_arbiter_full.sv
 
 env_config.sv
 ahb_env.sv
