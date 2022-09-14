@@ -150,7 +150,41 @@ class ahb_transaction extends uvm_sequence_item;
                         haddr.size == 8;
                 if(hburst == WRAP16 || hburst == INCR16)
                         haddr.size == 16;
-        }        
+        }     
+
+        constraint addr_wrap4_word{
+                if((hburst == WRAP4) && (hsize == WORD)){
+                        foreach(haddr[i]){
+                                if(i != 0){
+                                        haddr[i][3:2] == haddr[i-1][3:2] + 1;
+                                        haddr[i][31:4] == haddr[i-1][31:4];
+                                }
+                        }
+                }
+        }   
+
+
+        constraint addr_wrap8_word{
+                                if((hburst == WRAP8) && (hsize == WORD)){
+                                        foreach(haddr[i]){
+                                                if(i != 0){
+                                                        haddr[i][4:2] == haddr[i-1][4:2] + 1;
+                                                        haddr[i][31:5] == haddr[i-1][31:5];
+                                                }
+                                        }
+                                }
+                        }
+
+        constraint adddr_wrap16_word{
+                                if((hburst == WRAP16) && (hsize == WORD)){
+                                        foreach(haddr[i]){
+                                                if(i != 0){
+                                                        haddr[i][5:2] == haddr[i-1][5:2] + 1;
+                                                        haddr[i][31:6] == haddr[i-1][31:6];
+                                                }
+                                        }
+                                }
+                        }
 
         constraint addr_size_max_limit {
                 foreach(haddr[i])

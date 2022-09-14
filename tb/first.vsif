@@ -9,5 +9,7 @@ session block_level {
 
 group tests {
     scan_script: "vm_scan.pl ius.flt vm.flt shell.flt uvm.flt";
-    test test1 {run_script: "pwd;~/SV_training/first_vsif/my_run.sh -f run.f top_file1 -seed random";count: 3;};
+    test incr_write_4_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/tb/run.f +UVM_TESTNAME=incr_write_4_test ;count: 1;};
+    test incr_write_8_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/tb/run.f +UVM_TESTNAME=incr_write_8_test ;count: 1;};
+
 };//tests
