@@ -31,15 +31,18 @@
 // *** include compile files ***
 
 
--incdir ../agent
+-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/
+-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/agent
+-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/tb
+-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/tb/tests
 
-../rtl/integration_pkg.sv
-../agent/ahb_agent_pkg.sv
-tests_pkg.sv
-../agent/arbiter_if.sv
-../rtl/generic_arbiter_full.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/rtl/integration_pkg.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/agent/ahb_agent_pkg.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/tb/tests_pkg.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/agent/arbiter_if.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/rtl/generic_arbiter_full.sv
 
-env_config.sv
-ahb_env.sv
-test_harness.sv
-tb_top.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/tb/env_config.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/tb/ahb_env.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/tb/test_harness.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/tb/tb_top.sv
