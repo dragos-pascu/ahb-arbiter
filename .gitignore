@@ -21,3 +21,6 @@ waves.shm
 *.diag
 
 /tb/.bpad
+
+
+vmgr_db
