@@ -18,7 +18,6 @@ class ahb_env extends uvm_env;
 
     function new(string name="ahb_env", uvm_component parent);
         super.new(name,parent);
-        env_cfg = new();
     endfunction
 
     virtual function void build_phase(uvm_phase phase);
@@ -35,7 +34,11 @@ class ahb_env extends uvm_env;
             m_agent[i] = ahb_master_agent::type_id::create($sformatf("master[%0d]",i),this);
             magt_cfg[i] = ahb_magent_config::type_id::create($sformatf("magt_cfg[%0d]",i));
             magt_cfg[i].agent_id = i;
+            //coverage , is_active flag for master
+            magt_cfg[i].enable_coverage = env_cfg.enable_coverage;
+            magt_cfg[i].is_active = env_cfg.is_active;
             env_cfg.magt_cfg[i] = magt_cfg[i];
+            
             uvm_config_db#(ahb_magent_config)::set(null, $sformatf("master[%0d]", i), "ahb_magent_config", env_cfg.magt_cfg[i]);
      
         end

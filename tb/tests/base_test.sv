@@ -22,11 +22,16 @@ class base_test extends uvm_test;
         super.build_phase(phase);
         
         env_cfg = env_config::type_id::create("env_cfg", this);
+
+        env_cfg.enable_coverage = 1;
+        env_cfg.is_active = 1;
+
         uvm_config_db#(env_config)::set(null, "", "env_config", env_cfg);
+
         env = ahb_env::type_id::create("env",this);
         `uvm_info(get_type_name(),"Build phase of test is executing",UVM_HIGH)
 
-        //make changes to env here? 
+        
                                                                                                                   
     endfunction
 

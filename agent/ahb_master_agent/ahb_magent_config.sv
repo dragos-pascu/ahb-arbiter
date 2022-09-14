@@ -4,7 +4,8 @@ class ahb_magent_config extends uvm_object;
 
     virtual master_if vif;
     int agent_id;
-    uvm_active_passive_enum is_active;
+    bit is_active;
+    bit enable_coverage;
     
     //constructor 
     function new(string name= "ahb_magent_config"); 
