@@ -108,6 +108,72 @@ class incr_write_4sequence extends uvm_sequence#(ahb_transaction);
 
 endclass
 
+class incr_write_8sequence extends uvm_sequence#(ahb_transaction);
+    
+    `uvm_object_utils(incr_write_8sequence)
+
+    function new(string name="incr_write_8sequence");
+        super.new(name);
+    endfunction
+
+    
+    virtual task body();
+        `uvm_info(get_type_name(),"Inside body of incr_write_8sequence.",UVM_MEDIUM)
+
+        req = ahb_transaction::type_id::create("req");
+        repeat(1)begin
+        start_item(req);
+        if(!req.randomize() with {
+            (hbusreq == 1);
+            (hlock == 1);
+            (hburst == INCR8);
+            (hwrite == WRITE); 
+            (htrans[0] == NONSEQ); 
+            } )
+            `uvm_fatal(get_type_name(), "INCR8 write randomize failed!")
+        finish_item(req);
+        get_response(req);
+        end
+        `uvm_info(get_type_name(), "INCR8 sequence finished", UVM_MEDIUM)
+
+    endtask
+
+
+endclass
+
+class incr_write_16sequence extends uvm_sequence#(ahb_transaction);
+    
+    `uvm_object_utils(incr_write_16sequence)
+
+    function new(string name="incr_write_16sequence");
+        super.new(name);
+    endfunction
+
+    
+    virtual task body();
+        `uvm_info(get_type_name(),"Inside body of incr_write_16sequence.",UVM_MEDIUM)
+
+        req = ahb_transaction::type_id::create("req");
+        repeat(1)begin
+        start_item(req);
+        if(!req.randomize() with {
+            (hbusreq == 1);
+            (hlock == 1);
+            (hburst == INCR16);
+            (hwrite == WRITE); 
+            (htrans[0] == NONSEQ); 
+            } )
+            `uvm_fatal(get_type_name(), "INCR16 write randomize failed!")
+        finish_item(req);
+        get_response(req);
+        end
+        `uvm_info(get_type_name(), "INCR16 sequence finished", UVM_MEDIUM)
+
+    endtask
+
+
+endclass
+
 class incr_read_4sequence extends uvm_sequence#(ahb_transaction);
     
     `uvm_object_utils(incr_read_4sequence)
@@ -166,6 +232,69 @@ class wrap_write_4sequence extends uvm_sequence#(ahb_transaction);
         get_response(req);
         end
         `uvm_info(get_type_name(), "Wrap4 write sequence finished", UVM_MEDIUM)
+
+    endtask
+
+
+endclass
+
+
+class wrap_write_8sequence extends uvm_sequence#(ahb_transaction);
+    
+    `uvm_object_utils(wrap_write_8sequence)
+
+    function new(string name="wrap_write_8sequence");
+        super.new(name);
+    endfunction
+
+    
+    virtual task body();
+        `uvm_info(get_type_name(),"Inside body of wrap_write_8sequence.",UVM_MEDIUM)
+
+        req = ahb_transaction::type_id::create("req");
+        repeat(1)begin
+        start_item(req);
+        if(!req.randomize() with {
+            (hburst == WRAP8);
+            (hwrite == WRITE); 
+            (htrans[0] == NONSEQ); 
+            } )
+            `uvm_fatal(get_type_name(), "WRAP8 write randomize failed!")
+        finish_item(req);
+        get_response(req);
+        end
+        `uvm_info(get_type_name(), "WRAP8 write sequence finished", UVM_MEDIUM)
+
+    endtask
+
+
+endclass
+
+class wrap_write_16sequence extends uvm_sequence#(ahb_transaction);
+    
+    `uvm_object_utils(wrap_write_16sequence)
+
+    function new(string name="wrap_write_16sequence");
+        super.new(name);
+    endfunction
+
+    
+    virtual task body();
+        `uvm_info(get_type_name(),"Inside body of wrap_write_16sequence.",UVM_MEDIUM)
+
+        req = ahb_transaction::type_id::create("req");
+        repeat(1)begin
+        start_item(req);
+        if(!req.randomize() with {
+            (hburst == WRAP16);
+            (hwrite == WRITE); 
+            (htrans[0] == NONSEQ); 
+            } )
+            `uvm_fatal(get_type_name(), "WRAP16 write randomize failed!")
+        finish_item(req);
+        get_response(req);
+        end
+        `uvm_info(get_type_name(), "WRAP16 write sequence finished", UVM_MEDIUM)
 
     endtask
 

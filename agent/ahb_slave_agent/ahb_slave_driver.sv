@@ -60,21 +60,6 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
         
         
       end
-      // for (int i=0; i<req.no_of_waits; ++i) begin
-      //   if (i == req.no_of_waits-1) begin
-      //     vif.s_cb.hready <= 1;
-      //   end
-      //   else begin
-      //     vif.s_cb.hready <= 0;
-      //   end
-      //   @vif.s_cb;
-      // end
-      if (vif.s_cb.hready) begin
-        if(vif.s_cb.hwrite == READ) begin
-        vif.s_cb.hrdata <= storage.read(vif.s_cb.haddr);
-        end
-        
-      end
 
 
     endtask  
