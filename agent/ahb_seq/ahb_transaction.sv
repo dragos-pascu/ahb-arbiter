@@ -137,8 +137,6 @@ class ahb_transaction extends uvm_sequence_item;
                 }
         }
 
-        // constraint wait_solve {solve wait_size before number_of_waits_values;
-        //                         }
 
         constraint address_size {
                 //haddr Based on hburst and hsize
@@ -175,6 +173,10 @@ class ahb_transaction extends uvm_sequence_item;
                 }
         }
 
+        constraint hsize_value{
+                hsize == WORD;  
+        }
+
         constraint addr_val {
                 if(hburst != SINGLE){
                         if(hburst == INCR || hburst == INCR4 || hburst == INCR8 || hburst == INCR16){
@@ -189,12 +191,11 @@ class ahb_transaction extends uvm_sequence_item;
         }          
 
         constraint wdata_solve {solve hburst before hwdata;
-                                //solve haddr before hwdata;
+                                solve hburst before haddr;
+                                solve haddr before hwdata;
+                                solve haddr before htrans;
                                 }
 
-        constraint transfer_size {
-                hsize == BYTE;
-        }
                     
         constraint write_data {
                 hwdata.size == haddr.size;

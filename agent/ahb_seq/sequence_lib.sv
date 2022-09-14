@@ -72,6 +72,42 @@ class simple_write_sequence extends uvm_sequence#(ahb_transaction);
 endclass
 
 
+class incr_write_sequence extends uvm_sequence#(ahb_transaction);
+    
+    `uvm_object_utils(incr_write_sequence)
+
+    function new(string name="incr_write_sequence");
+        super.new(name);
+    endfunction
+
+    
+    virtual task body();
+        `uvm_info(get_type_name(),"Inside body of incr_write_sequence.",UVM_MEDIUM)
+
+        req = ahb_transaction::type_id::create("req");
+        repeat(1)begin
+        start_item(req);
+        if(!req.randomize() with {
+            (hbusreq == 1);
+            (hlock == 1);
+            (hburst == INCR);
+            (hwrite == WRITE); 
+            (htrans[0] == NONSEQ); 
+            } )
+            `uvm_fatal(get_type_name(), "INCR write randomize failed!")
+        foreach (req.haddr[i]) begin
+            req.post_randomize(req.haddr[i]);
+        end
+        finish_item(req);
+        get_response(req);
+        end
+        `uvm_info(get_type_name(), "INCR sequence finished", UVM_MEDIUM)
+
+    endtask
+
+
+endclass
+
 class incr_write_4sequence extends uvm_sequence#(ahb_transaction);
     
     `uvm_object_utils(incr_write_4sequence)
