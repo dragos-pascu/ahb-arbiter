@@ -125,8 +125,8 @@ class ahb_scoreboard extends uvm_scoreboard;
                 
                 mismatch++;
                 `uvm_error(get_type_name(),"Mismatch : ")
-                `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_tx1.convert2string()), UVM_MEDIUM);
-                `uvm_info(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()), UVM_MEDIUM);
+                `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_tx1.convert2string()));
+                `uvm_error(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()));
 
             end
         end
