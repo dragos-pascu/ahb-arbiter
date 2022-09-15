@@ -17,7 +17,7 @@
 
 //+UVM_TESTNAME=incr_write_test
 
-//+UVM_TESTNAME=incr_write_4_test
++UVM_TESTNAME=incr_write_4_test
 //+UVM_TESTNAME=incr_write_8_test
 //+UVM_TESTNAME=incr_write_16_test
 
