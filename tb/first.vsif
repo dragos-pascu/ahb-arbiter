@@ -11,5 +11,12 @@ group tests {
     scan_script: "vm_scan.pl ius.flt vm.flt shell.flt uvm.flt";
     test incr_write_4_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/tb/run.f +UVM_TESTNAME=incr_write_4_test ;count: 1;};
     test incr_write_8_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/tb/run.f +UVM_TESTNAME=incr_write_8_test ;count: 1;};
+    test incr_write_16_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/tb/run.f +UVM_TESTNAME=incr_write_16_test ;count: 1;};
+
+
+    test wrap_write_4_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/tb/run.f +UVM_TESTNAME=wrap_write_4_test ;count: 1;};
+    test wrap_write_8_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/tb/run.f +UVM_TESTNAME=wrap_write_8_test ;count: 1;};
+    test wrap_write_16_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/tb/run.f +UVM_TESTNAME=wrap_write_16_test ;count: 1;};
+
 
 };//tests

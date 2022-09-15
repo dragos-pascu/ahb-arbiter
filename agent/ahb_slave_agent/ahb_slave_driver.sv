@@ -54,7 +54,7 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
 
     task drive(ahb_transaction req);
       
-      `uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s",req.convert2string()), UVM_MEDIUM);
+      //`uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s",req.convert2string()), UVM_MEDIUM);
       
       foreach (req.no_of_waits[i]) begin
         

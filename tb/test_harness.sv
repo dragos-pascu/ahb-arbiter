@@ -16,7 +16,7 @@ interface test_harness(input hclk, input  hreset);
     wire[1:0] hresp;
     wire hready;
     wire[master_number-1:0] hgrant;
-    wire[2:0] m_hsize = 0;
+    wire[2:0] m_hsize = 2;
     wire [master_number-1:0]m_hwrite;
 
     generate
@@ -34,6 +34,8 @@ interface test_harness(input hclk, input  hreset);
       assign m_htrans[2*(i+1)-1:2*i]=m_if[i].master.htrans;
       assign m_hbusreq[(i+1)-1:i]    =m_if[i].master.hbusreq;
       assign m_hlock[(i+1)-1:i]     =m_if[i].master.hlock;
+      //assign m_hsize = m_if[i].master.hsize;
+
 
       initial begin 
       uvm_config_db #(virtual master_if)::set(null,"", $sformatf("master[%0d]", i), master); 
