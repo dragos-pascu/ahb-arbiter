@@ -11,8 +11,10 @@ class ahb_transaction extends uvm_sequence_item;
         rand rw_t hwrite; // read/write
         rand transfer_t htrans[];
         rand logic [31:0] hwdata[];  
-        int no_of_busy = 0;
-
+        
+        //busy transfer
+        rand int no_of_busy = 0; // including busy
+        rand int busy_pos;
 
         //bus req signals
         rand logic  hlock; 
@@ -92,6 +94,16 @@ class ahb_transaction extends uvm_sequence_item;
         //         }
        
         // }
+
+        constraint noumber_of_busy{
+                no_of_busy >= 0;
+                no_of_busy < 6;
+        }
+
+        constraint busy_position{
+                busy_pos > 0;
+                busy_pos < haddr.size;
+        }
 
         constraint wait_size{
                 no_of_waits.size >= 0;
@@ -213,6 +225,7 @@ class ahb_transaction extends uvm_sequence_item;
                                 solve hburst before haddr;
                                 solve haddr before hwdata;
                                 solve haddr before htrans;
+                                solve haddr before busy_pos;
                                 solve hsize before haddr;
                                 }
 
@@ -230,11 +243,11 @@ class ahb_transaction extends uvm_sequence_item;
 
         constraint burst_transfer {  
                 if((haddr.size == 1) && (hburst == INCR)){
-                        htrans.size == 1 + no_of_busy;
+                        htrans.size == 1 ;//+ no_of_busy;
                         htrans[0] == NONSEQ; 
                 }
                 else if(hburst != SINGLE){
-                        htrans.size == haddr.size + no_of_busy;
+                        htrans.size == haddr.size ; //+ no_of_busy;
                         foreach(htrans[i]){
                                 if(i == 0)
                                         htrans[i] == NONSEQ;

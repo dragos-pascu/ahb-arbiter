@@ -68,14 +68,31 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             foreach (req.haddr[i]) begin
                 
                 while (!vif.m_cb.hgrant) @vif.m_cb;
-                    
-                vif.m_cb.haddr  <= req.haddr[i];
-                vif.m_cb.htrans <= req.htrans[i];
-                //drive control signals
-                vif.m_cb.hwrite  <= req.hwrite;
-                vif.m_cb.hsize   <= req.hsize;
-                vif.m_cb.hburst  <= req.hburst;
                 
+                if (i!=req.busy_pos) begin
+                    vif.m_cb.haddr  <= req.haddr[i];
+                    vif.m_cb.htrans <= req.htrans[i];
+                    //drive control signals
+                    vif.m_cb.hwrite  <= req.hwrite;
+                    vif.m_cb.hsize   <= req.hsize;
+                    vif.m_cb.hburst  <= req.hburst;
+                end else begin
+                    for (int j=0; j<req.no_of_busy; ++j) begin
+                        if (j==0) begin
+                            vif.m_cb.htrans <= BUSY;
+                        end else begin
+                            vif.m_cb.htrans <= IDLE;
+                        end
+                        @vif.m_cb;
+                    end
+                    vif.m_cb.haddr  <= req.haddr[i];
+                    vif.m_cb.htrans <= req.htrans[i];
+                    //drive control signals
+                    vif.m_cb.hwrite  <= req.hwrite;
+                    vif.m_cb.hsize   <= req.hsize;
+                    vif.m_cb.hburst  <= req.hburst;
+                end
+
 
                 //wait(vif.m_cb.hgrant & vif.m_cb.hready); expresia se executa in timp 0 daca expresia este true
                 if (i == req.haddr.size()-1) begin
