@@ -55,9 +55,9 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     task address_phase();
         forever begin                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
             seq_item_port.get(req);
+            req.add_busy();
             `uvm_info(get_type_name(), $sformatf( "master driver Tr: \n %s",req.convert2string()), UVM_MEDIUM);
 
-            
              vif.m_cb.hbusreq <= req.hbusreq;
              vif.m_cb.hlock <= req.hlock;
             

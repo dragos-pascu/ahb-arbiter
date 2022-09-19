@@ -54,6 +54,8 @@ class ahb_transaction extends uvm_sequence_item;
                 $sformat (s, "%S\n   hresp   = %0d", s, hresp);
                 $sformat (s, "%S\n   hrdata  = %0d", s, hrdata);
                 $sformat (s, "%S\n   no_of_waits  = %p", s, no_of_waits);
+                $sformat (s, "%S\n   busy_pos  = %0d", s, busy_pos);
+                $sformat (s, "%S\n   no_of_busy  = %0d", s, no_of_busy);
                 return s;
         endfunction 
 
@@ -102,7 +104,7 @@ class ahb_transaction extends uvm_sequence_item;
 
         constraint busy_position{
                 busy_pos > 0;
-                busy_pos < haddr.size;
+                busy_pos < haddr.size - 1;
         }
 
         constraint wait_size{
@@ -243,11 +245,11 @@ class ahb_transaction extends uvm_sequence_item;
 
         constraint burst_transfer {  
                 if((haddr.size == 1) && (hburst == INCR)){
-                        htrans.size == 1 ;//+ no_of_busy;
+                        htrans.size == 1 + no_of_busy;
                         htrans[0] == NONSEQ; 
                 }
                 else if(hburst != SINGLE){
-                        htrans.size == haddr.size ; //+ no_of_busy;
+                        htrans.size == haddr.size + no_of_busy;
                         foreach(htrans[i]){
                                 if(i == 0)
                                         htrans[i] == NONSEQ;
@@ -259,5 +261,19 @@ class ahb_transaction extends uvm_sequence_item;
 
 
          
+         function void add_busy();
+                int flag = 1;
+                foreach (htrans[i]) begin
+                        if (i>= busy_pos && i<busy_pos + no_of_busy) begin
+                                if (flag) begin
+                                        htrans[i] = BUSY;
+                                        flag = 0;
+                                end else begin
+                                        htrans[i] = IDLE;
+                                end
+                        end
+                end
+
+         endfunction
 
 endclass
