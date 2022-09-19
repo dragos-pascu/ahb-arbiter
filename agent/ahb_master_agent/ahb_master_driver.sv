@@ -7,7 +7,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     ahb_magent_config agent_config;
 
     mailbox mbx = new();
-
+    int htrans_index;
 
     function new(string name = "ahb_master_driver", uvm_component parent);
         super.new(name, parent);
@@ -65,34 +65,35 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             @(vif.m_cb iff(vif.m_cb.hgrant & vif.m_cb.hready));
             // while(!vif.m_cb.hgrant)
             //     @vif.m_cb;
+            htrans_index = 0;
             foreach (req.haddr[i]) begin
                 
                 while (!vif.m_cb.hgrant) @vif.m_cb;
                 
+                
+
                 if (i!=req.busy_pos) begin
                     vif.m_cb.haddr  <= req.haddr[i];
-                    vif.m_cb.htrans <= req.htrans[i];
+                    vif.m_cb.htrans <= req.htrans[htrans_index];
                     //drive control signals
                     vif.m_cb.hwrite  <= req.hwrite;
                     vif.m_cb.hsize   <= req.hsize;
                     vif.m_cb.hburst  <= req.hburst;
                 end else begin
                     for (int j=0; j<req.no_of_busy; ++j) begin
-                        if (j==0) begin
-                            vif.m_cb.htrans <= BUSY;
-                        end else begin
-                            vif.m_cb.htrans <= IDLE;
-                        end
+                        vif.m_cb.htrans <= req.htrans[i+j];
+                        htrans_index++;
                         @vif.m_cb;
                     end
                     vif.m_cb.haddr  <= req.haddr[i];
-                    vif.m_cb.htrans <= req.htrans[i];
+                    vif.m_cb.htrans <= req.htrans[htrans_index];
                     //drive control signals
                     vif.m_cb.hwrite  <= req.hwrite;
                     vif.m_cb.hsize   <= req.hsize;
                     vif.m_cb.hburst  <= req.hburst;
                 end
 
+                htrans_index++;
 
                 //wait(vif.m_cb.hgrant & vif.m_cb.hready); expresia se executa in timp 0 daca expresia este true
                 if (i == req.haddr.size()-1) begin

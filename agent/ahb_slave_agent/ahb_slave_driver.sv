@@ -66,7 +66,7 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
 
       
       begin
-        @(vif.s_cb iff(vif.s_cb.hwrite == READ & vif.s_cb.hready ));
+        @(vif.s_cb iff(vif.s_cb.hwrite == READ ));
         //int size = vif.s_cb.haddr.size();
         for (int i=0; i<4; ++i) begin
           @vif.s_cb;
