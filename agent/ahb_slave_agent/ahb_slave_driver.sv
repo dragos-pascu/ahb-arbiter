@@ -56,13 +56,20 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       
       //`uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s",req.convert2string()), UVM_MEDIUM);
       
-      foreach (req.no_of_waits[i]) begin
+      fork
+        foreach (req.no_of_waits[i]) begin
         
         vif.s_cb.hready <= req.no_of_waits[i];
         @vif.s_cb;
         
       end
 
+      if (vif.s_cb.hwrite == READ) begin
+        vif.s_cb.hrdata <= $urandom();
+      end
+      join_none
+
+      
 
     endtask  
 

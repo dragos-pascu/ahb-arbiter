@@ -95,7 +95,7 @@ class ahb_slave_monitor extends uvm_monitor;
             end
 
  
-            //`uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_MEDIUM);
+            `uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_MEDIUM);
             m_req_port.write(item);
             
         end

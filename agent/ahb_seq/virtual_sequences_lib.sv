@@ -155,17 +155,17 @@ class virtual_incr_read_4sequence extends virtual_base_sequence;
         `uvm_info(get_type_name(), "Executing virtual_incr_read_4sequence", UVM_MEDIUM)
    
         begin
-            for(int i=0;i<master_number;i++)begin
-                automatic int j=i;
-                fork begin
-                    incr_write_4sequence wr_seq_h;
-                    wr_seq_h = incr_write_4sequence::type_id::create("incr_write_4sequence");
-                    //wr_seq_h.starting_phase=starting_phase;
-                    wr_seq_h.start(p_sequencer.master_seqr[j]);
-                end
-                join_none
-            end
-            wait fork;
+            // for(int i=0;i<master_number;i++)begin
+            //     automatic int j=i;
+            //     fork begin
+            //         incr_write_4sequence wr_seq_h;
+            //         wr_seq_h = incr_write_4sequence::type_id::create("incr_write_4sequence");
+            //         //wr_seq_h.starting_phase=starting_phase;
+            //         wr_seq_h.start(p_sequencer.master_seqr[j]);
+            //     end
+            //     join_none
+            // end
+            //wait fork;
             for(int i=0;i<master_number;i++)begin
                 automatic int j=i;
                 fork begin

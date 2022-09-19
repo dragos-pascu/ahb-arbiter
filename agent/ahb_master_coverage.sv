@@ -26,10 +26,6 @@ class ahb_master_coverage extends uvm_subscriber#(ahb_transaction);
         hsize: coverpoint item.hsize {bins word_bin = {WORD};}
 
         hwdata: coverpoint item.hwdata[0] {option.auto_bin_max = 6;}
-        hrdata: coverpoint item.hrdata {option.auto_bin_max = 6;}
-
-        hready: coverpoint item.hready;
-        hresp: coverpoint item.hresp {bins rsp = {OKAY, ERROR};}
 
         //cross cov
         read_writeXhsize: cross read_write, hsize;

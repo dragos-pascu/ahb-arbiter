@@ -19,7 +19,7 @@
 // *** include test ***
 //+UVM_TESTNAME=simple_write_test
 
-+UVM_TESTNAME=incr_write_test
+//+UVM_TESTNAME=incr_write_test
 
 //+UVM_TESTNAME=incr_write_4_test
 //+UVM_TESTNAME=incr_write_8_test
@@ -27,7 +27,7 @@
 
 //+UVM_TESTNAME=wrap_write_4_test
 //+UVM_TESTNAME=wrap_write_8_test
-//+UVM_TESTNAME=wrap_write_16_test
++UVM_TESTNAME=wrap_write_16_test
 
 
 //+UVM_TESTNAME=incr_read_4_test
@@ -41,10 +41,12 @@
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/tb/tests
 
 /home/dragos.pascu/Projects/ahb-arbiter-project/rtl/integration_pkg.sv
+#/home/dragos.pascu/Projects/ahb-arbiter-project/rtl/integration_pkg_lucian.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/agent/ahb_agent_pkg.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/tb/tests_pkg.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/agent/arbiter_if.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/rtl/generic_arbiter_full_v6.sv
+#/home/dragos.pascu/Projects/ahb-arbiter-project/rtl/generic_arbiter_comb.sv
 
 /home/dragos.pascu/Projects/ahb-arbiter-project/tb/env_config.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/tb/ahb_env.sv

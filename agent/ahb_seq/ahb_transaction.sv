@@ -80,18 +80,18 @@ class ahb_transaction extends uvm_sequence_item;
                 
         endfunction
 
-        function void post_randomize(int haddr);
-                address_list.push_back(haddr);       
-        endfunction
+        // function void post_randomize(int haddr);
+        //         address_list.push_back(haddr);       
+        // endfunction
 
-        constraint read_address{
-                if (hwrite==READ) {
-                      foreach (haddr[i]) {
-                        haddr[i] inside {address_list};
-                      }   
-                }
+        // constraint read_address{
+        //         if (hwrite==READ) {
+        //               foreach (haddr[i]) {
+        //                 haddr[i] inside {address_list};
+        //               }   
+        //         }
        
-        }
+        // }
 
         constraint wait_size{
                 no_of_waits.size >= 0;
