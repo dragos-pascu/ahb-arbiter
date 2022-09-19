@@ -105,8 +105,8 @@ class ahb_transaction extends uvm_sequence_item;
                 
         endfunction
 
-        function void post_randomize(int address);
-                address_list.push_back(address);       
+        function void post_randomize(int haddr);
+                address_list.push_back(haddr);       
         endfunction
 
         constraint read_address{
@@ -165,26 +165,26 @@ class ahb_transaction extends uvm_sequence_item;
 
 
         constraint addr_wrap8_word{
-                                if((hburst == WRAP8) && (hsize == WORD)){
-                                        foreach(haddr[i]){
-                                                if(i != 0){
-                                                        haddr[i][4:2] == haddr[i-1][4:2] + 1;
-                                                        haddr[i][31:5] == haddr[i-1][31:5];
-                                                }
-                                        }
+                if((hburst == WRAP8) && (hsize == WORD)){
+                        foreach(haddr[i]){
+                                if(i != 0){
+                                        haddr[i][4:2] == haddr[i-1][4:2] + 1;
+                                        haddr[i][31:5] == haddr[i-1][31:5];
                                 }
                         }
+                }
+        }
 
         constraint adddr_wrap16_word{
-                                if((hburst == WRAP16) && (hsize == WORD)){
-                                        foreach(haddr[i]){
-                                                if(i != 0){
-                                                        haddr[i][5:2] == haddr[i-1][5:2] + 1;
-                                                        haddr[i][31:6] == haddr[i-1][31:6];
-                                                }
-                                        }
+                if((hburst == WRAP16) && (hsize == WORD)){
+                        foreach(haddr[i]){
+                                if(i != 0){
+                                        haddr[i][5:2] == haddr[i-1][5:2] + 1;
+                                        haddr[i][31:6] == haddr[i-1][31:6];
                                 }
                         }
+                }
+        }
 
         constraint addr_size_max_limit {
                 foreach(haddr[i])
@@ -257,6 +257,19 @@ class ahb_transaction extends uvm_sequence_item;
                                         htrans[i] == SEQ;
                         }
                 } 
-        }                
+        }  
+
+
+        constraint onekb_boundry {
+                if(hburst == INCR)
+                        haddr[0][10:0] <= (1024 - ((haddr.size)*(2**hsize)));
+                if((hburst == WRAP4) || (hburst == INCR4))
+                        haddr[0][10:0] <= (1024 - 4*(2**hsize));
+                if((hburst == WRAP8) || (hburst == INCR8))
+                        haddr[0][10:0] <= (1024 - 8*(2**hsize));
+
+                if((hburst == WRAP16) || (hburst == INCR16))
+                        haddr[0][10:0] <= (1024 - 16*(2**hsize));
+        }              
 
 endclass

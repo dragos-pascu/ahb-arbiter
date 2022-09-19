@@ -39,10 +39,10 @@ interface master_if(input hclk, input hreset);
     endclocking
 
 
-    property no_nonseq_after_busy;
-        @(posedge hclk) disable iff(!hreset)
-                (hburst == 0) |=> (htrans != 1);
-    endproperty
+    // property no_nonseq_after_busy;
+    //     @(posedge hclk) disable iff(!hreset)
+    //             (hburst == 0) |=> (htrans != 1);
+    // endproperty
 
     /*------TRANSFER PROPERTIES*/
 
@@ -50,34 +50,34 @@ interface master_if(input hclk, input hreset);
     //1KB Boundry Check Incrementing burst
     property kb_boundry_p;
         @(posedge hclk) disable iff(!hreset)
-            (htrans == 3) |-> (haddr[10:0] != 11'b1_00000_00000);
+            (htrans == SEQ) |-> (haddr[10:0] != 11'b1_00000_00000);
     endproperty
 
     //Address Check for INCR/INCRx transfer
     property incr_addr_p;
         @(posedge hclk) disable iff(!hreset)
-            (htrans == 3) && ((hburst == 1)||(hburst == 3)||(hburst == 5)||(hburst == 7)) &&
-            ($past(htrans, 1) != 1) && ($past(hready, 1)) |-> (haddr == ($past(haddr, 1) + 2**hsize));
+            (htrans == SEQ) && ((hburst == INCR)||(hburst == INCR4)||(hburst == INCR8)||(hburst == INCR16)) &&
+            ($past(htrans, 1) != BUSY) && ($past(hready, 1)) |-> (haddr == ($past(haddr, 1) + 2**hsize));
     endproperty
 
     //Address Check for WRAP4 hsize = WORD  
     property wrap4_word_addr_p;
         @(posedge hclk) disable iff(!hreset)
-            (htrans == 3) && (hburst == 2) && (hsize == 2) && ($past(htrans, 1) != 1) && ($past(hready, 1)) |->
+            (htrans == SEQ) && (hburst == WRAP4) && (hsize == WORD) && ($past(htrans, 1) != BUSY) && ($past(hready, 1)) |->
             ((haddr[3:2] == ($past(haddr[3:2], 1) + 1)) && (haddr[31:4] == $past(haddr[31:4], 1)));
     endproperty
 
     //Address Check for WRAP8 hsize = WORD  
     property wrap8_word_addr_p;
         @(posedge hclk) disable iff(!hreset)
-            (htrans == 3) && (hburst == 4) && (hsize == 2) && ($past(htrans, 1) != 1) && ($past(hready, 1)) |->
+            (htrans == SEQ) && (hburst == WRAP8) && (hsize == WORD) && ($past(htrans, 1) != BUSY) && ($past(hready, 1)) |->
             ((haddr[4:2] == ($past(haddr[4:2], 1) + 1)) && (haddr[31:5] == $past(haddr[31:5], 1)));
     endproperty
 
     //Address Check for WRAP16 Word 
     property wrap16_word_addr_p;
         @(posedge hclk) disable iff(!hreset)
-            (htrans == 3) && (hburst == 6) && (hsize == 2) && ($past(htrans, 1) != 1) && ($past(hready, 1)) |->
+            (htrans == SEQ) && (hburst == WRAP16) && (hsize == WORD) && ($past(htrans, 1) != BUSY) && ($past(hready, 1)) |->
             ((haddr[5:2] == ($past(haddr[5:2], 1) + 1)) && (haddr[31:6] == $past(haddr[31:6], 1)));
     endproperty
 
@@ -134,6 +134,7 @@ type (except for IDLE and BUSY)*/
     WAITED_TRANSFER: assert property(same_transfer_tye_p);
     
 
+
 endinterface : master_if
 
 
@@ -173,7 +174,7 @@ interface salve_if(input hclk, input hreset);
     property slave_reponse_p;
         @(posedge hclk) disable iff(!hreset)
             htrans == IDLE || htrans == BUSY |-> hresp == OKAY;
-    endproperty;
+    endproperty
 
 
     
