@@ -34,7 +34,7 @@ class ahb_env extends uvm_env;
             m_agent[i] = ahb_master_agent::type_id::create($sformatf("master[%0d]",i),this);
             magt_cfg[i] = ahb_magent_config::type_id::create($sformatf("magt_cfg[%0d]",i));
             magt_cfg[i].agent_id = i;
-            //coverage , is_active flag for master
+            //coverage and is_active flag for master
             magt_cfg[i].enable_coverage = env_cfg.enable_coverage;
             magt_cfg[i].is_active = env_cfg.is_active;
             env_cfg.magt_cfg[i] = magt_cfg[i];
@@ -50,6 +50,10 @@ class ahb_env extends uvm_env;
             s_agent[i] = ahb_slave_agent::type_id::create($sformatf("slave[%0d]",i),this);
             sagt_cfg[i] = ahb_sagent_config::type_id::create($sformatf("sagt_cfg[%0d]",i));
             sagt_cfg[i].agent_id = i;
+
+            //coverage and is_active flag for skave
+            sagt_cfg[i].enable_coverage = env_cfg.enable_coverage;
+            sagt_cfg[i].is_active = env_cfg.is_active;
             env_cfg.sagt_cfg[i] = sagt_cfg[i];
             uvm_config_db#(ahb_sagent_config)::set(null, $sformatf("slave[%0d]", i), "ahb_sagent_config", env_cfg.sagt_cfg[i]);
      

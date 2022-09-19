@@ -21,13 +21,14 @@ package ahb_agent_pkg;
     
 
     `include "ahb_master_agent/ahb_magent_config.sv"
-    `include "ahb_coverage.sv"
+    `include "ahb_master_coverage.sv"
     `include "ahb_master_agent/ahb_master_monitor.sv"
     `include "ahb_master_agent/ahb_master_driver.sv"
     `include "ahb_master_agent/ahb_master_agent.sv"
     
     
     `include "ahb_slave_agent/ahb_sagent_config.sv"
+    `include "ahb_slave_coverage.sv"
     `include "ahb_slave_agent/ahb_slave_monitor.sv"
     `include "ahb_slave_agent/ahb_slave_driver.sv"
     `include "ahb_slave_agent/ahb_slave_agent.sv"

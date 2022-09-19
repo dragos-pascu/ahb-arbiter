@@ -39,10 +39,7 @@ interface master_if(input hclk, input hreset);
     endclocking
 
 
-    // property no_nonseq_after_busy;
-    //     @(posedge hclk) disable iff(!hreset)
-    //             (hburst == 0) |=> (htrans != 1);
-    // endproperty
+    
 
     /*------TRANSFER PROPERTIES*/
 
@@ -97,7 +94,7 @@ interface master_if(input hclk, input hreset);
     //Control Signals are identical to the first transfer (WRAP/INCR) . if in SEQ and not SINGLE, check previous ctrl signals
     property ctrl_sig_same_p;
         @(posedge hclk) disable iff(!hreset)
-            hburst == SEQ && htrans != SINGLE -> (( (hwrite == $past(hwrite, 1) ) 
+            htrans == SEQ && hburst != SINGLE -> (( (hwrite == $past(hwrite, 1) ) 
                                         && ( hsize == $past(hsize, 1) ) 
                                         && ( hburst == $past(hburst,1)) ));
     endproperty
@@ -113,25 +110,31 @@ interface master_if(input hclk, input hreset);
 
     /*Check that the burst transfer doesn’t finish with a BUSY transfer (if incrementing or wrap-
 ping) but with a SEQ.*/
+    
+    // After a SINGLE burst transfer there can`t be a BUSY.
+    property no_busy_after_single_p;
+        @(posedge hclk) disable iff(!hreset)
+                (hburst == SINGLE) |=> (htrans != BUSY);
+    endproperty
 
-
-        /* HREADY == 0 , the master must not change the transfer
-type (except for IDLE and BUSY)*/
+    /* HREADY == 0 , the master must not change the transfer
+    type (except for IDLE and BUSY)*/
     property same_transfer_tye_p;
         @(posedge hclk) disable iff(!hreset)
             hready == 0 && ((htrans!= BUSY) || (htrans != IDLE) )
                   |=> (htrans == $past(htrans, 1));
     endproperty
 
-    // ONE_KB: assert property(kb_boundry_p);
-    // INCR_ADDR: assert property(incr_addr_p);
-    // WRAP4_WORD_ADDR : assert property (wrap4_word_addr_p);   
-    // WRAP8_WORD_ADDR : assert property (wrap8_word_addr_p);
-    // WRAP16__WORD_ADDR : assert property (wrap16_word_addr_p);       
-    // ADDR_ALIGNMENT : assert property(addr_alignment_word_p);
-    // SINGLE_NO_BUSY: assert property(no_busy_single_burst_p);
-    // SAME_CTRL_SIG : assert property(ctrl_sig_same_p);
-    // WAITED_TRANSFER: assert property(same_transfer_tye_p);
+    ONE_KB: assert property(kb_boundry_p);
+    INCR_ADDR: assert property(incr_addr_p);
+    WRAP4_WORD_ADDR : assert property (wrap4_word_addr_p);   
+    WRAP8_WORD_ADDR : assert property (wrap8_word_addr_p);
+    WRAP16__WORD_ADDR : assert property (wrap16_word_addr_p);       
+    ADDR_ALIGNMENT : assert property(addr_alignment_word_p);
+    SINGLE_NO_BUSY: assert property(no_busy_single_burst_p);
+    //SAME_CTRL_SIG : assert property(ctrl_sig_same_p);
+    WAITED_TRANSFER: assert property(same_transfer_tye_p);
+    NO_BUSY_AFTER_SINGLE : assert property(no_busy_after_single_p);
     
 
 

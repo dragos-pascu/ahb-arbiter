@@ -15,7 +15,7 @@ class ahb_slave_base_seq extends uvm_sequence#(ahb_transaction);
         start_item(temp_item);
         if(!temp_item.randomize() with {
             (hresp == OKAY);
-            (no_of_waits.size == 1);
+            //(no_of_waits.size == 1);
         } )
         `uvm_fatal(get_type_name(), "Can't randomize the item!")
         finish_item(temp_item);
@@ -83,7 +83,7 @@ class incr_write_sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of incr_write_sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == INCR);

@@ -6,8 +6,12 @@
 
 //-linedebug
 //-debug
--uvmlinedebug
+//-uvmlinedebug
 -cov_cgsample
+-coverage all
+-covoverwrite
+//-cov_debuglog
+
 
 //+UVM_PHASE_TRACE
 //+UVM_OBJECTION_TRACE
