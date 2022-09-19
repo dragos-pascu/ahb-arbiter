@@ -78,8 +78,8 @@ class ahb_transaction extends uvm_sequence_item;
                         (hwrite   === tx_rhs.hwrite) &&
                         //the slave response vs what master received
                         (hready   === tx_rhs.hready) &&
-                        (hresp   === tx_rhs.hresp) &&
-                        (hrdata   === tx_rhs.hrdata);
+                        (hresp   === tx_rhs.hresp) ;
+                        //(hrdata   === tx_rhs.hrdata);
                 return res;
                 
         endfunction
@@ -96,6 +96,10 @@ class ahb_transaction extends uvm_sequence_item;
         //         }
        
         // }
+
+        constraint requests{
+                hlock == 1;
+        }
 
         constraint noumber_of_busy{
                 no_of_busy >= 0;
