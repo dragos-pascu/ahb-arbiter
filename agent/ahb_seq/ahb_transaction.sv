@@ -21,7 +21,7 @@ class ahb_transaction extends uvm_sequence_item;
         //slave response signals
         rand bit hready;
         rand resp_t hresp; 
-        bit [31:0] hrdata;
+        rand bit [31:0] hrdata;
         rand bit no_of_waits[];
 
         

@@ -64,8 +64,16 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
         
       end
 
-      if (vif.s_cb.hwrite == READ) begin
-        vif.s_cb.hrdata <= $urandom();
+      
+      begin
+        @(vif.s_cb iff(vif.s_cb.hwrite == READ & vif.s_cb.hready ));
+        int size = vif.s_cb.haddr.size();
+        for (int i=0; i<size; ++i) begin
+          @vif.s_cb;
+          vif.s_cb.hrdata <= $urandom();
+          
+        end
+        
       end
       join_none
 
