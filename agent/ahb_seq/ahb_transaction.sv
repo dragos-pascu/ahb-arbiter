@@ -44,12 +44,13 @@ class ahb_transaction extends uvm_sequence_item;
 
         rand logic  hlock; // m signal to arbiter
         rand logic  hbusreq; // m signal to arbiter
-        logic hgrant;
 
         
-        rand bit hready;
-        rand resp_t hresp; 
+        bit hready;
+        resp_t hresp; 
         bit [31:0] hrdata;
+
+        int no_of_busy = 0;
 
         rand bit no_of_waits[];
         /*****Add other signals for sampling******/
@@ -118,12 +119,12 @@ class ahb_transaction extends uvm_sequence_item;
        
         }
 
-
         constraint wait_size{
                 no_of_waits.size >= 0;
                 no_of_waits.size <= 17;
                 
         }
+
         constraint number_of_waits_values{
                 foreach (no_of_waits[i]) {
                         if (i == no_of_waits.size - 1) {
@@ -137,13 +138,13 @@ class ahb_transaction extends uvm_sequence_item;
                 }
         }
 
-
         constraint address_size {
                 //haddr Based on hburst and hsize
                 if(hburst == SINGLE)
                         haddr.size == 1;
                 if(hburst == INCR)
-                        haddr.size < (1024/(2^hsize));
+                        //haddr.size < (1024/(2^hsize));
+                        haddr.size < 256; // problem using the above formula, number is for hsize == WORD
                 if(hburst == WRAP4 || hburst == INCR4)
                         haddr.size == 4;
                 if(hburst == WRAP8 || hburst == INCR8)
@@ -195,6 +196,16 @@ class ahb_transaction extends uvm_sequence_item;
                 haddr.size > 0;
         }
         
+        constraint onekb_boundry {
+        if(hburst == INCR)
+                haddr[0][10:0] <= (1024 - ((haddr.size)*(2**hsize)));
+        if((hburst == WRAP4) || (hburst == INCR4))
+                haddr[0][10:0] <= (1024 - 4*(2**hsize));
+        if((hburst == WRAP8) || (hburst == INCR8))
+                haddr[0][10:0] <= (1024 - 8*(2**hsize));
+        if((hburst == WRAP16) || (hburst == INCR16))
+                haddr[0][10:0] <= (1024 - 16*(2**hsize));
+        }     
 
         constraint word_boundary{
                 if(hsize == HALFWORD){
@@ -224,10 +235,11 @@ class ahb_transaction extends uvm_sequence_item;
                 }
         }          
 
-        constraint wdata_solve {//solve hburst before hwdata;
+        constraint wdata_solve {
                                 solve hburst before haddr;
                                 solve haddr before hwdata;
                                 solve haddr before htrans;
+                                solve hsize before haddr;
                                 }
 
                     
@@ -242,14 +254,13 @@ class ahb_transaction extends uvm_sequence_item;
                 }
         }        
 
-        constraint burst_transfer { 
-                // Single transfer with no busy 
+        constraint burst_transfer {  
                 if((haddr.size == 1) && (hburst == INCR)){
+                        htrans.size == 1 + no_of_busy;
                         htrans[0] == NONSEQ; 
                 }
-                // Burst transfer with no busy
                 else if(hburst != SINGLE){
-                        htrans.size == haddr.size;
+                        htrans.size == haddr.size + no_of_busy;
                         foreach(htrans[i]){
                                 if(i == 0)
                                         htrans[i] == NONSEQ;
@@ -260,16 +271,6 @@ class ahb_transaction extends uvm_sequence_item;
         }  
 
 
-        constraint onekb_boundry {
-                if(hburst == INCR)
-                        haddr[0][10:0] <= (1024 - ((haddr.size)*(2**hsize)));
-                if((hburst == WRAP4) || (hburst == INCR4))
-                        haddr[0][10:0] <= (1024 - 4*(2**hsize));
-                if((hburst == WRAP8) || (hburst == INCR8))
-                        haddr[0][10:0] <= (1024 - 8*(2**hsize));
-
-                if((hburst == WRAP16) || (hburst == INCR16))
-                        haddr[0][10:0] <= (1024 - 16*(2**hsize));
-        }              
+         
 
 endclass

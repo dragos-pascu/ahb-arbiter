@@ -87,13 +87,12 @@ class incr_write_sequence extends uvm_sequence#(ahb_transaction);
         start_item(req);
         if(!req.randomize() with {
             (hburst == INCR);
+            (hsize == WORD);
             (hwrite == WRITE); 
             (htrans[0] == NONSEQ); 
             } )
             `uvm_fatal(get_type_name(), "INCR write randomize failed!")
-        foreach (req.haddr[i]) begin
-            req.post_randomize(req.haddr[i]);
-        end
+
         finish_item(req);
         get_response(req);
         end
@@ -125,9 +124,9 @@ class incr_write_4sequence extends uvm_sequence#(ahb_transaction);
             (htrans[0] == NONSEQ); 
             } )
             `uvm_fatal(get_type_name(), "INCR4 write randomize failed!")
-        foreach (req.haddr[i]) begin
-            req.post_randomize(req.haddr[i]);
-        end
+        // foreach (req.haddr[i]) begin
+        //     req.post_randomize(req.haddr[i]);
+        // end
         finish_item(req);
         get_response(req);
         end
