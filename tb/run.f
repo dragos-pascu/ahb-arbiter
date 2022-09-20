@@ -12,7 +12,6 @@
 -covoverwrite
 //-cov_debuglog
 
-
 //+UVM_PHASE_TRACE
 //+UVM_OBJECTION_TRACE
 

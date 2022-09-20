@@ -136,19 +136,22 @@ ping) but with a SEQ.*/
     
         /**************COVERAGE FOR MASTER INTERFACE*****************/
 
+    
     covergroup ahb_cg @(posedge hclk);
 
-        option.per_instance = 1;
-
-        //add reset
+        
+        // option.per_instance = 1;
+        // type_option.merge_instances = 1;
+        // option.get_inst_coverage = 1;
+        // option.name = "14";
 
 
         hbusreq: coverpoint hbusreq;
         hlock: coverpoint hlock;
 
         read_write: coverpoint hwrite {bins read_write_bin = {WRITE};}
-        htrans: coverpoint htrans[0];
-        haddr : coverpoint haddr[0] {
+        htrans: coverpoint htrans;
+        haddr : coverpoint haddr{
             bins range_0  = {['d0:'d69]};
             bins range_1  = {['d70:'d140]};
             bins range_2  = {['d141:'d210]};
@@ -158,7 +161,7 @@ ping) but with a SEQ.*/
         hburst : coverpoint hburst;
         hsize: coverpoint hsize {bins word_bin = {WORD};}
 
-        hwdata: coverpoint hwdata[0] {option.auto_bin_max = 6;}
+        hwdata: coverpoint hwdata{option.auto_bin_max = 6;}
 
         //cross cov
         read_writeXhsize: cross read_write, hsize;
@@ -222,7 +225,7 @@ interface salve_if(input hclk, input hreset);
     
     covergroup ahb_cg @(posedge hclk);
 
-        option.per_instance = 1;
+        //option.per_instance = 1;
 
         //add reset
 
@@ -241,6 +244,9 @@ interface salve_if(input hclk, input hreset);
 
 
     ahb_cg slave_cg = new();
+
+        
+    
 
 endinterface : salve_if
 
