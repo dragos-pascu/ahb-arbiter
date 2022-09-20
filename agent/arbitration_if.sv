@@ -18,6 +18,24 @@ interface arbitration_if(input hclk, input hreset);
         input hbusreq , hlock;
     endclocking
 
+    /*Only one hgrant can be asserted on the bus at a time*/
+    /*onehot0 because the hgrant starts with all to 0 to avoid assertion*/
+    property only_one_hgrant_p;
+
+        @(posedge hclk) disable iff(!hreset)
+        $onehot0(hgrant);
+
+    endproperty
+
+    /*When no master requests the bus, the master lowest priority receive the bus . (increments from master_number to 0)*/
+    property default_master_p;
+        @(posedge hclk) disable iff(!hreset)
+        hbusreq == 0 |-> ##3 hgrant == 1 << (master_number - 1);
+    endproperty
+
+
+    ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
+    DEFAULT_BUS_MASTER: assert property(default_master_p);
 
     covergroup ahb_cg @(posedge hclk);
 

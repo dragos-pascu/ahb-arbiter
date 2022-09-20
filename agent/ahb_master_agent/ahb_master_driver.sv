@@ -60,6 +60,9 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
              vif.m_cb.hbusreq <= req.hbusreq;
              vif.m_cb.hlock <= req.hlock;
+             /*HLOCKx must
+be asserted at least a cycle before the address to which it refers, in
+order to prevent the arbiter from changing the grant signals.*/
             
             //drive address
             @(vif.m_cb iff(vif.m_cb.hgrant & vif.m_cb.hready));
