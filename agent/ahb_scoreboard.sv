@@ -3,12 +3,14 @@ class ahb_scoreboard extends uvm_scoreboard;
     `uvm_component_utils(ahb_scoreboard)
     `uvm_analysis_imp_decl(_predictor)
     `uvm_analysis_imp_decl(_evaluator)
+    `uvm_analysis_imp_decl(_request_port)
 
     uvm_analysis_imp_predictor #(ahb_transaction,ahb_scoreboard) item_collect_predictor;
     uvm_analysis_imp_evaluator #(ahb_transaction,ahb_scoreboard) item_collect_evaluator;
     ahb_transaction expected_transactions[master_number][$];
     ahb_transaction actual_transactions[master_number][$];
 
+    virtual arbitration_if req_if;
 
     ahb_transaction expected_tx;
     ahb_transaction temp_tx;
@@ -28,6 +30,11 @@ class ahb_scoreboard extends uvm_scoreboard;
 
     function void build_phase(uvm_phase phase);
     super.build_phase(phase);
+        
+        if (!uvm_config_db #(virtual arbitration_if)::get(null, "", "req_if", req_if))
+            `uvm_fatal(get_type_name(), $sformatf("Failed to retrive busrequest interface"))
+       
+
     endfunction
 
     // function void write_predictor(ahb_transaction master_item);

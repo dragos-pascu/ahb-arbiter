@@ -6,6 +6,8 @@ interface test_harness(input hclk, input  hreset);
 
     //master signals
 
+    arbitration_if req_if(.*);
+
     wire[32*master_number-1:0] m_hwdata;
     wire[31:0] m_hrdata;
 	  wire[32*master_number-1:0] m_haddr;
@@ -39,7 +41,7 @@ interface test_harness(input hclk, input  hreset);
 
       initial begin 
       uvm_config_db #(virtual master_if)::set(null,"", $sformatf("master[%0d]", i), master); 
-     end
+      end
 
     end
     endgenerate
@@ -78,9 +80,18 @@ interface test_harness(input hclk, input  hreset);
 
         initial begin 
         uvm_config_db #(virtual salve_if)::set(null,"", $psprintf("slave[%0d]", i), slave); 
-     end 
+        end 
 
       end
     endgenerate
+
+    assign req_if.hbusreq = m_hbusreq;
+    assign req_if.hmaster = s_hmaster;
+    assign req_if.hgrant  = hgrant;
+
+    initial begin
+      uvm_config_db #(virtual arbitration_if)::set(null,"","req_if", req_if); 
+    end
+
 
 endinterface
