@@ -149,8 +149,14 @@ ping) but with a SEQ.*/
         hbusreq: coverpoint hbusreq;
         hlock: coverpoint hlock;
 
-        read_write: coverpoint hwrite {bins read_write_bin = {WRITE};}
-        htrans: coverpoint htrans;
+        read_write: coverpoint hwrite {bins write_bin = {WRITE};}
+        htrans: coverpoint htrans{
+            bins idle = {IDLE};
+            bins nonseq = {NONSEQ};
+            bins seq = {SEQ};
+            bins busy = {BUSY};
+            
+        }
         haddr : coverpoint haddr{
             bins range_0  = {['d0:'d69]};
             bins range_1  = {['d70:'d140]};
@@ -158,7 +164,12 @@ ping) but with a SEQ.*/
             bins range_3  = {['d211:'d281]};
             bins range_4  = {['d282:'d350]};
         }
-        hburst : coverpoint hburst;
+        hburst : coverpoint hburst {
+            option.at_least = 1;
+            bins increment 	= {INCR, INCR4, INCR8, INCR16};
+			bins wrap 	= {WRAP4, WRAP8, WRAP16};
+			bins single 	= {SINGLE};
+        }
         hsize: coverpoint hsize {bins word_bin = {WORD};}
 
         hwdata: coverpoint hwdata{option.auto_bin_max = 6;}
