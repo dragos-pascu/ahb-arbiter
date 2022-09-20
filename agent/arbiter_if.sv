@@ -136,7 +136,44 @@ ping) but with a SEQ.*/
     WAITED_TRANSFER: assert property(same_transfer_tye_p);
     NO_BUSY_AFTER_SINGLE : assert property(no_busy_after_single_p);
     
+    
+        /**************COVERAGE FOR MASTER INTERFACE*****************/
 
+    covergroup ahb_cg @(posedge hclk);
+
+        option.per_instance = 1;
+
+        //add reset
+
+
+        hbusreq: coverpoint hbusreq;
+        hlock: coverpoint hlock;
+
+        read_write: coverpoint hwrite {bins read_write_bin = {WRITE};}
+        htrans: coverpoint htrans[0];
+        haddr : coverpoint haddr[0] {
+            bins range_0  = {['d0:'d69]};
+            bins range_1  = {['d70:'d140]};
+            bins range_2  = {['d141:'d210]};
+            bins range_3  = {['d211:'d281]};
+            bins range_4  = {['d282:'d350]};
+        }
+        hburst : coverpoint hburst;
+        hsize: coverpoint hsize {bins word_bin = {WORD};}
+
+        hwdata: coverpoint hwdata[0] {option.auto_bin_max = 6;}
+
+        //cross cov
+        read_writeXhsize: cross read_write, hsize;
+        hburstXhsize: cross hburst, hsize;
+        read_writeXhburst: cross read_write, hburst;
+        read_writeXhburstXhsize: cross read_write, hburst, hsize;
+
+
+
+    endgroup
+
+    ahb_cg master_cg = new();
 
 endinterface : master_if
 
@@ -184,6 +221,31 @@ interface salve_if(input hclk, input hreset);
     //SLAVE_RESPONSE: assert property(slave_reponse_p);
     
 
+
+        /**************COVERAGE FOR SLAVE INTERFACE*****************/
+
+    
+    covergroup ahb_cg @(posedge hclk);
+
+        option.per_instance = 1;
+
+        //add reset
+
+
+
+        hrdata: coverpoint hrdata {option.auto_bin_max = 6;}
+        hready: coverpoint hready;
+        hresp: coverpoint hresp {bins rsp = {OKAY, ERROR};}
+
+        //cross cov
+        hrespXhready : cross hready , hresp;
+
+
+
+    endgroup
+
+
+    ahb_cg slave_cg = new();
 
 endinterface : salve_if
 
