@@ -5,7 +5,6 @@ class ahb_slave_agent extends uvm_agent;
     ahb_slave_driver ahb_sdriver;
     slave_sequencer sequencer;
     ahb_slave_monitor ahb_smonitor;
-    ahb_slave_coverage ahb_coverage_h;
     ahb_sagent_config config_h;
 
     function new(string name="ahb_slave_agent",uvm_component parent=null);
@@ -27,9 +26,6 @@ class ahb_slave_agent extends uvm_agent;
             ahb_sdriver = ahb_slave_driver::type_id::create("ahb_sdriver",this);
         end
 
-        if (config_h.enable_coverage) begin
-            ahb_coverage_h = ahb_slave_coverage::type_id::create("ahb_coverage_h",this);
-        end
 
     endfunction
 
@@ -41,9 +37,6 @@ class ahb_slave_agent extends uvm_agent;
             ahb_smonitor.m_req_port.connect(sequencer.m_request_export);
         end
 
-        if (config_h.enable_coverage) begin
-            ahb_smonitor.m_req_port.connect(ahb_coverage_h.analysis_export);
-        end
 
     endfunction
 

@@ -18,10 +18,7 @@ interface master_if(input hclk, input hreset);
     logic[31:0] hwdata;        
     logic[31:0] hrdata;        
     logic      hready;         
-    logic[1:0] hresp;          
-    logic[3:0] hmaster;        
-    logic      hsel;           
-    logic      hmastlock;      
+    logic[1:0] hresp;                            
     logic      hbusreq;         
     logic      hlock;          
     logic      hgrant;              
@@ -195,10 +192,8 @@ interface salve_if(input hclk, input hreset);
     logic[1:0] hresp;          
     logic[3:0] hmaster;        
     logic      hsel;           
-    logic      hmastlock;      
-    logic      hbusreq;         
-    logic      hlock;          
-    logic      hgrant;               
+    logic      hmastlock;               
+                         
 
 
     clocking s_cb @(posedge hclk);
