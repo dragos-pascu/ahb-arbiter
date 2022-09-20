@@ -12,6 +12,7 @@ module top(
     
     logic clk;
     logic reset;
+    time moment_reset;
 
     test_harness vif (.hclk(clk), .hreset(reset));
     
@@ -49,13 +50,33 @@ module top(
     forever #5ns  clk = ~clk;
     end
 
+    // initial begin
+    //     reset <= 0;
+    //     #5ns
+    //     reset <= 1;
+    // end
+    
     initial begin
+    reset <= 0;
+    #5ns
+    reset <= 1;
+    forever begin
+        automatic int ticks_before_reset = $urandom_range(100, 500);
+        automatic int reset_ticks = $urandom_range(1, 10);
+        repeat (ticks_before_reset) @(posedge clk) begin end
         reset <= 0;
-        #5ns
+        repeat (reset_ticks) @(posedge clk) begin end
         reset <= 1;
+    end
     end
 
 
+
+    task reset_f();
+        reset <= 0;
+        #5ns
+        reset <= 1;
+    endtask
 
     initial begin
         run_test();
