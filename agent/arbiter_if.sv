@@ -91,7 +91,7 @@ interface master_if(input hclk, input hreset);
     //Control Signals are identical to the first transfer (WRAP/INCR) . if in SEQ and not SINGLE, check previous ctrl signals
     property ctrl_sig_same_p;
         @(posedge hclk) disable iff(!hreset)
-            htrans == SEQ && hburst != SINGLE -> (( (hwrite == $past(hwrite, 1) ) 
+            htrans == SEQ && hburst != SINGLE |-> (( (hwrite == $past(hwrite, 1) ) 
                                         && ( hsize == $past(hsize, 1) ) 
                                         && ( hburst == $past(hburst,1)) ));
     endproperty
@@ -122,6 +122,22 @@ ping) but with a SEQ.*/
                   |=> (htrans == $past(htrans, 1));
     endproperty
 
+    /* Address lasts for a single HCLK cycle unless its extended by the previous bus transfer*/
+    property adr_phase_duration_p;
+        @(posedge hclk) disable iff(!hreset)
+            hready != 0 |=> (haddr != $past(haddr, 1));
+    endproperty
+
+    property single_htrans_value_p;
+        @(posedge hclk) disable iff(!hreset)
+            hburst == SINGLE |-> hburst == NONSEQ;
+    endproperty
+
+    property burst_htrans_value_p;
+        @(posedge hclk) disable iff(!hreset)
+            hburst != SINGLE |=> htrans != NONSEQ ;
+    endproperty
+
     ONE_KB: assert property(kb_boundry_p);
     INCR_ADDR: assert property(incr_addr_p);
     WRAP4_WORD_ADDR : assert property (wrap4_word_addr_p);   
@@ -132,12 +148,15 @@ ping) but with a SEQ.*/
     //SAME_CTRL_SIG : assert property(ctrl_sig_same_p);
     WAITED_TRANSFER: assert property(same_transfer_tye_p);
     NO_BUSY_AFTER_SINGLE : assert property(no_busy_after_single_p);
-    
+    ADDR_PHASE_DURATION : assert property(adr_phase_duration_p);
+    SINGLE_HTRANS_VALUE : assert property(single_htrans_value_p);
+
+
     
         /**************COVERAGE FOR MASTER INTERFACE*****************/
 
     
-    covergroup ahb_cg @(posedge hclk);
+    covergroup ahb_cg_master @(posedge hclk);
 
         
         // option.per_instance = 1;
@@ -175,16 +194,13 @@ ping) but with a SEQ.*/
         hwdata: coverpoint hwdata{option.auto_bin_max = 6;}
 
         //cross cov
-        read_writeXhsize: cross read_write, hsize;
-        hburstXhsize: cross hburst, hsize;
-        read_writeXhburst: cross read_write, hburst;
         read_writeXhburstXhsize: cross read_write, hburst, hsize;
 
 
 
     endgroup
 
-    ahb_cg master_cg = new();
+    ahb_cg_master master_cg = new();
 
 endinterface : master_if
 
@@ -218,23 +234,35 @@ interface salve_if(input hclk, input hreset);
     endclocking
 
 
-
     //OKAY Slave response to IDLE and BUSY
     property slave_reponse_p;
         @(posedge hclk) disable iff(!hreset)
             htrans == IDLE || htrans == BUSY |-> hresp == OKAY;
     endproperty
 
+    //Sampling occures when hsel and hready is HIGH.
+    property slave_sample_p;
+        @(posedge hclk) disable iff(!hreset)
+            hsel == 1 || hready == 1 |=> haddr != $past(haddr, 1);
+    endproperty
+
+    //Reset will be asserted asserted asynchronously but deasserted synchronously after rising edge of HCLK.
+    // property reset_timing_p;
+    //     @(posedge hclk)
+    //         hreset == 0 
+    // endproperty
+
 
     
-    //SLAVE_RESPONSE: assert property(slave_reponse_p);
+    SLAVE_RESPONSE: assert property(slave_reponse_p);
+    SLAVE_SAMPLE: assert property(slave_sample_p);
     
 
 
         /**************COVERAGE FOR SLAVE INTERFACE*****************/
 
     
-    covergroup ahb_cg @(posedge hclk);
+    covergroup ahb_cg_slave @(posedge hclk);
 
         //option.per_instance = 1;
 
@@ -254,7 +282,7 @@ interface salve_if(input hclk, input hreset);
     endgroup
 
 
-    ahb_cg slave_cg = new();
+    ahb_cg_slave slave_cg = new();
 
         
     

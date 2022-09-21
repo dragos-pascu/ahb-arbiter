@@ -27,6 +27,13 @@ interface arbitration_if(input hclk, input hreset);
 
     endproperty
 
+    property only_one_hsel_p;
+
+        @(posedge hclk) disable iff(!hreset)
+        $onehot0(hsel);
+
+    endproperty
+
     /*When no master requests the bus, the master lowest priority receive the bus . (increments from master_number to 0)*/
     property default_master_p;
         @(posedge hclk) disable iff(!hreset)
@@ -35,9 +42,10 @@ interface arbitration_if(input hclk, input hreset);
 
 
     ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
+    ONLY_ONE_HSEL: assert property(only_one_hsel_p);
     DEFAULT_BUS_MASTER: assert property(default_master_p);
 
-    covergroup ahb_cg @(posedge hclk);
+    covergroup ahb_cg_arbitration @(posedge hclk);
 
         option.per_instance = 1;
 
@@ -99,6 +107,6 @@ interface arbitration_if(input hclk, input hreset);
 
     endgroup
 
-    ahb_cg arbiter_cg = new();
+    ahb_cg_arbitration arbiter_cg = new();
 
 endinterface
