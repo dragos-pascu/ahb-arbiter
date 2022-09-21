@@ -99,6 +99,7 @@ class ahb_transaction extends uvm_sequence_item;
 
         constraint requests{
                 hlock == 1;
+                hbusreq == 1;
         }
 
         constraint noumber_of_busy{
