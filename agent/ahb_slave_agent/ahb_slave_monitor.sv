@@ -56,7 +56,7 @@ class ahb_slave_monitor extends uvm_monitor;
     task monitor_addr_phase();
       ahb_transaction item;
       forever begin
-      @(vif.s_cb iff(vif.s_cb.hsel == 1 && vif.hready == 1));
+      @(vif.s_cb iff(vif.s_cb.hsel == 1 && vif.hready == 1 && vif.hreset == 1));
       if (vif.htrans == NONSEQ || vif.htrans == SEQ) begin
       item = ahb_transaction::type_id::create("item");
       item.htrans = new[1];

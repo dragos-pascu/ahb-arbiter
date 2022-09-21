@@ -36,7 +36,7 @@ class ahb_master_monitor extends uvm_monitor;
         super.run_phase(phase);
         forever begin
             `uvm_info(get_type_name(), "Monitor run phase", UVM_MEDIUM)
-            @(vif.hclk)
+            //@(vif.hclk)
             fork
                 monitor_addr_phase();
                 monitor_data_phase();
@@ -50,7 +50,8 @@ class ahb_master_monitor extends uvm_monitor;
         ahb_transaction item;
 
         forever begin
-            @(vif.m_cb iff(vif.m_cb.hready == 1 & vif.m_cb.hgrant == 1));
+            
+            @(vif.m_cb iff(vif.m_cb.hready == 1 && vif.m_cb.hgrant == 1 && vif.hreset == 1));
             if (vif.htrans == NONSEQ || vif.htrans == SEQ) begin
                 item = ahb_transaction::type_id::create("item");
                 item.htrans = new[1];

@@ -29,7 +29,7 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       initialize();
       forever begin
         
-        @(vif.s_cb iff vif.s_cb.hsel );
+        @(vif.s_cb iff vif.s_cb.hsel && vif.hreset == 1);
         //wait(vif.s_cb.hsel);
         seq_item_port.get_next_item(req);
         drive(req);
