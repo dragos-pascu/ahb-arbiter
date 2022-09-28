@@ -274,7 +274,7 @@ class ahb_transaction extends uvm_sequence_item;
 
 
          
-         function void add_busy();
+        function void post_randomize();
                 int flag = 1;
                 foreach (htrans[i]) begin
                         if (i>= busy_pos && i<busy_pos + no_of_busy) begin
