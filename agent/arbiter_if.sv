@@ -138,18 +138,18 @@ ping) but with a SEQ.*/
             hburst != SINGLE |=> htrans != NONSEQ ;
     endproperty
 
-    ONE_KB: assert property(kb_boundry_p);
-    INCR_ADDR: assert property(incr_addr_p);
-    WRAP4_WORD_ADDR : assert property (wrap4_word_addr_p);   
-    WRAP8_WORD_ADDR : assert property (wrap8_word_addr_p);
-    WRAP16__WORD_ADDR : assert property (wrap16_word_addr_p);       
-    ADDR_ALIGNMENT : assert property(addr_alignment_word_p);
-    SINGLE_NO_BUSY: assert property(no_busy_single_burst_p);
-    //SAME_CTRL_SIG : assert property(ctrl_sig_same_p);
-    WAITED_TRANSFER: assert property(same_transfer_tye_p);
-    NO_BUSY_AFTER_SINGLE : assert property(no_busy_after_single_p);
-    ADDR_PHASE_DURATION : assert property(adr_phase_duration_p);
-    SINGLE_HTRANS_VALUE : assert property(single_htrans_value_p);
+    // ONE_KB: assert property(kb_boundry_p);
+    // INCR_ADDR: assert property(incr_addr_p);
+    // WRAP4_WORD_ADDR : assert property (wrap4_word_addr_p);   
+    // WRAP8_WORD_ADDR : assert property (wrap8_word_addr_p);
+    // WRAP16__WORD_ADDR : assert property (wrap16_word_addr_p);       
+    // ADDR_ALIGNMENT : assert property(addr_alignment_word_p);
+    // SINGLE_NO_BUSY: assert property(no_busy_single_burst_p);
+    // //SAME_CTRL_SIG : assert property(ctrl_sig_same_p);
+    // WAITED_TRANSFER: assert property(same_transfer_tye_p);
+    // NO_BUSY_AFTER_SINGLE : assert property(no_busy_after_single_p);
+    // //ADDR_PHASE_DURATION : assert property(adr_phase_duration_p);
+    // SINGLE_HTRANS_VALUE : assert property(single_htrans_value_p);
 
 
     
@@ -237,7 +237,7 @@ interface salve_if(input hclk, input hreset);
     //OKAY Slave response to IDLE and BUSY
     property slave_reponse_p;
         @(posedge hclk) disable iff(!hreset)
-            htrans == IDLE || htrans == BUSY |-> hresp == OKAY;
+            (htrans == IDLE || htrans == BUSY && hready == 1) |-> hresp == OKAY;
     endproperty
 
     //Sampling occures when hsel and hready is HIGH.
@@ -254,8 +254,8 @@ interface salve_if(input hclk, input hreset);
 
 
     
-    SLAVE_RESPONSE: assert property(slave_reponse_p);
-    SLAVE_SAMPLE: assert property(slave_sample_p);
+    // SLAVE_RESPONSE: assert property(slave_reponse_p);
+    // SLAVE_SAMPLE: assert property(slave_sample_p);
     
 
 

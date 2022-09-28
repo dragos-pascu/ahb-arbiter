@@ -21,6 +21,75 @@ class virtual_simple_write_sequence extends virtual_base_sequence;
 endclass
 
 
+class virtual_random_sequence extends virtual_base_sequence;
+    `uvm_object_utils(virtual_random_sequence)
+    function new(string name="virtual_random_sequence");
+        super.new(name);
+    endfunction
+
+    virtual task body();
+        `uvm_info(get_type_name(), "Executing virtual_random_sequence", UVM_MEDIUM)
+        for(int i=0;i<master_number;i++)begin
+        automatic int j=i;
+        fork begin
+            
+            randcase
+
+            1: begin
+                simple_write_sequence wr_seq_h;
+                wr_seq_h = simple_write_sequence::type_id::create("simple_write_sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                incr_write_4sequence wr_seq_h;
+                wr_seq_h = incr_write_4sequence::type_id::create("simple_write_sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                incr_write_8sequence wr_seq_h;
+                wr_seq_h = incr_write_8sequence::type_id::create("simple_write_sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                incr_write_16sequence wr_seq_h;
+                wr_seq_h = incr_write_16sequence::type_id::create("simple_write_sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                wrap_write_4sequence wr_seq_h;
+                wr_seq_h = wrap_write_4sequence::type_id::create("simple_write_sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                wrap_write_8sequence wr_seq_h;
+                wr_seq_h = wrap_write_8sequence::type_id::create("simple_write_sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                wrap_write_16sequence wr_seq_h;
+                wr_seq_h = wrap_write_16sequence::type_id::create("simple_write_sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            endcase
+
+            
+         end
+        join
+      end
+    endtask
+
+
+endclass
+
+
+
 class virtual_incr_write_sequence extends virtual_base_sequence;
     `uvm_object_utils(virtual_incr_write_sequence)
     function new(string name="virtual_incr_write_sequence");

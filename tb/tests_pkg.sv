@@ -19,6 +19,8 @@ package tests_pkg;
     `include "tests/wrap_write_4_test.sv"
     `include "tests/wrap_write_8_test.sv"
     `include "tests/wrap_write_16_test.sv"
+
+    `include "tests/random_test.sv"
     
 
     `include "tests/incr_read_4_test.sv"

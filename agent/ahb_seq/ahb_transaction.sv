@@ -103,13 +103,21 @@ class ahb_transaction extends uvm_sequence_item;
         }
 
         constraint noumber_of_busy{
-                no_of_busy >= 0;
-                no_of_busy < 6;
+                if(hburst != SINGLE)
+                {
+                        no_of_busy >= 0;
+                        no_of_busy < 6;
+                }
+                
         }
 
         constraint busy_position{
-                busy_pos > 0;
-                busy_pos < haddr.size - 1;
+                if(hburst != SINGLE)
+                {
+                        busy_pos > 0;
+                        busy_pos < haddr.size - 1;
+                }
+                
         }
 
         constraint wait_size{

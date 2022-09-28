@@ -54,28 +54,26 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
     task address_phase();
         forever begin
-            //dont drive when reset comes
+            //dont drive when reset is 0
             @(vif.m_cb iff (vif.hreset))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
             seq_item_port.get(req);
             req.add_busy();
             `uvm_info(get_type_name(), $sformatf( "master driver Tr: \n %s",req.convert2string()), UVM_MEDIUM);
 
-             vif.m_cb.hbusreq <= req.hbusreq;
-             vif.m_cb.hlock <= req.hlock;
-             /*HLOCKx must
+            vif.m_cb.hbusreq <= req.hbusreq;
+            vif.m_cb.hlock <= req.hlock;
+            /*HLOCKx must
 be asserted at least a cycle before the address to which it refers, in
 order to prevent the arbiter from changing the grant signals.*/
             
             //drive address
             @(vif.m_cb iff(vif.m_cb.hgrant && vif.m_cb.hready));
-            // while(!vif.m_cb.hgrant)
-            //     @vif.m_cb;
             htrans_index = 0;
             foreach (req.haddr[i]) begin
                 
                 while (!vif.m_cb.hgrant) @vif.m_cb;
                 
-                
+                // should put a hready somewhere 
 
                 if (i!=req.busy_pos) begin
                     vif.m_cb.haddr  <= req.haddr[i];
@@ -105,8 +103,6 @@ order to prevent the arbiter from changing the grant signals.*/
                         vif.m_cb.hbusreq <= 0;  
                         vif.m_cb.hlock <= 0;                  
                 end
-
-        
 
                 @vif.m_cb;
                 while(!vif.m_cb.hready) @vif.m_cb; 
