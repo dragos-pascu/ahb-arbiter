@@ -42,38 +42,44 @@ class virtual_random_sequence extends virtual_base_sequence;
             end
 
             1: begin
+                incr_write_sequence wr_seq_h;
+                wr_seq_h = incr_write_sequence::type_id::create("incr_write_sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
                 incr_write_4sequence wr_seq_h;
-                wr_seq_h = incr_write_4sequence::type_id::create("simple_write_sequence");
+                wr_seq_h = incr_write_4sequence::type_id::create("incr_write_4sequence");
                 wr_seq_h.start(p_sequencer.master_seqr[j]);
             end
 
             1: begin
                 incr_write_8sequence wr_seq_h;
-                wr_seq_h = incr_write_8sequence::type_id::create("simple_write_sequence");
+                wr_seq_h = incr_write_8sequence::type_id::create("incr_write_8sequence");
                 wr_seq_h.start(p_sequencer.master_seqr[j]);
             end
 
             1: begin
                 incr_write_16sequence wr_seq_h;
-                wr_seq_h = incr_write_16sequence::type_id::create("simple_write_sequence");
+                wr_seq_h = incr_write_16sequence::type_id::create("incr_write_16sequence");
                 wr_seq_h.start(p_sequencer.master_seqr[j]);
             end
 
             1: begin
                 wrap_write_4sequence wr_seq_h;
-                wr_seq_h = wrap_write_4sequence::type_id::create("simple_write_sequence");
+                wr_seq_h = wrap_write_4sequence::type_id::create("wrap_write_4sequence");
                 wr_seq_h.start(p_sequencer.master_seqr[j]);
             end
 
             1: begin
                 wrap_write_8sequence wr_seq_h;
-                wr_seq_h = wrap_write_8sequence::type_id::create("simple_write_sequence");
+                wr_seq_h = wrap_write_8sequence::type_id::create("wrap_write_8sequence");
                 wr_seq_h.start(p_sequencer.master_seqr[j]);
             end
 
             1: begin
                 wrap_write_16sequence wr_seq_h;
-                wr_seq_h = wrap_write_16sequence::type_id::create("simple_write_sequence");
+                wr_seq_h = wrap_write_16sequence::type_id::create("wrap_write_16sequence");
                 wr_seq_h.start(p_sequencer.master_seqr[j]);
             end
 

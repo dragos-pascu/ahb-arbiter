@@ -49,12 +49,6 @@ module top(
     clk <= 0;
     forever #5ns  clk = ~clk;
     end
-
-    // initial begin
-    //     reset <= 0;
-    //     #5ns
-    //     reset <= 1;
-    // end
     
     initial begin
     reset <= 0;
@@ -70,13 +64,6 @@ module top(
     end
     end
 
-
-
-    task reset_f();
-        reset <= 0;
-        #5ns
-        reset <= 1;
-    endtask
 
     initial begin
         run_test();

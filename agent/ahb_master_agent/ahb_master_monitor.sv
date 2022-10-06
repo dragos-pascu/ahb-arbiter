@@ -52,29 +52,31 @@ class ahb_master_monitor extends uvm_monitor;
         forever begin
             
             @(vif.m_cb iff(vif.m_cb.hready == 1 && vif.m_cb.hgrant == 1 && vif.hreset == 1));
-            if (vif.htrans == NONSEQ || vif.htrans == SEQ) begin
+            if (vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ) begin
                 item = ahb_transaction::type_id::create("item");
                 item.htrans = new[1];
                 item.haddr = new[1];
                 item.hwdata = new[1];
                 begin
                 //bus signals
-                item.hbusreq =  vif.hbusreq;
-                item.hlock =  vif.hlock ;
+                item.hbusreq =  vif.m_cb.hbusreq;
+                item.hlock =  vif.m_cb.hlock ;
                 //address and control signals
-                item.haddr[0] =  vif.haddr ;
-                item.hburst =  burst_t'(vif.hburst);
-                item.htrans[0] =  transfer_t'(vif.htrans);
-                item.hsize =   size_t'(vif.hsize) ;
-                item.hwrite =  rw_t'(vif.hwrite);   
+                item.haddr[0] =  vif.m_cb.haddr ;
+                item.hburst =  burst_t'(vif.m_cb.hburst);
+                item.htrans[0] =  transfer_t'(vif.m_cb.htrans);
+                item.hsize =   size_t'(vif.m_cb.hsize) ;
+                item.hwrite =  rw_t'(vif.m_cb.hwrite);   
                 item.id = agent_config.agent_id;
 
                 // slave response
-                item.hready = vif.hready;
-                item.hresp = resp_t'(vif.hresp);
+                item.hready = vif.m_cb.hready;
+                item.hresp = resp_t'(vif.m_cb.hresp);
                 
                 end
 
+                @vif.m_cb;
+                while(!vif.m_cb.hready) @vif.m_cb; 
                 mbx.put(item);
             end
         end
@@ -86,11 +88,10 @@ class ahb_master_monitor extends uvm_monitor;
         forever begin
             mbx.get(item);
 
-            @(posedge vif.hclk iff(vif.hready));
             if(item.hwrite == WRITE) begin
-                item.hwdata[0] = vif.hwdata;
+                item.hwdata[0] = vif.m_cb.hwdata;
             end else if (item.hwrite == READ) begin
-                item.hready = vif.hready;
+                item.hrdata = vif.m_cb.hrdata;
             end
 
             //`uvm_info(get_type_name(), "Item written to analysis port.", UVM_MEDIUM)

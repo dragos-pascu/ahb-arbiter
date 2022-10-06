@@ -41,9 +41,9 @@ interface arbitration_if(input hclk, input hreset);
     endproperty
 
 
-    ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
-    ONLY_ONE_HSEL: assert property(only_one_hsel_p);
-    DEFAULT_BUS_MASTER: assert property(default_master_p);
+    // ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
+    // ONLY_ONE_HSEL: assert property(only_one_hsel_p);
+    // DEFAULT_BUS_MASTER: assert property(default_master_p);
 
     covergroup ahb_cg_arbitration @(posedge hclk);
 

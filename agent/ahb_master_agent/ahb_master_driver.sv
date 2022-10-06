@@ -57,7 +57,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             //dont drive when reset is 0
             @(vif.m_cb iff (vif.hreset))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
             seq_item_port.get(req);
-            //req.add_busy();
             `uvm_info(get_type_name(), $sformatf( "master driver Tr: \n %s",req.convert2string()), UVM_MEDIUM);
 
             vif.m_cb.hbusreq <= req.hbusreq;
@@ -71,7 +70,7 @@ order to prevent the arbiter from changing the grant signals.*/
             htrans_index = 0;
             foreach (req.haddr[i]) begin
                 
-                while (!vif.m_cb.hgrant) @vif.m_cb;
+                while (!(vif.m_cb.hgrant && vif.m_cb.hready)) @vif.m_cb;
                 
                 // should put a hready somewhere 
 

@@ -57,12 +57,12 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       //`uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s",req.convert2string()), UVM_MEDIUM);
       
       fork
-        foreach (req.no_of_waits[i]) begin
+      //   foreach (req.no_of_waits[i]) begin
         
-        vif.s_cb.hready <= req.no_of_waits[i];
-        @vif.s_cb;
+      //   vif.s_cb.hready <= req.no_of_waits[i];
+      //   @vif.s_cb;
         
-      end
+      // end
 
       
       begin
