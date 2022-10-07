@@ -22,7 +22,8 @@ interface test_harness(input hclk, input  hreset);
     wire[1:0] hresp;
     wire hready;
     wire[master_number-1:0] hgrant;
-    wire[2:0] m_hsize = 2;
+    //wire[2:0] m_hsize; //= 2;
+    wire [3*master_number-1:0] m_hsize;
     wire [master_number-1:0]m_hwrite;
 
     generate
@@ -41,6 +42,7 @@ interface test_harness(input hclk, input  hreset);
       assign m_hbusreq[(i+1)-1:i]    =m_if[i].master.hbusreq;
       assign m_hlock[(i+1)-1:i]     =m_if[i].master.hlock;
       //assign m_hsize = m_if[i].master.hsize;
+      assign m_hsize[3*(i+1)-1:3*i]=m_if[i].master.hsize;
 
 
       initial begin 
@@ -57,9 +59,10 @@ interface test_harness(input hclk, input  hreset);
     wire[2:0] s_hburst;
     wire[1:0] s_htrans;
     wire s_hmastlock;
-    wire[3:0] s_hmaster;
-    wire[2*slave_number-1:0] s_hresp;//
-    wire[slave_number-1:0] s_hready;//
+    wire [size_out-1:0] s_hmaster;
+    //wire[3:0] s_hmaster;
+    wire[2*slave_number-1:0] s_hresp;
+    wire[slave_number-1:0] s_hready;
     wire[2:0] s_hsize;
     wire[slave_number-1:0] s_hsel;
     wire s_hwrite;
@@ -75,7 +78,7 @@ interface test_harness(input hclk, input  hreset);
           assign s_if[i].slave.hburst=s_hburst;
           assign s_if[i].slave.htrans=s_htrans;
           assign s_if[i].slave.hmastlock=s_hmastlock;
-          assign s_if[i].slave.hmaster=s_hmaster;
+          //assign s_if[i].slave.hmaster=s_hmaster;
           assign s_if[i].slave.hsize=s_hsize;
           assign s_if[i].slave.hwrite=s_hwrite;
           assign s_hrdata[32*(i+1)-1:32*i]=s_if[i].slave.hrdata;

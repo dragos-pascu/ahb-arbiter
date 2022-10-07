@@ -43,6 +43,7 @@ module generic_arbiter_full(m_busreq,m_hlock,hclk,hreset,s_hmaster_lock
     begin
         if (!hreset) begin
             master_phase[ARBITRATION] <= `LAST_MASTER;
+            hgrant <= 1 << `LAST_MASTER; //comment for bug0
         end
         else begin
             int m;
@@ -71,7 +72,8 @@ module generic_arbiter_full(m_busreq,m_hlock,hclk,hreset,s_hmaster_lock
         end
     end
 
-    wire [31:0] master_address = m_haddr[32*master_phase[ADDRESS] +: 32];
+    wire [31:0] master_address = m_haddr[32*master_phase[ADDRESS] +: 32]; 
+    reg  [31:0] master_address_d; 
     wire [1:0]  master_htrans  = m_htrans[2*master_phase[ADDRESS] +: 2];
 
     assign s_hburst_out = m_hburst[3*master_phase[ADDRESS] +: 3];
@@ -80,7 +82,9 @@ module generic_arbiter_full(m_busreq,m_hlock,hclk,hreset,s_hmaster_lock
     assign s_hwrite  = m_hwrite[master_phase[ADDRESS]];
     assign s_hsize   = m_hsize[3*master_phase[ADDRESS] +: 3];
 
-    wire [size_out_s-1:0] address_selected_slave = decode_slave(master_address);
+    //wire [size_out_s-1:0] address_selected_slave = decode_slave(master_address);//bug_1
+    wire [31:0] slave_sel_address = m_hready ? master_address : master_address_d;
+    wire [size_out_s-1:0] address_selected_slave = decode_slave(slave_sel_address);//bug_1
     reg  [size_out_s-1:0] data_selected_slave;
     assign s_hsel       = 1 << address_selected_slave;
     assign s_htrans_out = master_htrans;
@@ -93,6 +97,7 @@ module generic_arbiter_full(m_busreq,m_hlock,hclk,hreset,s_hmaster_lock
         end
         else begin
             if (m_hready) begin
+                master_address_d <= master_address;
                 data_selected_slave <= address_selected_slave;
             end
         end

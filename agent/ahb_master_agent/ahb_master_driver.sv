@@ -66,7 +66,8 @@ be asserted at least a cycle before the address to which it refers, in
 order to prevent the arbiter from changing the grant signals.*/
             
             //drive address
-            @(vif.m_cb iff(vif.m_cb.hgrant && vif.m_cb.hready));
+            //@(vif.m_cb iff(vif.m_cb.hgrant && vif.m_cb.hready));
+            while(!(vif.m_cb.hgrant && vif.m_cb.hready)) @vif.m_cb;
             htrans_index = 0;
             foreach (req.haddr[i]) begin
                 
@@ -103,8 +104,7 @@ order to prevent the arbiter from changing the grant signals.*/
                         vif.m_cb.hlock <= 0;                  
                 end
 
-                @vif.m_cb;
-                while(!vif.m_cb.hready) @vif.m_cb; 
+                @(vif.m_cb iff(vif.m_cb.hready)); //executes at least while , eq is do while loop
                 mbx.put(req);
                 
                 

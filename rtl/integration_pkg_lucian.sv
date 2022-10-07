@@ -3,7 +3,7 @@ timeunit 1ns/1ns;
 
 //import uvm_pkg::*;
 
-parameter master_number=4;
+parameter master_number=9;
 parameter slave_number=4;
 parameter size_out=3;
 parameter size_out_s=3;
