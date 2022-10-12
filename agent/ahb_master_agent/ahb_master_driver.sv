@@ -71,10 +71,11 @@ order to prevent the arbiter from changing the grant signals.*/
             htrans_index = 0;
             foreach (req.haddr[i]) begin
                 
-                while (!(vif.m_cb.hgrant && vif.m_cb.hready)) @vif.m_cb;
-                
-                // should put a hready somewhere 
+                while (!(vif.m_cb.hgrant && vif.m_cb.hready)) @vif.m_cb; 
 
+                
+                // why put hready for address phase page 42 of protocol. 
+                /*Ca se face sampling-ul de slave cand am hready nu e problema masterului ci a slaveului.*/
                 if (i!=req.busy_pos) begin
                     vif.m_cb.haddr  <= req.haddr[i];
                     vif.m_cb.htrans <= req.htrans[htrans_index];

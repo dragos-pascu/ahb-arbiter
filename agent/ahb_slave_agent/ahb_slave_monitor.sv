@@ -42,8 +42,8 @@ class ahb_slave_monitor extends uvm_monitor;
           super.run_phase(phase);
           forever begin
               `uvm_info(get_type_name(), "Slave monitor run phase", UVM_MEDIUM)
-              @(vif.hclk)
               fork
+                  @(posedge vif.hclk iff (vif.hreset));
                   monitor_addr_phase();
                   monitor_data_phase();
               join
@@ -56,26 +56,26 @@ class ahb_slave_monitor extends uvm_monitor;
     task monitor_addr_phase();
       ahb_transaction item;
       forever begin
-      @(vif.s_cb iff(vif.s_cb.hsel == 1 && vif.hready == 1 && vif.hreset == 1));
-      if (vif.htrans == NONSEQ || vif.htrans == SEQ) begin
+      @(vif.s_cb iff(vif.s_cb.hready == 1 && vif.s_cb.hsel));
+      if (vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ) begin
       item = ahb_transaction::type_id::create("item");
       item.htrans = new[1];
       item.haddr = new[1];
       item.hwdata = new[1];
         begin
             //address and control signals
-            item.haddr[0] =  vif.haddr ;
-            item.hburst =  burst_t'(vif.hburst);
-            item.htrans[0] =  transfer_t'(vif.htrans);
-            item.hsize =   size_t'(vif.hsize) ;
-            item.hwrite =  rw_t'(vif.hwrite);   
+            item.haddr[0] =  vif.s_cb.haddr ;
+            item.hburst =  burst_t'(vif.s_cb.hburst);
+            item.htrans[0] =  transfer_t'(vif.s_cb.htrans);
+            item.hsize =   size_t'(vif.s_cb.hsize) ;
+            item.hwrite =  rw_t'(vif.s_cb.hwrite);   
             // slave response
-            item.hready = vif.hready;
-            item.hresp = resp_t'(vif.hresp);
-            item.hrdata = vif.hrdata;
-            item.id = vif.hmaster;
-            mbx.put(item);
-          end
+            item.hready = vif.s_cb.hready;
+            item.hresp = resp_t'(vif.s_cb.hresp);
+            item.hrdata = vif.s_cb.hrdata;
+            item.id = vif.s_cb.hmaster;
+        end
+        mbx.put(item);
       end
       end
     endtask
@@ -85,7 +85,7 @@ class ahb_slave_monitor extends uvm_monitor;
         forever begin
             mbx.get(item);
 
-            @(vif.s_cb iff(vif.hready));
+            @(vif.s_cb iff(vif.s_cb.hready));
             if(item.hwrite == WRITE) begin
                 item.hwdata[0] = vif.hwdata;
                 storage.write(item.haddr[0],item.hwdata[0]);

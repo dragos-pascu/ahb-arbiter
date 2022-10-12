@@ -58,23 +58,27 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       
       fork
         foreach (req.no_of_waits[i]) begin
-        
-        vif.s_cb.hready <= req.no_of_waits[i];
-        @vif.s_cb;
+        if (vif.s_cb.htrans != IDLE) begin
+          vif.s_cb.hready <= req.no_of_waits[i];
+          @vif.s_cb;
+        end else begin
+          vif.s_cb.hready <= 1;
+          vif.s_cb.hresp <= OKAY;
+        end
         
       end
 
       
-      begin
-        @(vif.s_cb iff(vif.s_cb.hwrite == READ ));
-        //int size = vif.s_cb.haddr.size();
-        for (int i=0; i<4; ++i) begin
-          @vif.s_cb;
-          vif.s_cb.hrdata <= $urandom();
+      // begin
+      //   @(vif.s_cb iff(vif.s_cb.hwrite == READ ));
+      //   //int size = vif.s_cb.haddr.size();
+      //   for (int i=0; i<4; ++i) begin
+      //     @vif.s_cb;
+      //     vif.s_cb.hrdata <= $urandom();
           
-        end
+      //   end
         
-      end
+      // end
       join_none
 
       

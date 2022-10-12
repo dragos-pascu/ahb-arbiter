@@ -55,7 +55,7 @@ module top(
     #5ns
     reset <= 1;
     forever begin
-        automatic int ticks_before_reset = $urandom_range(100, 500);
+        automatic int ticks_before_reset = $urandom_range(10, 100);
         automatic int reset_ticks = $urandom_range(1, 10);
         repeat (ticks_before_reset) @(posedge clk) begin end
         reset <= 0;
