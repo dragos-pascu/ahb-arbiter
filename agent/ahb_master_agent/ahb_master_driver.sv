@@ -9,6 +9,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     mailbox mbx = new();
     int htrans_index;
 
+
     function new(string name = "ahb_master_driver", uvm_component parent);
         super.new(name, parent);
     endfunction: new
@@ -59,27 +60,21 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             seq_item_port.get(req);
             `uvm_info(get_type_name(), $sformatf( "master driver Tr: \n %s",req.convert2string()), UVM_MEDIUM);
 
+            //request bus
             vif.m_cb.hbusreq <= req.hbusreq;
             vif.m_cb.hlock <= req.hlock;
-            /*HLOCKx must
-be asserted at least a cycle before the address to which it refers, in
-order to prevent the arbiter from changing the grant signals.*/
             
-            //drive address
-            //@(vif.m_cb iff(vif.m_cb.hgrant && vif.m_cb.hready));
-            while(!(vif.m_cb.hgrant && vif.m_cb.hready)) @vif.m_cb;
             htrans_index = 0;
             foreach (req.haddr[i]) begin
-                
-                while (!(vif.m_cb.hgrant && vif.m_cb.hready)) @vif.m_cb; 
+                //wait for bus to be granted
+                while (!(vif.m_cb.hgrant && vif.m_cb.hready && vif.hreset)) @vif.m_cb; 
 
                 
-                // why put hready for address phase page 42 of protocol. 
-                /*Ca se face sampling-ul de slave cand am hready nu e problema masterului ci a slaveului.*/
+
                 if (i!=req.busy_pos) begin
+                    //drive address phase
                     vif.m_cb.haddr  <= req.haddr[i];
                     vif.m_cb.htrans <= req.htrans[htrans_index];
-                    //drive control signals
                     vif.m_cb.hwrite  <= req.hwrite;
                     vif.m_cb.hsize   <= req.hsize;
                     vif.m_cb.hburst  <= req.hburst;
@@ -91,7 +86,6 @@ order to prevent the arbiter from changing the grant signals.*/
                     end
                     vif.m_cb.haddr  <= req.haddr[i];
                     vif.m_cb.htrans <= req.htrans[htrans_index];
-                    //drive control signals
                     vif.m_cb.hwrite  <= req.hwrite;
                     vif.m_cb.hsize   <= req.hsize;
                     vif.m_cb.hburst  <= req.hburst;
@@ -143,7 +137,6 @@ order to prevent the arbiter from changing the grant signals.*/
 
     function void report_phase(uvm_phase phase);
         `uvm_info(get_type_name(), $sformatf("master_cg is: %f", vif.master_cg.get_coverage()), UVM_MEDIUM)
-
     endfunction
 
 endclass //ahb_master_driver extends superClass

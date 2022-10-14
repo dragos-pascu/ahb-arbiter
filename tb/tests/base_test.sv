@@ -73,7 +73,7 @@ class base_test extends uvm_test;
             
         // join_none
        
-        phase.phase_done.set_drain_time(this, 5000ns);          
+        phase.phase_done.set_drain_time(this, 10000ns);          
         phase.drop_objection(this);
         
 
