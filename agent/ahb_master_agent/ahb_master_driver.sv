@@ -67,7 +67,10 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             htrans_index = 0;
             foreach (req.haddr[i]) begin
                 //wait for bus to be granted
-                while (!(vif.m_cb.hgrant && vif.m_cb.hready && vif.hreset)) @vif.m_cb; 
+                while (!(vif.m_cb.hgrant && vif.m_cb.hready && vif.hreset)) begin
+                    @vif.m_cb; 
+                    vif.m_cb.htrans <= 0;
+                end
 
                 
 
@@ -99,7 +102,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                         vif.m_cb.hlock <= 0;                  
                 end
 
-                @(vif.m_cb iff(vif.m_cb.hready)); //executes at least while , eq is do while loop
+                @(vif.m_cb iff(vif.m_cb.hready && vif.hreset)); //executes at least while , eq is do while loop
                 mbx.put(req);
                 
                 

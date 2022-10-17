@@ -34,16 +34,12 @@ class ahb_master_monitor extends uvm_monitor;
 
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
-        forever begin
             `uvm_info(get_type_name(), "Monitor run phase", UVM_MEDIUM)
-            //@(vif.hclk)
             fork
-                @(posedge vif.hclk iff (vif.hreset));
                 monitor_addr_phase();
                 monitor_data_phase();
-            join
+            join_none
             
-        end
         
     endtask
 
@@ -52,7 +48,9 @@ class ahb_master_monitor extends uvm_monitor;
 
         forever begin
             
-            @(vif.m_cb iff(vif.m_cb.hready && vif.m_cb.hgrant ));
+            #1ns;
+            //@(vif.m_cb iff(vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset));
+            while(!(vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset)) @vif.m_cb;
             if (vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ) begin
                 item = ahb_transaction::type_id::create("item");
                 item.htrans = new[1];
@@ -76,8 +74,8 @@ class ahb_master_monitor extends uvm_monitor;
                 
                 end
 
-                
-                
+                //#1ns;
+                @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
                 mbx.put(item);
             end
         end
@@ -88,8 +86,7 @@ class ahb_master_monitor extends uvm_monitor;
         ahb_transaction item;
         forever begin
             mbx.get(item);
-
-            @(vif.m_cb iff(vif.m_cb.hready));
+            $display("got the item");
             if(item.hwrite == WRITE) begin
                 item.hwdata[0] = vif.m_cb.hwdata;
             end else if (item.hwrite == READ) begin
