@@ -4,9 +4,9 @@
 -timescale 1ns/1ns
 -access +rw
 
-//-linedebug
-//-debug
-//-uvmlinedebug
+-linedebug
+-debug
+-uvmlinedebug
 -cov_cgsample
 -coverage all
 -covoverwrite
