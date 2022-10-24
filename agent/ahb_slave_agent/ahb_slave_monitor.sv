@@ -54,30 +54,33 @@ class ahb_slave_monitor extends uvm_monitor;
 
 
     task monitor_addr_phase();
-      ahb_transaction item;
-      forever begin
-      @(vif.s_cb iff(vif.s_cb.hready == 1 && vif.s_cb.hsel));
-      if (vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ) begin
-      item = ahb_transaction::type_id::create("item");
-      item.htrans = new[1];
-      item.haddr = new[1];
-      item.hwdata = new[1];
-        begin
-            //address and control signals
-            item.haddr[0] =  vif.s_cb.haddr ;
-            item.hburst =  burst_t'(vif.s_cb.hburst);
-            item.htrans[0] =  transfer_t'(vif.s_cb.htrans);
-            item.hsize =   size_t'(vif.s_cb.hsize) ;
-            item.hwrite =  rw_t'(vif.s_cb.hwrite);   
-            // slave response
-            item.hready = vif.s_cb.hready;
-            item.hresp = resp_t'(vif.s_cb.hresp);
-            item.hrdata = vif.s_cb.hrdata;
-            item.id = vif.s_cb.hmaster;
+        ahb_transaction item;
+        forever begin
+        
+        #1;
+        while(!(vif.s_cb.hready && vif.s_cb.hsel && vif.hreset)) @vif.s_cb;
+        if (vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ) begin
+        item = ahb_transaction::type_id::create("item");
+        item.htrans = new[1];
+        item.haddr = new[1];
+        item.hwdata = new[1];
+          begin
+              //address and control signals
+              item.haddr[0] =  vif.s_cb.haddr ;
+              item.hburst =  burst_t'(vif.s_cb.hburst);
+              item.htrans[0] =  transfer_t'(vif.s_cb.htrans);
+              item.hsize =   size_t'(vif.s_cb.hsize) ;
+              item.hwrite =  rw_t'(vif.s_cb.hwrite);   
+              // slave response
+              item.hready = vif.s_cb.hready;
+              item.hresp = resp_t'(vif.s_cb.hresp);
+              item.hrdata = vif.s_cb.hrdata;
+              item.id = vif.s_cb.hmaster;
+          end
+          @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
+          mbx.put(item);
         end
-        mbx.put(item);
-      end
-      end
+        end
     endtask
 
     task monitor_data_phase();
@@ -85,7 +88,6 @@ class ahb_slave_monitor extends uvm_monitor;
         forever begin
             mbx.get(item);
 
-            @(vif.s_cb iff(vif.s_cb.hready));
             if(item.hwrite == WRITE) begin
                 item.hwdata[0] = vif.hwdata;
                 storage.write(item.haddr[0],item.hwdata[0]);

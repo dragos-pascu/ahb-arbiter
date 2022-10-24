@@ -60,6 +60,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             seq_item_port.get(req);
             `uvm_info(get_type_name(), $sformatf( "master driver Tr: \n %s",req.convert2string()), UVM_MEDIUM);
 
+            
             //request bus
             vif.m_cb.hbusreq <= req.hbusreq;
             vif.m_cb.hlock <= req.hlock;
@@ -68,11 +69,10 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             foreach (req.haddr[i]) begin
                 //wait for bus to be granted
                 while (!(vif.m_cb.hgrant && vif.m_cb.hready && vif.hreset)) begin
-                    @vif.m_cb; 
                     vif.m_cb.htrans <= 0;
+                    @vif.m_cb; 
                 end
 
-                
 
                 if (i!=req.busy_pos) begin
                     //drive address phase

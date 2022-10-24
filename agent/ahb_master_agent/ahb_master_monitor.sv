@@ -40,7 +40,6 @@ class ahb_master_monitor extends uvm_monitor;
                 monitor_data_phase();
             join_none
             
-        
     endtask
 
     task monitor_addr_phase();

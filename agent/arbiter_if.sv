@@ -155,8 +155,8 @@ ping) but with a SEQ.*/
     
         /**************COVERAGE FOR MASTER INTERFACE*****************/
 
-    
-    covergroup ahb_cg_master @(posedge hclk);
+    //condition for the master to put transaction on bus
+    covergroup ahb_cg_master @(hclk iff (hgrant && hready));
 
         
         // option.per_instance = 1;
@@ -262,7 +262,7 @@ interface salve_if(input hclk, input hreset);
         /**************COVERAGE FOR SLAVE INTERFACE*****************/
 
     
-    covergroup ahb_cg_slave @(posedge hclk);
+    covergroup ahb_cg_slave @(hclk iff (hsel && hready));
 
         //option.per_instance = 1;
 
