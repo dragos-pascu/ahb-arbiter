@@ -6,11 +6,11 @@ interface test_harness(input hclk, input  hreset);
 
     //master signals
 
-    request_if req_if(.*);
+    
 
-    initial begin
-      uvm_config_db #(virtual request_if)::set(null,"","req_if", req_if); 
-    end
+    // initial begin
+    //   uvm_config_db #(virtual request_if)::set(null,"","req_if", req_if); 
+    // end
 
     wire[32*master_number-1:0] m_hwdata;
     wire[31:0] m_hrdata;
@@ -88,17 +88,34 @@ interface test_harness(input hclk, input  hreset);
         initial begin 
         uvm_config_db #(virtual salve_if)::set(null,"", $psprintf("slave[%0d]", i), slave); 
         end 
+        
 
       end
     endgenerate
 
-    assign req_if.hbusreq = m_hbusreq;
-    assign req_if.hlock = m_hlock;
+    //vifs for bus request
 
-    assign s_hmaster  = req_if.hmaster;
-    assign hgrant  = req_if.hgrant;
-    assign s_hmastlock = req_if.hmastlock;    
+    generate
+    for(genvar i=0;i<master_number;i++)
+    begin: req_if
+      request_if bus_req(.*);
 
+      assign req_if[i].bus_req.hbusreq = m_hbusreq[i];
+      assign req_if[i].bus_req.hlock = m_hlock[i];
+
+      assign s_hmaster  = req_if[i].bus_req.hmaster;
+      assign hgrant[i]  = req_if[i].bus_req.hgrant;
+      assign s_hmastlock = req_if[i].bus_req.hmastlock;    
+
+
+      initial begin 
+      uvm_config_db #(virtual request_if)::set(null,"", $sformatf("bus_req[%0d]", i), bus_req); 
+      end
+
+    end
+    endgenerate
+
+    
 
     
 
