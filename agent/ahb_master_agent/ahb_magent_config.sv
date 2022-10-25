@@ -3,6 +3,7 @@ class ahb_magent_config extends uvm_object;
     `uvm_object_utils(ahb_magent_config) 
 
     virtual master_if vif;
+    virtual request_if req_vif;
     int agent_id;
     bit is_active;
     bit enable_coverage;
