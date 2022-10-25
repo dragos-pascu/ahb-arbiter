@@ -8,6 +8,7 @@ class ahb_env extends uvm_env;
     ahb_master_agent m_agent[master_number];
     ahb_slave_agent s_agent[slave_number];
     ahb_scoreboard scoreboard_h;
+    request_scoreboard req_scoreboard_h;
 
 
     ahb_magent_config      magt_cfg[master_number];
@@ -23,6 +24,7 @@ class ahb_env extends uvm_env;
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         scoreboard_h = ahb_scoreboard::type_id::create("scoreboard_h",this);
+        req_scoreboard_h = request_scoreboard::type_id::create("req_scoreboard_h",this);
 
         if(!uvm_config_db#(env_config)::get(this, "", "env_config", env_cfg))
                     `uvm_fatal(get_full_name(), "Can`t get env_config from db")
@@ -70,6 +72,8 @@ class ahb_env extends uvm_env;
         for (int i=0; i<master_number; ++i) begin
             vsequencer.master_seqr[i] = m_agent[i].sequencer;
             m_agent[i].ahb_mmonitor.item_collect_port.connect(scoreboard_h.item_collect_predictor);
+            m_agent[i].ahb_mmonitor.request_collect_port.connect(req_scoreboard_h.req_collect_predictor);
+
         end
 
         //connect vsequencer handles to slave sequencers and monitors to scoreboard

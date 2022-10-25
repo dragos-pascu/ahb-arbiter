@@ -46,11 +46,23 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     endtask
 
     virtual task run_phase(uvm_phase phase);
-        initialize();
-        fork
-            address_phase();
-            data_phase();
-        join_none
+        forever begin
+            initialize();
+            wait(vif.hreset==1);
+            fork
+                address_phase();
+                data_phase();
+                reset_monitor();
+            join_any
+            disable fork;
+        end
+        
+    endtask
+
+    task reset_monitor();
+        
+        wait(vif.hreset==0);        
+        
     endtask
 
     task address_phase();

@@ -48,6 +48,7 @@ class ahb_scoreboard extends uvm_scoreboard;
             temp_tx1 =  expected_transactions[slave_item.id].pop_front();
             if (slave_item.compare(temp_tx1)) begin
             match++;
+
             end
             else begin
                 

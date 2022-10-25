@@ -3,6 +3,7 @@ class ahb_master_monitor extends uvm_monitor;
 
 
     uvm_analysis_port #(ahb_transaction) item_collect_port;
+    uvm_analysis_port #(ahb_transaction) request_collect_port;
 
     virtual master_if vif;
 
@@ -24,6 +25,7 @@ class ahb_master_monitor extends uvm_monitor;
         super.build_phase(phase);
 
         item_collect_port = new("item_collected_port",this);
+        request_collect_port = new("request_collect_port",this);
 
         if(!uvm_config_db #(ahb_magent_config)::get(null,get_parent().get_name(), "ahb_magent_config", agent_config)) 
 
