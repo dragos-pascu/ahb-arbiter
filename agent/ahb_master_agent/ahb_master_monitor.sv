@@ -6,6 +6,8 @@ class ahb_master_monitor extends uvm_monitor;
 
     virtual master_if vif;
 
+    virtual request_if request_vif;
+
     mailbox mbx = new();
 
     ahb_magent_config agent_config;
@@ -28,6 +30,10 @@ class ahb_master_monitor extends uvm_monitor;
           `uvm_fatal(get_type_name(), "Failed to get config inside Master Monitor")
 
         if(!uvm_config_db #(virtual master_if)::get(this, "", $sformatf("master[%0d]", agent_config.agent_id), vif)) 
+
+          `uvm_fatal(get_type_name(), "Failed to get VIF inside Master Monitor")
+
+        if(!uvm_config_db #(virtual request_if)::get(this, "", $sformatf("bus_req[%0d]", agent_config.agent_id), request_vif)) 
 
           `uvm_fatal(get_type_name(), "Failed to get VIF inside Master Monitor")
     endfunction

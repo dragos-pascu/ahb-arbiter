@@ -70,6 +70,6 @@ interface request_if(input hclk, input hreset);
 
     endgroup
 
-    ahb_cg_arbitration arbiter_cg = new();
+    //ahb_cg_arbitration arbiter_cg = new();
 
 endinterface

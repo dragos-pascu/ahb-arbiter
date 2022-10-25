@@ -10,7 +10,6 @@ class ahb_scoreboard extends uvm_scoreboard;
     ahb_transaction expected_transactions[master_number][$];
     ahb_transaction actual_transactions[master_number][$];
 
-    virtual request_if req_if;
 
     ahb_transaction expected_tx;
     ahb_transaction temp_tx;
@@ -31,9 +30,6 @@ class ahb_scoreboard extends uvm_scoreboard;
     function void build_phase(uvm_phase phase);
     super.build_phase(phase);
         
-        if (!uvm_config_db #(virtual request_if)::get(null, "", "req_if", req_if))
-            `uvm_fatal(get_type_name(), $sformatf("Failed to retrive busrequest interface"))
-       
 
     endfunction
 
