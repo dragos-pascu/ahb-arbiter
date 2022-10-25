@@ -6,10 +6,10 @@ interface test_harness(input hclk, input  hreset);
 
     //master signals
 
-    arbitration_if req_if(.*);
+    request_if req_if(.*);
 
     initial begin
-      uvm_config_db #(virtual arbitration_if)::set(null,"","req_if", req_if); 
+      uvm_config_db #(virtual request_if)::set(null,"","req_if", req_if); 
     end
 
     wire[32*master_number-1:0] m_hwdata;
@@ -93,11 +93,11 @@ interface test_harness(input hclk, input  hreset);
     endgenerate
 
     assign req_if.hbusreq = m_hbusreq;
-    assign req_if.hmaster = s_hmaster;
-    assign req_if.hgrant  = hgrant;
-    assign req_if.hmastlock  = s_hmastlock;
-    assign req_if.hsel = s_hsel;
     assign req_if.hlock = m_hlock;
+
+    assign s_hmaster  = req_if.hmaster;
+    assign hgrant  = req_if.hgrant;
+    assign s_hmastlock = req_if.hmastlock;    
 
 
     

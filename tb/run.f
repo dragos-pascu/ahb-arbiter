@@ -44,7 +44,7 @@
 #/home/dragos.pascu/Projects/ahb-arbiter-project/rtl/integration_pkg_lucian.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/agent/ahb_agent_pkg.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/tb/tests_pkg.sv
-/home/dragos.pascu/Projects/ahb-arbiter-project/agent/arbitration_if.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/agent/request_if.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/agent/arbiter_if.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/rtl/generic_arbiter_full_v6.sv
 #/home/dragos.pascu/Projects/ahb-arbiter-project/rtl/generic_arbiter_comb.sv
