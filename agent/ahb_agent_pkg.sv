@@ -32,5 +32,6 @@ package ahb_agent_pkg;
     `include "ahb_slave_agent/ahb_slave_agent.sv"
     
     `include "ahb_scoreboard.sv"
+    `include "request_scoreboard.sv"
 
 endpackage
