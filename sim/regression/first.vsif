@@ -1,0 +1,26 @@
+session block_level {
+    top_dir                     : /home/$USER/regression_results;
+    output_mode                 : terminal;    // [log_only, terminal]
+    run_mode                    : batch;       // [batch, batch_debug, interactive]
+    drm                         : serial local;
+    master_submission_policy    : execute_locally;
+    max_runs_in_parallel        : 1;
+};
+
+group tests {
+    scan_script: "vm_scan.pl ius.flt vm.flt shell.flt uvm.flt";
+
+    test simple_write_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/run.f +UVM_TESTNAME=simple_write_test ;count: 2;};
+
+
+    test incr_write_4_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/run.f +UVM_TESTNAME=incr_write_4_test ;count: 2;};
+    test incr_write_8_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/run.f +UVM_TESTNAME=incr_write_8_test ;count: 2;};
+    test incr_write_16_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/run.f +UVM_TESTNAME=incr_write_16_test ;count: 2;};
+
+
+    test wrap_write_4_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/run.f +UVM_TESTNAME=wrap_write_4_test ;count: 2;};
+    test wrap_write_8_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/run.f +UVM_TESTNAME=wrap_write_8_test ;count: 2;};
+    test wrap_write_16_test {run_script: xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/run.f +UVM_TESTNAME=wrap_write_16_test ;count: 2;};
+
+
+};//tests
