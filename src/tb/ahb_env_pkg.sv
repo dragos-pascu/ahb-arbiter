@@ -6,7 +6,11 @@ package ahb_env_pkg;
     import ahb_seq_pkg::*;
     import master_pkg::*;
     import slave_pkg::*;
+
     `include "ahb_scoreboard.sv"
     `include "request_scoreboard.sv"
+
+    `include "env_config.sv"
+    `include "ahb_env.sv"
 
 endpackage

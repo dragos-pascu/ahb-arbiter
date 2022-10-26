@@ -4,10 +4,10 @@ package tests_pkg;
     `include "uvm_macros.svh"
     import integration_pkg::*;
     import ahb_seq_pkg::*;
+    import master_pkg::*;
+    import slave_pkg::*;
     import ahb_env_pkg::*;
-
-    `include "../env_config.sv"
-    `include "../ahb_env.sv"
+    
 
     `include "base_test.sv"
     

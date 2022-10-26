@@ -1,9 +1,4 @@
-import uvm_pkg::*;
-`include "uvm_macros.svh"
-import integration_pkg::*;
-import master_pkg::*;
-import slave_pkg::*;
-import ahb_env_pkg::*;
+
 class ahb_env extends uvm_env;
     
     `uvm_component_utils(ahb_env)

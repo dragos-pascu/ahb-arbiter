@@ -57,7 +57,6 @@
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_full_v6.sv
 #/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_comb.sv
 
-/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env_config.sv
-/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/ahb_env.sv
+
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/test_harness.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tb_top.sv
