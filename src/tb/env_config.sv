@@ -1,8 +1,12 @@
 import uvm_pkg::*;
-import ahb_agent_pkg::*;
+`include "uvm_macros.svh"
 import integration_pkg::*;
+import master_pkg::*;
+import slave_pkg::*;
+import ahb_env_pkg::*;
+
 class env_config extends uvm_object;
-    
+
     `uvm_object_utils(env_config)
 
     ahb_magent_config magt_cfg[master_number];

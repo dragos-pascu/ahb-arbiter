@@ -36,14 +36,22 @@
 
 
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src
--incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/agent
--incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb
+-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent
+-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent
+-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tests
 
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/integration_pkg.sv
 #/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/integration_pkg_lucian.sv
-/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_agent_pkg.sv
-/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tests_pkg.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_seq/ahb_seq_pkg.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/master_pkg.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/slave_pkg.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/ahb_env_pkg.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tests/tests_pkg.sv
+
+
+
+
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/request_if.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/arbiter_if.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_full_v6.sv
