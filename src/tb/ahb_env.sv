@@ -77,6 +77,10 @@ class ahb_env extends uvm_env;
             m_agent[i].ahb_mmonitor.item_collect_port.connect(scoreboard_h.item_collect_predictor);
             m_agent[i].req_monitor.request_collect_port.connect(req_scoreboard_h.req_collect_predictor);
 
+            //analysis fifo connect            
+            m_agent[i].req_monitor.request_collect_port.connect(req_scoreboard_h.analysis_fifo.analysis_export);
+
+
         end
 
         //connect vsequencer handles to slave sequencers and monitors to scoreboard

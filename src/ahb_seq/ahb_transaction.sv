@@ -1,7 +1,8 @@
 
 
 class ahb_transaction extends uvm_sequence_item;
-        
+        `uvm_object_utils(ahb_transaction)
+
         //id of the coresponding master
         int id; 
         //address, control and data
@@ -32,8 +33,6 @@ class ahb_transaction extends uvm_sequence_item;
         /*****Add other signals for sampling******/
 
         logic [31:0] address_list[$];
-
-        `uvm_object_utils(ahb_transaction)
 
         function new(string name = "ahb_transaction");
             super.new(name);

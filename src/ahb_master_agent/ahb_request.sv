@@ -1,4 +1,5 @@
 class ahb_request extends uvm_sequence_item;
+        `uvm_object_utils(ahb_request)
     //id of the coresponding master
     int id; 
 
