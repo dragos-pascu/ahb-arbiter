@@ -4,6 +4,7 @@ class ahb_master_agent extends uvm_agent;
 
     ahb_master_driver ahb_mdriver;
     ahb_master_monitor ahb_mmonitor;
+    ahb_request_monitor req_monitor;
     ahb_sequencer sequencer;
     ahb_magent_config config_h;
 
@@ -22,7 +23,7 @@ class ahb_master_agent extends uvm_agent;
 
         ahb_mmonitor = ahb_master_monitor::type_id::create("ahb_mmonitor",this);
 
-        
+        req_monitor = ahb_request_monitor::type_id::create("req_monitor",this);
 
         if (config_h.is_active) begin
             sequencer = ahb_sequencer::type_id::create("sequencer",this);
