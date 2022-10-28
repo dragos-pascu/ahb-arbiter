@@ -4,7 +4,6 @@ class ahb_master_agent extends uvm_agent;
 
     ahb_master_driver ahb_mdriver;
     ahb_master_monitor ahb_mmonitor;
-    ahb_request_monitor req_monitor;
     ahb_sequencer sequencer;
     ahb_magent_config config_h;
 

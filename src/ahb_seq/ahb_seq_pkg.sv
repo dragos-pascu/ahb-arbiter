@@ -7,7 +7,6 @@ package ahb_seq_pkg;
     import integration_pkg::*;
     `include "../ahb_slave_agent/memory.sv"
 
-    `include "../ahb_seq/ahb_request.sv"
     `include "../ahb_seq/ahb_transaction.sv"
     `include "../ahb_seq/ahb_sequencer.sv"
     `include "../ahb_seq/slave_sequencer.sv"

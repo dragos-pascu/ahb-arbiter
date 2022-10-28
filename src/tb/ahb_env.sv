@@ -73,7 +73,7 @@ class ahb_env extends uvm_env;
         for (int i=0; i<master_number; ++i) begin
             vsequencer.master_seqr[i] = m_agent[i].sequencer;
             m_agent[i].ahb_mmonitor.item_collect_port.connect(scoreboard_h.item_collect_predictor);
-            m_agent[i].req_monitor.request_collect_port.connect(req_scoreboard_h.req_collect_predictor);
+            //m_agent[i].req_monitor.request_collect_port.connect(req_scoreboard_h.req_collect_predictor);
 
         end
 
