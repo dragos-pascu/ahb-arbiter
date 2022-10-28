@@ -2,6 +2,7 @@ class ahb_req_agent extends uvm_agent;
     `uvm_component_utils(ahb_req_agent)
 
     ahb_request_monitor req_monitor;
+    config_req_agent config_req;
 
     
     function new(string name="ahb_req_agent",uvm_component parent = null);
