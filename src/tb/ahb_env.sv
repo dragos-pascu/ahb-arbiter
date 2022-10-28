@@ -78,7 +78,7 @@ class ahb_env extends uvm_env;
             m_agent[i].req_monitor.request_collect_port.connect(req_scoreboard_h.req_collect_predictor);
 
             //analysis fifo connect            
-            m_agent[i].req_monitor.request_collect_port.connect(req_scoreboard_h.analysis_fifo.analysis_export);
+            m_agent[i].req_monitor.request_collect_port.connect(req_scoreboard_h.analysis_fifo[i].analysis_export);
 
 
         end
