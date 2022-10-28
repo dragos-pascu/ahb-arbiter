@@ -1,6 +1,6 @@
 class ahb_request_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_request_monitor)
-    uvm_analysis_port #(ahb_transaction) request_collect_port;
+    uvm_analysis_port #(ahb_request) request_collect_port;
     virtual request_if request_vif;
     ahb_magent_config agent_config;
 

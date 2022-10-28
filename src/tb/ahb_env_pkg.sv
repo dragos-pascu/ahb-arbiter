@@ -1,5 +1,8 @@
+`timescale 1ns/1ns
 package ahb_env_pkg;
     
+    
+
     import uvm_pkg::*;
     `include "uvm_macros.svh"
     import integration_pkg::*;

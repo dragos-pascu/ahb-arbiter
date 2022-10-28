@@ -5,8 +5,8 @@ class request_scoreboard extends uvm_scoreboard;
     `uvm_analysis_imp_decl(_evaluator)
     `uvm_analysis_imp_decl(_request_port)
 
-    uvm_analysis_imp_predictor #(ahb_transaction,request_scoreboard) req_collect_predictor;
-    uvm_analysis_imp_evaluator #(ahb_transaction,request_scoreboard) req_collect_evaluator;
+    uvm_analysis_imp_predictor #(ahb_request,request_scoreboard) req_collect_predictor;
+    uvm_analysis_imp_evaluator #(ahb_request,request_scoreboard) req_collect_evaluator;
 
     ahb_transaction expected_response[master_number][$];
     ahb_transaction actual_response[master_number][$];
@@ -26,14 +26,14 @@ class request_scoreboard extends uvm_scoreboard;
     /*Take from predictor the request and predit a grant.*/
     /* Daca queue.size este diferit de 0 la final inseamna ca au ramas masteri fara sa primeasca grant*/
 
-    function void write_predictor(ahb_transaction request_item);
+    function void write_predictor(ahb_request request_item);
         // `uvm_info(get_type_name(), $sformatf("Request from  master[%0d] : \n %s", request_item.id,request_item.convert2string()), UVM_MEDIUM);
         // expected_transactions[request_item.id].push_back(request_item);
     endfunction
 
     /*Compare the actual grant bit with the predicted value. Actual grant vine */
 
-    function void write_evaluator(ahb_transaction slave_item);
+    function void write_evaluator(ahb_request slave_item);
        
     endfunction
 

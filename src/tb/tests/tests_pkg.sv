@@ -1,4 +1,7 @@
+`timescale 1ns/1ns
 package tests_pkg;
+    
+    
 
     import uvm_pkg::*;
     `include "uvm_macros.svh"
