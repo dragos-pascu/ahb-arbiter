@@ -8,11 +8,12 @@ package master_pkg;
     import integration_pkg::*;
     import ahb_seq_pkg::*;
 
-    `include "ahb_request.sv"
-    `include "ahb_request_monitor.sv"
+
     `include "ahb_magent_config.sv"
     `include "ahb_master_monitor.sv"
     `include "ahb_master_driver.sv"
+    `include "ahb_request.sv"
+    `include "ahb_request_monitor.sv"
     `include "ahb_master_agent.sv"
 
 
