@@ -1,5 +1,5 @@
 
-import integration_pkg::*;
+
 class ahb_transaction extends uvm_sequence_item;
         
         //id of the coresponding master
