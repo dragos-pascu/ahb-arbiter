@@ -10,13 +10,11 @@ class ahb_env extends uvm_env;
     ahb_slave_agent s_agent[slave_number];
     ahb_scoreboard scoreboard_h;
 
-    ahb_req_agent req_agent;
     request_scoreboard req_scoreboard_h;
 
 
     ahb_magent_config      magt_cfg[master_number];
     ahb_sagent_config      sagt_cfg[slave_number];
-    config_req_agent req_cfg;
 
     ahb_vsequencer vsequencer;
 
@@ -33,21 +31,7 @@ class ahb_env extends uvm_env;
         if(!uvm_config_db#(env_config)::get(this, "", "env_config", env_cfg))
                     `uvm_fatal(get_full_name(), "Can`t get env_config from db")
 
-        //create request agent and config
-        begin
-
-            req_agent= ahb_req_agent::type_id::create("req_agent",this);
-            req_cfg = config_req_agent::type_id::create("req_cfg",this);
-            
-            for (int i=0; i<master_number; ++i) begin
-                req_cfg.master_id[i] = i;
-            end
-            req_cfg.enable_coverage = env_cfg.enable_coverage;
-            req_agent.config_req = req_cfg;
-
-            // uvm_config_db#(ahb_magent_config)::set(null, $sformatf("master[%0d]", i), "ahb_magent_config", env_cfg.magt_cfg[i]);
-
-        end
+        
 
         //create masters and config items
         foreach (m_agent[i]) begin
@@ -99,8 +83,6 @@ class ahb_env extends uvm_env;
             vsequencer.slave_seqr[i] = s_agent[i].sequencer;
             s_agent[i].ahb_smonitor.m_req_port.connect(scoreboard_h.item_collect_evaluator);
         end
-
-        req_agent.req_monitor.request_collect_port.connect(req_scoreboard_h.req_collect_predictor);
 
 
  
