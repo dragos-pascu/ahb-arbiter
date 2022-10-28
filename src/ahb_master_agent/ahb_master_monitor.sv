@@ -3,11 +3,9 @@ class ahb_master_monitor extends uvm_monitor;
 
 
     uvm_analysis_port #(ahb_transaction) item_collect_port;
-    uvm_analysis_port #(ahb_transaction) request_collect_port;
 
     virtual master_if vif;
 
-    virtual request_if request_vif;
 
     mailbox mbx = new();
 
@@ -25,7 +23,6 @@ class ahb_master_monitor extends uvm_monitor;
         super.build_phase(phase);
 
         item_collect_port = new("item_collected_port",this);
-        request_collect_port = new("request_collect_port",this);
 
         if(!uvm_config_db #(ahb_magent_config)::get(null,get_parent().get_name(), "ahb_magent_config", agent_config)) 
 
@@ -33,16 +30,13 @@ class ahb_master_monitor extends uvm_monitor;
 
         if(!uvm_config_db #(virtual master_if)::get(this, "", $sformatf("master[%0d]", agent_config.agent_id), vif)) 
 
-          `uvm_fatal(get_type_name(), "Failed to get VIF inside Master Monitor")
+          `uvm_fatal(get_type_name(), "Failed to get VIF inside master monitor")
 
-        if(!uvm_config_db #(virtual request_if)::get(this, "", $sformatf("bus_req[%0d]", agent_config.agent_id), request_vif)) 
-
-          `uvm_fatal(get_type_name(), "Failed to get VIF inside Master Monitor")
     endfunction
 
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
-            `uvm_info(get_type_name(), "Monitor run phase", UVM_MEDIUM)
+            `uvm_info(get_type_name(), "Master monitor run phase", UVM_MEDIUM)
             fork
                 monitor_addr_phase();
                 monitor_data_phase();
@@ -67,6 +61,7 @@ class ahb_master_monitor extends uvm_monitor;
                 //bus signals
                 item.hbusreq =  vif.m_cb.hbusreq;
                 item.hlock =  vif.m_cb.hlock ;
+                
                 //address and control signals
                 item.haddr[0] =  vif.m_cb.haddr ;
                 item.hburst =  burst_t'(vif.m_cb.hburst);
