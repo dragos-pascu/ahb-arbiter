@@ -42,16 +42,24 @@ class ahb_slave_monitor extends uvm_monitor;
           super.run_phase(phase);
           `uvm_info(get_type_name(), "Slave monitor run phase", UVM_MEDIUM)
           forever begin
-              fork
-                  @(posedge vif.hclk iff (vif.hreset));
+              wait(vif.hreset==1)
+                fork
                   monitor_addr_phase();
                   monitor_data_phase();
-              join
+                  reset_monitor();
+                  
+                join_any
+                disable fork;
 
           end
 
-      endtask
+    endtask
 
+    task reset_monitor();
+        
+        wait(vif.hreset==0);        
+        
+    endtask
 
     task monitor_addr_phase();
         ahb_transaction item;
