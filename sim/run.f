@@ -52,8 +52,8 @@
 
 
 
-/home/dragos.pascu/Projects/ahb-arbiter-project/src/request_if.sv
-/home/dragos.pascu/Projects/ahb-arbiter-project/src/arbiter_if.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/request_if.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/arbiter_if.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_full_v6.sv
 #/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_comb.sv
 
