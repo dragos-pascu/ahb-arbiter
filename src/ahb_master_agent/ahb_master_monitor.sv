@@ -95,7 +95,7 @@ class ahb_master_monitor extends uvm_monitor;
                 item.hready = vif.m_cb.hready;
             end
 
-            //`uvm_info(get_type_name(), "Item written to analysis port.", UVM_MEDIUM)
+            `uvm_info(get_type_name(), "Item written to analysis port.", UVM_DEBUG)
             item_collect_port.write(item);
         end
     endtask

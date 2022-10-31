@@ -46,7 +46,6 @@ class ahb_request_monitor extends uvm_monitor;
             request_item.id = agent_config.agent_id;
             request_collect_port.write(request_item);
 
-
         end
 
 

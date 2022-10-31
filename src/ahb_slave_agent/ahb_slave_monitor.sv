@@ -40,8 +40,8 @@ class ahb_slave_monitor extends uvm_monitor;
 
     virtual task run_phase(uvm_phase phase);
           super.run_phase(phase);
+          `uvm_info(get_type_name(), "Slave monitor run phase", UVM_MEDIUM)
           forever begin
-              `uvm_info(get_type_name(), "Slave monitor run phase", UVM_MEDIUM)
               fork
                   @(posedge vif.hclk iff (vif.hreset));
                   monitor_addr_phase();
@@ -97,7 +97,7 @@ class ahb_slave_monitor extends uvm_monitor;
             end
 
  
-            `uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_MEDIUM);
+            `uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_DEBUG);
             m_req_port.write(item);
             
         end

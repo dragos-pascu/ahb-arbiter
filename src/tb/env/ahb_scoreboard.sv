@@ -34,13 +34,13 @@ class ahb_scoreboard extends uvm_scoreboard;
     endfunction
 
     function void write_predictor(ahb_transaction master_item);
-        `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_MEDIUM);
+        `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_HIGH);
         expected_transactions[master_item.id].push_back(master_item);
         predictor_transactions++;
     endfunction
 
     function void write_evaluator(ahb_transaction slave_item);
-        `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_MEDIUM);
+        `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_HIGH);
         
         if (expected_transactions[slave_item.id].size == 0) begin
             `uvm_error(get_type_name(),"Queue is empty")

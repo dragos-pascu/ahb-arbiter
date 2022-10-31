@@ -59,7 +59,7 @@ class request_scoreboard extends uvm_scoreboard;
 
         join   
         for (int i=0; i<master_number; ++i) begin
-            `uvm_info(get_type_name(), $sformatf("Request from  requests_array[%0d] : \n %s", requests_array[i].id,requests_array[i].convert2string()), UVM_MEDIUM);
+            `uvm_info(get_type_name(), $sformatf("Request from  requests_array[%0d] : \n %s", requests_array[i].id,requests_array[i].convert2string()), UVM_HIGH);
 
         end 
     endtask

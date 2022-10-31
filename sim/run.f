@@ -11,7 +11,10 @@
 -coverage all
 -covoverwrite
 //-cov_debuglog
+-svseed random
 
+
++UVM_VERBOSITY=UVM_HIGH
 //+UVM_PHASE_TRACE
 //+UVM_OBJECTION_TRACE
 
