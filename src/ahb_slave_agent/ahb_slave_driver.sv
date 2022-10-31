@@ -26,19 +26,29 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
     endfunction
 
     task run_phase(uvm_phase phase);
-      initialize();
       forever begin
         
-        @(vif.s_cb iff vif.s_cb.hsel && vif.hreset == 1);
-        //wait(vif.s_cb.hsel);
-        seq_item_port.get_next_item(req);
-        drive(req);
-        seq_item_port.item_done();
+        initialize();
+        wait(vif.hreset==1);
+        
+        fork
+          
+          drive();
+          reset_monitor();
+
+        join_any
+        disable fork;
+        
 
       end
 
     endtask
 
+    task reset_monitor();
+        
+      wait(vif.hreset==0);        
+        
+    endtask
 
     task initialize();
       vif.s_cb.hready <= 1;
@@ -48,15 +58,14 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
         @(vif.s_cb);
       end
       
-      
-
     endtask
 
-    task drive(ahb_transaction req);
+    task drive();
       
-      //`uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s",req.convert2string()), UVM_MEDIUM);
-      
-      fork
+      forever begin
+        //`uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s",req.convert2string()), UVM_MEDIUM);
+        @(vif.s_cb iff vif.s_cb.hsel && vif.hreset == 1);
+        seq_item_port.get_next_item(req);
         foreach (req.no_of_waits[i]) begin
         if (vif.s_cb.htrans != IDLE) begin
           vif.s_cb.hready <= req.no_of_waits[i];
@@ -65,8 +74,9 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
           vif.s_cb.hready <= 1;
           vif.s_cb.hresp <= OKAY;
         end
-        
+
       end
+      
 
       
       // begin
@@ -79,9 +89,10 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
       //   end
         
       // end
-      join_none
-
+  
+      seq_item_port.item_done();
       
+      end
 
     endtask  
 

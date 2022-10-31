@@ -15,6 +15,7 @@ class request_scoreboard extends uvm_scoreboard;
 
     bit busreq_map[master_number];
     bit hlock_map[master_number];
+    bit req_and_lock[master_number];
 
 
     function new(string name = "request_scoreboard", uvm_component parent);
@@ -78,11 +79,13 @@ class request_scoreboard extends uvm_scoreboard;
 
         end 
         store_in_map();
+        get_expected_grant();
         clear_maps();
+
         $display("///////////////////////////////////////////////////////////");
     endfunction
-
-    function store_in_map();
+    
+    function void store_in_map();
         for (int i=0; i<master_number; ++i) begin
             if (requests_array[i].hbusreq == 1) begin
                 busreq_map[requests_array[i].id] = 1;
@@ -90,19 +93,37 @@ class request_scoreboard extends uvm_scoreboard;
             if (requests_array[i].hlock == 1) begin
                 hlock_map[requests_array[i].id] = 1;
             end
+            req_and_lock[requests_array[i].id] = busreq_map[requests_array[i].id] & hlock_map[requests_array[i].id];
         end 
         `uvm_info(get_type_name(), $sformatf("busreq_map : %p \n ", busreq_map), UVM_HIGH);
         `uvm_info(get_type_name(), $sformatf("hlock_map : %p \n ", hlock_map), UVM_HIGH);
+        `uvm_info(get_type_name(), $sformatf("req_and_lock : %p \n ", req_and_lock), UVM_HIGH);
 
 
     endfunction
 
-    function clear_maps();
+    function void clear_maps();
         for (int i=0; i<master_number; ++i) begin
                 busreq_map[requests_array[i].id] = 0;
                 hlock_map[requests_array[i].id] = 0;
+                req_and_lock[requests_array[i].id] = 0;
             
         end 
+        `uvm_info(get_type_name(), $sformatf("clear_maps FINISHED \n "), UVM_MEDIUM);
+        `uvm_info(get_type_name(), $sformatf("busreq_map : %p \n ", busreq_map), UVM_HIGH);
+        `uvm_info(get_type_name(), $sformatf("hlock_map : %p \n ", hlock_map), UVM_HIGH);
+        `uvm_info(get_type_name(), $sformatf("req_and_lock : %p \n ", req_and_lock), UVM_HIGH);
+
+
+    endfunction
+
+    function void get_expected_grant();
+        int highest_priority_master;
+        // for (int i=0; i<master_number; ++i) begin
+        //     // if (busreq_map) begin
+        //     //     pass
+        //     // end
+        // end
     endfunction
 
 endclass
