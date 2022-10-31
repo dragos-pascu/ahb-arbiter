@@ -6,7 +6,6 @@ package tests_pkg;
     import uvm_pkg::*;
     `include "uvm_macros.svh"
     import integration_pkg::*;
-    import ahb_seq_pkg::*;
     import master_pkg::*;
     import slave_pkg::*;
     import ahb_env_pkg::*;
