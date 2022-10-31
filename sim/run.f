@@ -45,8 +45,8 @@
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tests
 
-/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/integration_pkg.sv
-#/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/integration_pkg_lucian.sv
+#/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/integration_pkg.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/integration_pkg_lucian.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/master_pkg.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/slave_pkg.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_env_pkg.sv
@@ -57,8 +57,8 @@
 
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/request_if.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/arbiter_if.sv
-/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_full_v6.sv
-#/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_comb.sv
+#/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_full_v6.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_comb.sv
 
 
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/test_harness.sv

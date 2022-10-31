@@ -49,9 +49,6 @@ class ahb_request_monitor extends uvm_monitor;
         end
 
 
-        
-        
-
     endtask
 
 endclass

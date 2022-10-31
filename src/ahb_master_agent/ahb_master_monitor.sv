@@ -37,11 +37,21 @@ class ahb_master_monitor extends uvm_monitor;
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
             `uvm_info(get_type_name(), "Master monitor run phase", UVM_MEDIUM)
+            wait(vif.hreset==1)
             fork
                 monitor_addr_phase();
                 monitor_data_phase();
-            join_none
+                reset_monitor();
+            join_any
+            disable fork;
             
+    endtask
+
+    
+    task reset_monitor();
+        
+        wait(vif.hreset==0);        
+        
     endtask
 
     task monitor_addr_phase();
