@@ -13,6 +13,9 @@ class ahb_env extends uvm_env;
     request_scoreboard req_scoreboard_h;
 
 
+    ahb_coverage ahb_coverage_h;
+    arbitration_coverage arbitration_coverage_h;
+
     ahb_magent_config      magt_cfg[master_number];
     ahb_sagent_config      sagt_cfg[slave_number];
 
@@ -27,6 +30,8 @@ class ahb_env extends uvm_env;
         super.build_phase(phase);
         scoreboard_h = ahb_scoreboard::type_id::create("scoreboard_h",this);
         req_scoreboard_h = request_scoreboard::type_id::create("req_scoreboard_h",this);
+        ahb_coverage_h = ahb_coverage::type_id::create("coverage_h",this);
+        arbitration_coverage_h = arbitration_coverage::type_id::create("arbitration_coverage_h",this);
 
         if(!uvm_config_db#(env_config)::get(this, "", "env_config", env_cfg))
                     `uvm_fatal(get_full_name(), "Can`t get env_config from db")
@@ -89,8 +94,10 @@ class ahb_env extends uvm_env;
             s_agent[i].ahb_smonitor.m_req_port.connect(scoreboard_h.item_collect_evaluator);
         end
 
-
- 
+        //connect scoreboard analysis port to export of coverage.
+        scoreboard_h.coverage_port.connect(ahb_coverage_h.analysis_export);
+        req_scoreboard_h.coverage_port.connect(arbitration_coverage_h.analysis_export);
+    
 
     endfunction
 

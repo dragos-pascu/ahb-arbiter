@@ -9,6 +9,11 @@ class request_scoreboard extends uvm_scoreboard;
     uvm_tlm_analysis_fifo #(ahb_request) analysis_fifo[master_number];
     uvm_analysis_imp_evaluator #(ahb_request,request_scoreboard) req_collect_evaluator;
 
+    //ap for coverage
+    uvm_analysis_port #(ahb_request) coverage_port;
+
+
+
     ahb_transaction expected_response[master_number][$];
     ahb_transaction actual_response[master_number][$];
     ahb_request requests_array[master_number];
@@ -22,6 +27,7 @@ class request_scoreboard extends uvm_scoreboard;
         super.new(name, parent);
         req_collect_predictor = new("req_collect_predictor",this);
         req_collect_evaluator =  new("req_collect_evaluator",this);
+        coverage_port = new("coverage_port",this);
 
         for (int i=0; i<master_number; ++i) begin
             analysis_fifo[i] = new($sformatf("analysis_fifo[%0d]",i),this);
@@ -73,7 +79,7 @@ class request_scoreboard extends uvm_scoreboard;
         join
     endtask
 
-    function predictor();
+    function void predictor();
     for (int i=0; i<master_number; ++i) begin
         `uvm_info(get_type_name(), $sformatf("Request from  requests_array[%0d] : \n %s", requests_array[i].id,requests_array[i].convert2string()), UVM_HIGH);
 

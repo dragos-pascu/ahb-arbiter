@@ -150,8 +150,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         
     endtask
 
-    function void report_phase(uvm_phase phase);
-        `uvm_info(get_type_name(), $sformatf("master_cg is: %f", vif.master_cg.get_coverage()), UVM_MEDIUM)
-    endfunction
+
 
 endclass //ahb_master_driver extends superClass

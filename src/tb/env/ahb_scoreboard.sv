@@ -4,9 +4,14 @@ class ahb_scoreboard extends uvm_scoreboard;
     `uvm_analysis_imp_decl(_predictor)
     `uvm_analysis_imp_decl(_evaluator)
     `uvm_analysis_imp_decl(_request_port)
+    `uvm_analysis_imp_decl(_cov_port)
 
     uvm_analysis_imp_predictor #(ahb_transaction,ahb_scoreboard) item_collect_predictor;
     uvm_analysis_imp_evaluator #(ahb_transaction,ahb_scoreboard) item_collect_evaluator;
+
+    uvm_analysis_port #(ahb_transaction) coverage_port;
+
+    
     ahb_transaction expected_transactions[master_number][$];
     ahb_transaction actual_transactions[master_number][$];
 
@@ -21,6 +26,7 @@ class ahb_scoreboard extends uvm_scoreboard;
         super.new(name, parent);
         item_collect_predictor = new("item_collect_predictor",this);
         item_collect_evaluator =  new("item_collect_evaluator",this);
+        coverage_port = new("coverage_port",this);
         match = 0;
         mismatch = 0;
         predictor_transactions = 0;
@@ -45,10 +51,11 @@ class ahb_scoreboard extends uvm_scoreboard;
         if (expected_transactions[slave_item.id].size == 0) begin
             `uvm_error(get_type_name(),"Queue is empty")
         end else begin
+            temp_tx1 = ahb_transaction::type_id::create("temp_tx1");
             temp_tx1 =  expected_transactions[slave_item.id].pop_front();
             if (slave_item.compare(temp_tx1)) begin
             match++;
-
+            coverage_port.write(temp_tx1);
             end
             else begin
                 
@@ -59,7 +66,6 @@ class ahb_scoreboard extends uvm_scoreboard;
 
             end
         end
-        
         
         evaluator_transactions++;
     endfunction

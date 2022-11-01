@@ -9,14 +9,16 @@ package ahb_env_pkg;
     import master_pkg::*;
     import slave_pkg::*;
     
+    `include "env_config.sv"
     `include "ahb_scoreboard.sv"
     `include "request_scoreboard.sv"
 
 
     `include "ahb_vsequencer.sv"
     `include "virtual_sequences_lib.sv"
-
-    `include "env_config.sv"
+    
+    `include "aribtration_coverage.sv"
+    `include "ahb_coverage.sv"
     `include "ahb_env.sv"
 
 endpackage
