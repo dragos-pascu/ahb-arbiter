@@ -30,16 +30,30 @@ class ahb_request_monitor extends uvm_monitor;
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
         `uvm_info(get_type_name(), "Request monitor run phase.", UVM_MEDIUM)
-        send_request();
+        wait(vif.hreset==1)
+        fork
+        
+            send_request();
+            reset_monitor();
+        
+        join_any
+        disable fork;
             
+    endtask
+
+    task reset_monitor();
+        
+        wait(vif.hreset==0);        
+        
     endtask
 
     task send_request();
     ahb_request request_item;
         forever begin
-
+                
+            while (!vif.hreset) @vif.req_cb;;
+             
             request_item = ahb_request::type_id::create("request_item");
-
             @vif.req_cb;
             request_item.hbusreq = vif.req_cb.hbusreq;
             request_item.hlock = vif.req_cb.hlock;
