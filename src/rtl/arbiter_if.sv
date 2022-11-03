@@ -137,16 +137,16 @@ ping) but with a SEQ.*/
             hburst != SINGLE |=> htrans != NONSEQ ;
     endproperty
 
-    ONE_KB: assert property(kb_boundry_p);
-    INCR_ADDR: assert property(incr_addr_p);
-    WRAP4_WORD_ADDR : assert property (wrap4_word_addr_p);   
-    WRAP8_WORD_ADDR : assert property (wrap8_word_addr_p);
-    WRAP16__WORD_ADDR : assert property (wrap16_word_addr_p);       
-    ADDR_ALIGNMENT : assert property(addr_alignment_word_p);
-    SINGLE_NO_BUSY: assert property(no_busy_single_burst_p);
+    // ONE_KB: assert property(kb_boundry_p);
+    // INCR_ADDR: assert property(incr_addr_p);
+    // WRAP4_WORD_ADDR : assert property (wrap4_word_addr_p);   
+    // WRAP8_WORD_ADDR : assert property (wrap8_word_addr_p);
+    // WRAP16__WORD_ADDR : assert property (wrap16_word_addr_p);       
+    // ADDR_ALIGNMENT : assert property(addr_alignment_word_p);
+    // SINGLE_NO_BUSY: assert property(no_busy_single_burst_p);
     //SAME_CTRL_SIG : assert property(ctrl_sig_same_p);
-    WAITED_TRANSFER: assert property(same_transfer_tye_p);
-    NO_BUSY_AFTER_SINGLE : assert property(no_busy_after_single_p);
+    // WAITED_TRANSFER: assert property(same_transfer_tye_p);
+    // NO_BUSY_AFTER_SINGLE : assert property(no_busy_after_single_p);
     //ADDR_PHASE_DURATION : assert property(adr_phase_duration_p);
     //SINGLE_HTRANS_VALUE : assert property(single_htrans_value_p);
 

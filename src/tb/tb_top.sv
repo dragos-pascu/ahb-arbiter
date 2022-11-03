@@ -14,36 +14,37 @@ module top(
     logic reset;
     time moment_reset;
 
-    test_harness vif (.hclk(clk), .hreset(reset));
+    test_harness th (.hclk(clk), .hreset(reset));
     
-    generic_arbiter_full DUT( .m_busreq(vif.m_hbusreq),
-                            .m_hlock(vif.m_hlock),
-                            .hclk(vif.hclk),
-                            .hreset(vif.hreset),
-                            .s_hmaster_lock(vif.s_hmastlock),
-                            .hgrant(vif.hgrant),
-                            .s_hready(vif.s_hready),
-                            .m_hwdata(vif.m_hwdata),
-                            .s_data_out(vif.s_hwdata),
-                            .m_haddr(vif.m_haddr),
-                            .s_addr_out(vif.s_haddr),
-                            .m_hburst(vif.m_hburst),
-                            .m_htrans(vif.m_htrans),
-                            .s_htrans_out(vif.s_htrans),
-                            .s_hburst_out(vif.s_hburst),
-                            .s_hmaster(vif.s_hmaster),
-                            .s_hwrite(vif.s_hwrite),
-                            .s_hresp(vif.s_hresp),
-                            .m_hresp(vif.hresp),
-                            .m_hready(vif.hready),
-                            .m_hsize(vif.m_hsize),
-                            .s_hsize(vif.s_hsize),
-                            .m_hwrite(vif.m_hwrite),
-                            .m_hrdata(vif.m_hrdata),
-                            .s_hsel(vif.s_hsel),
-                            .s_hrdata(vif.s_hrdata)
+    generic_arbiter_full DUT( .m_busreq(th.m_hbusreq),
+                            .m_hlock(th.m_hlock),
+                            .hclk(th.hclk),
+                            .hreset(th.hreset),
+                            .s_hmaster_lock(th.s_hmastlock),
+                            .hgrant(th.hgrant),
+                            .s_hready(th.s_hready),
+                            .m_hwdata(th.m_hwdata),
+                            .s_data_out(th.s_hwdata),
+                            .m_haddr(th.m_haddr),
+                            .s_addr_out(th.s_haddr),
+                            .m_hburst(th.m_hburst),
+                            .m_htrans(th.m_htrans),
+                            .s_htrans_out(th.s_htrans),
+                            .s_hburst_out(th.s_hburst),
+                            .s_hmaster(th.s_hmaster),
+                            .s_hwrite(th.s_hwrite),
+                            .s_hresp(th.s_hresp),
+                            .m_hresp(th.hresp),
+                            .m_hready(th.hready),
+                            .m_hsize(th.m_hsize),
+                            .s_hsize(th.s_hsize),
+                            .m_hwrite(th.m_hwrite),
+                            .m_hrdata(th.m_hrdata),
+                            .s_hsel(th.s_hsel),
+                            .s_hrdata(th.s_hrdata)
   );
-    
+
+    bind
 
     initial begin
     clk <= 0;

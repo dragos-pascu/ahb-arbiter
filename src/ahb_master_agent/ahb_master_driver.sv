@@ -70,7 +70,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             //dont drive when reset is 0
             @(vif.m_cb iff (vif.hreset))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
             seq_item_port.get(req);
-            `uvm_info(get_type_name(), $sformatf( "master driver Tr: \n %s",req.convert2string()), UVM_DEBUG);
+            `uvm_info(get_type_name(), $sformatf("master[%0d] driver", agent_config.agent_id), UVM_MEDIUM);
 
             
             //request bus
@@ -84,6 +84,11 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                     vif.m_cb.htrans <= IDLE;
                     @vif.m_cb; 
                 end
+
+                `uvm_info(get_type_name(), $sformatf( "hgrant este:  %d \n",vif.m_cb.hgrant), UVM_MEDIUM);
+                                `uvm_info(get_type_name(), $sformatf( "hready este:  %d \n",vif.m_cb.hready), UVM_MEDIUM);
+
+                `uvm_info(get_type_name(), $sformatf( "hreset este:  %d \n",vif.hreset), UVM_MEDIUM);
 
 
                 if (i!=req.busy_pos) begin
@@ -121,7 +126,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
             end
 
-            vif.m_cb.htrans <= 0;
+            vif.m_cb.htrans <= IDLE;
 
 
         end
