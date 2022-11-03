@@ -44,7 +44,6 @@ module top(
                             .s_hrdata(th.s_hrdata)
   );
 
-    bind
 
     initial begin
     clk <= 0;
