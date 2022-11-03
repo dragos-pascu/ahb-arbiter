@@ -30,17 +30,20 @@ interface test_harness(input hclk, input  hreset);
     for(genvar i=0;i<master_number;i++)
     begin: m_if
       master_if master(.*);
+      //outputs
       assign m_if[i].master.hresp        =hresp;
       assign m_if[i].master.hready       =hready;
       assign m_if[i].master.hgrant       =hgrant[i];
       assign m_if[i].master.hrdata=m_hrdata;
+
+      //inputs
       assign m_hwrite[(i+1)-1:i]     = m_if[i].master.hwrite;
       assign m_hwdata[32*(i+1)-1:32*i]=m_if[i].master.hwdata;
       assign m_haddr[32*(i+1)-1:32*i] =m_if[i].master.haddr;
       assign m_hburst[3*(i+1)-1:3*i]=m_if[i].master.hburst;
       assign m_htrans[2*(i+1)-1:2*i]=m_if[i].master.htrans;
-      assign m_hbusreq[(i+1)-1:i]    =m_if[i].master.hbusreq;
-      assign m_hlock[(i+1)-1:i]     =m_if[i].master.hlock;
+      assign m_hbusreq[i]    =m_if[i].master.hbusreq;
+      assign m_hlock[i]     =m_if[i].master.hlock;
       //assign m_hsize = m_if[i].master.hsize;
       assign m_hsize[3*(i+1)-1:3*i]=m_if[i].master.hsize;
 
