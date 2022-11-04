@@ -71,7 +71,7 @@ class ahb_scoreboard extends uvm_scoreboard;
                 if (expected_transactions[slave_item.id].size == 0) begin
                     `uvm_error(get_type_name(),"Queue is empty")
                 end else begin
-                    temp_tx1 = ahb_transaction::type_id::create("temp_tx1");
+                    // temp_tx1 = ahb_transaction::type_id::create("temp_tx1");
                     temp_tx1 =  expected_transactions[slave_item.id].pop_front();
                     if (slave_item.compare(temp_tx1)) begin
                     match++;
@@ -88,12 +88,22 @@ class ahb_scoreboard extends uvm_scoreboard;
                 end
             end
         join_none
+
         evaluator_transactions++;
     endfunction
 
+    
 
     virtual function void check_phase(uvm_phase phase);
+        foreach (expected_transactions[id]) begin
+            while (expected_transactions[id].size > 0) begin
+            temp_tx = expected_transactions[id].pop_front();
+                `uvm_info(get_type_name(), $sformatf("Scoreboard received an unmatched : %s",temp_tx.convert2string()), UVM_MEDIUM);
+
+            end
+        end
         
+
         if (predictor_transactions!=evaluator_transactions) begin
             `uvm_error(get_type_name(),$sformatf(" Number of master/slave transactions mismatch; nr of master_tx = [%0d] , nr of slave_tx = [%0d] ",predictor_transactions, evaluator_transactions));
         end else begin

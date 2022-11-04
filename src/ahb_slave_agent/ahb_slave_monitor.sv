@@ -65,33 +65,36 @@ class ahb_slave_monitor extends uvm_monitor;
         ahb_transaction item;
         forever begin
         
-        //while(!(vif.hready && vif.hsel && vif.hreset)) @vif.s_cb;
+            //while(!(vif.hready && vif.hsel && vif.hreset)) @vif.s_cb;
 
-        if ( ( vif.htrans == NONSEQ || vif.htrans == SEQ ) && vif.hsel == 1 && vif.hready == 1 && vif.hreset == 1) begin
-            `uvm_info(get_type_name(), $sformatf("hsel is : \n %d",vif.hsel), UVM_MEDIUM);
-        item = ahb_transaction::type_id::create("item");
-        item.htrans = new[1];
-        item.haddr = new[1];
-        item.hwdata = new[1];
-          begin
-              //address and control signals
-              item.haddr[0] =  vif.s_cb.haddr ;
-              item.hburst =  burst_t'(vif.s_cb.hburst);
-              item.htrans[0] =  transfer_t'(vif.s_cb.htrans);
-              item.hsize =   size_t'(vif.s_cb.hsize) ;
-              item.hwrite =  rw_t'(vif.s_cb.hwrite);   
-              // slave response
-              item.hready = vif.s_cb.hready;
-              item.hresp = resp_t'(vif.s_cb.hresp);
-              item.hrdata = vif.s_cb.hrdata;
-              item.id = agent_config.agent_id;
-          end
-          @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
-          mbx.put(item);
-        end else begin
-            @vif.s_cb;
+            if ( ( vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ ) && vif.s_cb.hsel == 1 && vif.s_cb.hready == 1 && vif.hreset == 1) begin
+                // `uvm_info(get_type_name(), $sformatf("hsel is : \n %d",vif.s_cb.hsel), UVM_MEDIUM);
+                item = ahb_transaction::type_id::create("item");
+                item.htrans = new[1];
+                item.haddr = new[1];
+                item.hwdata = new[1];
+
+                //address and control signals
+                item.haddr[0] =  vif.s_cb.haddr ;
+                item.hburst =  burst_t'(vif.s_cb.hburst);
+                item.htrans[0] =  transfer_t'(vif.s_cb.htrans);
+                item.hsize =   size_t'(vif.s_cb.hsize) ;
+                item.hwrite =  rw_t'(vif.s_cb.hwrite);   
+                // slave response
+                item.hready = vif.s_cb.hready;
+                item.hresp = resp_t'(vif.s_cb.hresp);
+                item.hrdata = vif.s_cb.hrdata;
+                item.id = agent_config.agent_id;
+
+                @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
+                mbx.put(item);
+            end 
+            else begin
+                // `uvm_info(get_type_name(), $sformatf("hsel is else branch : \n %d",vif.s_cb.hsel), UVM_MEDIUM);
+                @vif.s_cb;
+            end
         end
-        end
+        
     endtask
 
     task monitor_data_phase();
@@ -100,7 +103,7 @@ class ahb_slave_monitor extends uvm_monitor;
             mbx.get(item);
 
             if(item.hwrite == WRITE) begin
-                item.hwdata[0] = vif.hwdata;
+                item.hwdata[0] = vif.s_cb.hwdata;
                 storage.write(item.haddr[0],item.hwdata[0]);
             end
             else if (item.hwrite == READ) begin

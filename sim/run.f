@@ -12,7 +12,7 @@
 -coverage all
 -covoverwrite
 //-cov_debuglog
--svseed 3
+-svseed random
 
 
 +UVM_VERBOSITY=UVM_MEDIUM
