@@ -5,9 +5,9 @@
 -timescale 1ns/1ns
 -access +rw
 
--linedebug
--debug
--uvmlinedebug
+//-linedebug
+//-debug
+//-uvmlinedebug
 -cov_cgsample
 -coverage all
 -covoverwrite
@@ -15,7 +15,7 @@
 -svseed random
 
 
-+UVM_VERBOSITY=UVM_HIGH
++UVM_VERBOSITY=UVM_MEDIUM
 //+UVM_PHASE_TRACE
 //+UVM_OBJECTION_TRACE
 

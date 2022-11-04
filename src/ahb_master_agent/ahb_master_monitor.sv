@@ -36,6 +36,7 @@ class ahb_master_monitor extends uvm_monitor;
 
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
+        forever begin    
             `uvm_info(get_type_name(), "Master monitor run phase", UVM_MEDIUM)
             wait(vif.hreset==1)
             fork
@@ -44,6 +45,7 @@ class ahb_master_monitor extends uvm_monitor;
                 reset_monitor();
             join_any
             disable fork;
+        end
             
     endtask
 
@@ -60,36 +62,39 @@ class ahb_master_monitor extends uvm_monitor;
         forever begin
             
             #1ns;
-            //@(vif.m_cb iff(vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset));
-            while(!(vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset)) @vif.m_cb;
-            if (vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ) begin
-                item = ahb_transaction::type_id::create("item");
-                item.htrans = new[1];
-                item.haddr = new[1];
-                item.hwdata = new[1];
-                begin
-                //bus signals
-                item.hbusreq =  vif.m_cb.hbusreq;
-                item.hlock =  vif.m_cb.hlock ;
-                
-                //address and control signals
-                item.haddr[0] =  vif.m_cb.haddr ;
-                item.hburst =  burst_t'(vif.m_cb.hburst);
-                item.htrans[0] =  transfer_t'(vif.m_cb.htrans);
-                item.hsize =   size_t'(vif.m_cb.hsize) ;
-                item.hwrite =  rw_t'(vif.m_cb.hwrite);   
-                item.id = agent_config.agent_id;
+            // //@(vif.m_cb iff(vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset));
+            // while(!(vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset)) @vif.m_cb;
+            if ((vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset)) begin
+                if (vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ) begin
+                    item = ahb_transaction::type_id::create("item");
+                    item.htrans = new[1];
+                    item.haddr = new[1];
+                    item.hwdata = new[1];
+                    begin
+                    //bus signals
+                    item.hbusreq =  vif.m_cb.hbusreq;
+                    item.hlock =  vif.m_cb.hlock ;
 
-                // slave response
-                item.hready = vif.m_cb.hready;
-                item.hresp = resp_t'(vif.m_cb.hresp);
-                
-                end
+                    //address and control signals
+                    item.haddr[0] =  vif.m_cb.haddr ;
+                    item.hburst =  burst_t'(vif.m_cb.hburst);
+                    item.htrans[0] =  transfer_t'(vif.m_cb.htrans);
+                    item.hsize =   size_t'(vif.m_cb.hsize) ;
+                    item.hwrite =  rw_t'(vif.m_cb.hwrite);   
+                    item.id = agent_config.agent_id;
+
+                    // slave response
+                    item.hready = vif.m_cb.hready;
+                    item.hresp = resp_t'(vif.m_cb.hresp);
+
+                    end
 
                 //#1ns;
                 @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
                 mbx.put(item);
             end
+            end
+            
         end
 
     endtask

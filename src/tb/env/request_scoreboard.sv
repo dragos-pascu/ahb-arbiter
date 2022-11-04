@@ -88,7 +88,7 @@ class request_scoreboard extends uvm_scoreboard;
         get_expected_grant();
         clear_maps();
 
-        $display("///////////////////////////////////////////////////////////");
+         `uvm_info(get_type_name(),"///////////////////", UVM_HIGH);
     endfunction
     
     function void store_in_map();
@@ -115,7 +115,7 @@ class request_scoreboard extends uvm_scoreboard;
                 req_and_lock[requests_array[i].id] = 0;
             
         end 
-        `uvm_info(get_type_name(), $sformatf("clear_maps FINISHED \n "), UVM_MEDIUM);
+        `uvm_info(get_type_name(), $sformatf("clear_maps FINISHED \n "), UVM_HIGH);
         `uvm_info(get_type_name(), $sformatf("busreq_map : %p \n ", busreq_map), UVM_HIGH);
         `uvm_info(get_type_name(), $sformatf("hlock_map : %p \n ", hlock_map), UVM_HIGH);
         `uvm_info(get_type_name(), $sformatf("req_and_lock : %p \n ", req_and_lock), UVM_HIGH);
