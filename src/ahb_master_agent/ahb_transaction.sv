@@ -14,7 +14,7 @@ class ahb_transaction extends uvm_sequence_item;
         rand logic [31:0] hwdata[];  
         
         //busy transfer
-        rand int no_of_busy = 0; // including busy
+        rand int no_of_busy = 0; 
         rand int busy_pos;
 
         //bus req signals
@@ -101,28 +101,23 @@ class ahb_transaction extends uvm_sequence_item;
                 hbusreq == 1;
         }
 
-        constraint noumber_of_busy{
+
+        //comment this constraint for no busy and post_randomize also.
+        constraint busy_position_and_size{
                 if(hburst != SINGLE)
                 {
+                        busy_pos > 0;
+                        busy_pos < haddr.size - 1;
                         no_of_busy >= 0;
                         no_of_busy < 6;
                 }
                 
         }
 
-        constraint busy_position{
-                if(hburst != SINGLE)
-                {
-                        busy_pos > 0;
-                        busy_pos < haddr.size - 1;
-                }
-                
-        }
-
         constraint wait_size{
                 no_of_waits.size >= 0;
-                no_of_waits.size <= 17;
-                
+                no_of_waits.size < 17;
+                //between 0 and 16
         }
 
         constraint number_of_waits_values{
@@ -287,5 +282,18 @@ class ahb_transaction extends uvm_sequence_item;
         //         end
 
         // endfunction
+
+        function void post_randomize();
+                int temp = no_of_busy;
+                for (int i=0; i<htrans.size; ++i) begin
+                        if (i==busy_pos) begin
+                                while (temp>0) begin
+                                        htrans[i] = BUSY;
+                                        temp--;
+                                        i++;
+                                end
+                        end
+                end
+        endfunction
 
 endclass

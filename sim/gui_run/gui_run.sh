@@ -1,1 +1,1 @@
-clear; xrun -f ../run.f -clean -gui
+clear; xrun -f ../run.f -gui
