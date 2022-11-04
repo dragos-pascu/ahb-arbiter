@@ -74,10 +74,10 @@ class ahb_transaction extends uvm_sequence_item;
                         (hburst   === tx_rhs.hburst) &&
                         (htrans   === tx_rhs.htrans) &&
                         (hsize    === tx_rhs.hsize ) &&
-                        (hwrite   === tx_rhs.hwrite) &&
+                        (hwrite   === tx_rhs.hwrite) ;
                         //the slave response vs what master received
-                        (hready   === tx_rhs.hready) &&
-                        (hresp   === tx_rhs.hresp) ;
+                        // (hready   === tx_rhs.hready) &&
+                        // (hresp   === tx_rhs.hresp) ;
                         //(hrdata   === tx_rhs.hrdata);
                 return res;
                 

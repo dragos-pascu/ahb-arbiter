@@ -49,16 +49,23 @@ class ahb_scoreboard extends uvm_scoreboard;
         
         temp_expected = ahb_transaction::type_id::create("temp_expected");
         temp_expected = expected_transactions.pop_front();
-        if (slave_item.compare(temp_expected)) begin
-            match++;
-            coverage_port.write(temp_expected);
+
+        if (temp_expected != null) begin
+                if (slave_item.compare(temp_expected) ) begin
+                match++;
+                coverage_port.write(temp_expected);
+                end else begin
+
+                    mismatch++;
+                    `uvm_error(get_type_name(),"Mismatch : ")
+                    `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_expected.convert2string()));
+                    `uvm_error(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()));
+                end
         end else begin
-                
-            mismatch++;
-            `uvm_error(get_type_name(),"Mismatch : ")
-            `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_expected.convert2string()));
-            `uvm_error(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()));
+            `uvm_info(get_type_name(),"Expected queue is empty ! ",UVM_MEDIUM)
         end
+
+        
         
         evaluator_transactions++;
     endfunction

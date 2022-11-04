@@ -66,8 +66,9 @@ class ahb_slave_monitor extends uvm_monitor;
         forever begin
         
         #1;
-        while(!(vif.s_cb.hready && vif.s_cb.hsel && vif.hreset)) @vif.s_cb;
-        if (vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ) begin
+        //while(!(vif.hready && vif.hsel && vif.hreset)) @vif.s_cb;
+
+        if (vif.htrans == NONSEQ || vif.htrans == SEQ && vif.hsel == 1 && vif.hready == 1 && vif.hreset == 1) begin
         item = ahb_transaction::type_id::create("item");
         item.htrans = new[1];
         item.haddr = new[1];
@@ -83,7 +84,7 @@ class ahb_slave_monitor extends uvm_monitor;
               item.hready = vif.s_cb.hready;
               item.hresp = resp_t'(vif.s_cb.hresp);
               item.hrdata = vif.s_cb.hrdata;
-              item.id = vif.s_cb.hmaster;
+              item.id = agent_config.agent_id;
           end
           @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
           mbx.put(item);

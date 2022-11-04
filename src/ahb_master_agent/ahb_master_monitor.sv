@@ -61,11 +61,13 @@ class ahb_master_monitor extends uvm_monitor;
 
         forever begin
             
-            #1ns;
+            //#1ns;
             // //@(vif.m_cb iff(vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset));
             // while(!(vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset)) @vif.m_cb;
-            if ((vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset)) begin
-                if (vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ) begin
+            // @(vif.hclk iff(vif.hready && vif.hgrant && vif.hreset))
+            // if ((vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset)) begin
+                #1;
+                if (vif.htrans == NONSEQ || vif.htrans == SEQ && vif.hreset == 1 ) begin
                     item = ahb_transaction::type_id::create("item");
                     item.htrans = new[1];
                     item.haddr = new[1];
@@ -92,7 +94,7 @@ class ahb_master_monitor extends uvm_monitor;
                 //#1ns;
                 @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
                 mbx.put(item);
-            end
+            //end
             end
             
         end
@@ -110,7 +112,8 @@ class ahb_master_monitor extends uvm_monitor;
                 item.hready = vif.m_cb.hready;
             end
 
-            `uvm_info(get_type_name(), "Item written to analysis port.", UVM_DEBUG)
+            `uvm_info(get_type_name(), $sformatf("item is : %s ", item.convert2string()), UVM_MEDIUM)
+
             item_collect_port.write(item);
         end
     endtask
