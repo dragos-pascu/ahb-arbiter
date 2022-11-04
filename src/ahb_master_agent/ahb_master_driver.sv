@@ -86,7 +86,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                 end
 
                 `uvm_info(get_type_name(), $sformatf( "hgrant este:  %d \n",vif.m_cb.hgrant), UVM_MEDIUM);
-                                `uvm_info(get_type_name(), $sformatf( "hready este:  %d \n",vif.m_cb.hready), UVM_MEDIUM);
+                `uvm_info(get_type_name(), $sformatf( "hready este:  %d \n",vif.m_cb.hready), UVM_MEDIUM);
 
                 `uvm_info(get_type_name(), $sformatf( "hreset este:  %d \n",vif.hreset), UVM_MEDIUM);
 

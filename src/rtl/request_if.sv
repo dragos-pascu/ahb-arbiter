@@ -12,8 +12,8 @@ interface request_if(input hclk, input hreset);
 
     clocking req_cb @(posedge hclk);
 
-        output hgrant,hmaster ,hmastlock; 
-        input hbusreq , hlock;
+        //output hgrant,hmaster ,hmastlock; 
+        input hbusreq , hlock, hgrant,hmaster ,hmastlock;
     endclocking
 
     /*Only one hgrant can be asserted on the bus at a time*/
