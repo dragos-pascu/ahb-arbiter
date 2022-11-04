@@ -51,9 +51,12 @@ module top(
     end
     
     initial begin
+    reset <=1;
+    #10ns;
     reset <= 0;
-    #5ns
+    #15ns
     reset <= 1;
+
     // forever begin
     //     automatic int ticks_before_reset = $urandom_range(10, 100);
     //     automatic int reset_ticks = $urandom_range(1, 10);

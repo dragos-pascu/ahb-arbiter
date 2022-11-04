@@ -40,33 +40,54 @@ class ahb_scoreboard extends uvm_scoreboard;
     endfunction
 
     function void write_predictor(ahb_transaction master_item);
-        `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_HIGH);
-        expected_transactions[master_item.id].push_back(master_item);
-        predictor_transactions++;
+        int i;
+        // if (master_item.haddr[0]) begin
+        //     pass
+        // end
+        
+        for (i=0; i<slave_number; ++i) begin
+            if((master_item.haddr[0] >= slave_low_address[i]) && (master_item.haddr[0] <= slave_high_address[i] )) begin
+                expected_transactions[i].push_back(master_item);
+                predictor_transactions++;
+                `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_MEDIUM);
+
+                break;
+            end     
+        end
+        if (i>=slave_number) begin
+            `uvm_info(get_type_name(),$sformatf("Unmaped transaction not to be matched, haddr: %h",master_item.haddr[0]),UVM_MEDIUM);
+
+        end
+
+
+        
     endfunction
 
     function void write_evaluator(ahb_transaction slave_item);
         `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_HIGH);
-        
-        if (expected_transactions[slave_item.id].size == 0) begin
-            `uvm_error(get_type_name(),"Queue is empty")
-        end else begin
-            temp_tx1 = ahb_transaction::type_id::create("temp_tx1");
-            temp_tx1 =  expected_transactions[slave_item.id].pop_front();
-            if (slave_item.compare(temp_tx1)) begin
-            match++;
-            coverage_port.write(temp_tx1);
-            end
-            else begin
-                
-                mismatch++;
-                `uvm_error(get_type_name(),"Mismatch : ")
-                `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_tx1.convert2string()));
-                `uvm_error(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()));
+        fork 
+            begin
+                #1;
+                if (expected_transactions[slave_item.id].size == 0) begin
+                    `uvm_error(get_type_name(),"Queue is empty")
+                end else begin
+                    temp_tx1 = ahb_transaction::type_id::create("temp_tx1");
+                    temp_tx1 =  expected_transactions[slave_item.id].pop_front();
+                    if (slave_item.compare(temp_tx1)) begin
+                    match++;
+                    coverage_port.write(temp_tx1);
+                    end
+                    else begin
 
+                        mismatch++;
+                        `uvm_error(get_type_name(),"Mismatch : ")
+                        `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_tx1.convert2string()));
+                        `uvm_error(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()));
+
+                    end
+                end
             end
-        end
-        
+        join_none
         evaluator_transactions++;
     endfunction
 

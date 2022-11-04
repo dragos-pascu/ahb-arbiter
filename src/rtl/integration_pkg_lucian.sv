@@ -5,7 +5,7 @@ timeunit 1ns/1ns;
 
 parameter master_number=9;
 parameter slave_number=4;
-parameter size_out=3;
+parameter size_out=4; 
 parameter size_out_s=3;
 parameter number_trans = 4; //numarul de secvente pentru un master
                                      //   0    1    2    3      4     5     6    7     8      9    10

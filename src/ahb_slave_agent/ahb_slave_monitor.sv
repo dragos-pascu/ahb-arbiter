@@ -65,10 +65,10 @@ class ahb_slave_monitor extends uvm_monitor;
         ahb_transaction item;
         forever begin
         
-        #1;
         //while(!(vif.hready && vif.hsel && vif.hreset)) @vif.s_cb;
 
-        if (vif.htrans == NONSEQ || vif.htrans == SEQ && vif.hsel == 1 && vif.hready == 1 && vif.hreset == 1) begin
+        if ( ( vif.htrans == NONSEQ || vif.htrans == SEQ ) && vif.hsel == 1 && vif.hready == 1 && vif.hreset == 1) begin
+            `uvm_info(get_type_name(), $sformatf("hsel is : \n %d",vif.hsel), UVM_MEDIUM);
         item = ahb_transaction::type_id::create("item");
         item.htrans = new[1];
         item.haddr = new[1];
@@ -88,6 +88,8 @@ class ahb_slave_monitor extends uvm_monitor;
           end
           @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
           mbx.put(item);
+        end else begin
+            @vif.s_cb;
         end
         end
     endtask
@@ -106,7 +108,7 @@ class ahb_slave_monitor extends uvm_monitor;
             end
 
  
-            `uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_DEBUG);
+            `uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_MEDIUM);
             m_req_port.write(item);
             
         end

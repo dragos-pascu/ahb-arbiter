@@ -67,7 +67,7 @@ class ahb_master_monitor extends uvm_monitor;
             // @(vif.hclk iff(vif.hready && vif.hgrant && vif.hreset))
             // if ((vif.m_cb.hready && vif.m_cb.hgrant && vif.hreset)) begin
                 #1;
-                if (vif.htrans == NONSEQ || vif.htrans == SEQ && vif.hreset == 1 ) begin
+                if (vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ ) begin
                     item = ahb_transaction::type_id::create("item");
                     item.htrans = new[1];
                     item.haddr = new[1];
@@ -112,7 +112,7 @@ class ahb_master_monitor extends uvm_monitor;
                 item.hready = vif.m_cb.hready;
             end
 
-            `uvm_info(get_type_name(), $sformatf("item is : %s ", item.convert2string()), UVM_MEDIUM)
+            `uvm_info(get_type_name(), $sformatf("item from master_monitor is : %s ", item.convert2string()), UVM_MEDIUM)
 
             item_collect_port.write(item);
         end
