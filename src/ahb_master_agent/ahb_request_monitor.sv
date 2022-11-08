@@ -30,14 +30,18 @@ class ahb_request_monitor extends uvm_monitor;
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
         `uvm_info(get_type_name(), "Request monitor run phase.", UVM_MEDIUM)
-        wait(vif.hreset==1)
-        fork
+        repeat(2)   @vif.req_cb; //exit unknown state
+        forever begin
+            wait(vif.hreset==1)
+            fork
         
             send_request();
             reset_monitor();
         
-        join_any
-        disable fork;
+            join_any
+            disable fork;
+        end
+        
             
     endtask
 

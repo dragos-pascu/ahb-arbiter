@@ -5,17 +5,12 @@ class request_scoreboard extends uvm_scoreboard;
     `uvm_analysis_imp_decl(_evaluator)
     `uvm_analysis_imp_decl(_request_port)
 
-    // uvm_analysis_imp_predictor #(ahb_request,request_scoreboard) req_collect_predictor;
     uvm_tlm_analysis_fifo #(ahb_request) analysis_fifo[master_number];
-    // uvm_analysis_imp_evaluator #(ahb_request,request_scoreboard) req_collect_evaluator;
 
     //ap for coverage
     uvm_analysis_port #(ahb_request) coverage_port;
 
 
-
-    // ahb_transaction expected_response[master_number][$];
-    // ahb_transaction actual_response[master_number][$];
     ahb_request requests_array[master_number];
 
     bit busreq_map[master_number];
@@ -25,8 +20,7 @@ class request_scoreboard extends uvm_scoreboard;
 
     function new(string name = "request_scoreboard", uvm_component parent);
         super.new(name, parent);
-        // req_collect_predictor = new("req_collect_predictor",this);
-        // req_collect_evaluator =  new("req_collect_evaluator",this);
+        
         coverage_port = new("coverage_port",this);
 
         for (int i=0; i<master_number; ++i) begin
