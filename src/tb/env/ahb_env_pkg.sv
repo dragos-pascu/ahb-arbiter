@@ -8,6 +8,7 @@ package ahb_env_pkg;
     import integration_pkg::*;
     import master_pkg::*;
     import slave_pkg::*;
+    import reset_pkg::*;
     
     `include "env_config.sv"
     `include "ahb_scoreboard.sv"

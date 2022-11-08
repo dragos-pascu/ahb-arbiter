@@ -46,6 +46,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     endtask
 
     virtual task run_phase(uvm_phase phase);
+        repeat(2) @vif.m_cb;
         forever begin
             initialize();
             wait(vif.hreset==1);
@@ -68,7 +69,8 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     task address_phase();
         forever begin
             //dont drive when reset is 0
-            @(vif.m_cb iff (vif.hreset))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+            while (!vif.hreset) @vif.m_cb;
+
             seq_item_port.get(req);
             req.id = agent_config.agent_id;
             
@@ -76,17 +78,23 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             vif.m_cb.hbusreq <= req.hbusreq;
             vif.m_cb.hlock <= req.hlock;
             
+            
             `uvm_info(get_type_name(), $sformatf("Driver req : \n %s",req.convert2string()),UVM_MEDIUM);
 
             haddr_index = 0 ;
             for (int i=0; i<req.htrans.size(); ++i) begin
 
-                
+                //request bus
+                vif.m_cb.hbusreq <= req.hbusreq;
+                vif.m_cb.hlock <= req.hlock;
+
                 //wait for bus to be granted
                 while (!(vif.m_cb.hgrant && vif.m_cb.hready && vif.hreset)) begin
                     vif.m_cb.htrans <= IDLE;
                     @vif.m_cb; 
                 end
+
+                
 
                 if(req.htrans[i] == NONSEQ || req.htrans[i] == SEQ) begin
 

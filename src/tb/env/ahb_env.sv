@@ -8,6 +8,9 @@ class ahb_env extends uvm_env;
 
     ahb_master_agent m_agent[master_number];
     ahb_slave_agent s_agent[slave_number];
+
+    reset_agent reset_agent_h;
+
     ahb_scoreboard scoreboard_h;
 
     request_scoreboard req_scoreboard_h;
@@ -33,6 +36,8 @@ class ahb_env extends uvm_env;
         ahb_coverage_h = ahb_coverage::type_id::create("coverage_h",this);
         arbitration_coverage_h = arbitration_coverage::type_id::create("arbitration_coverage_h",this);
 
+        reset_agent_h = reset_agent::type_id::create("reset_agent_h",this);
+
         if(!uvm_config_db#(env_config)::get(this, "", "env_config", env_cfg))
                     `uvm_fatal(get_full_name(), "Can`t get env_config from db")
 
@@ -50,7 +55,7 @@ class ahb_env extends uvm_env;
             env_cfg.magt_cfg[i] = magt_cfg[i];
             
             uvm_config_db#(ahb_magent_config)::set(null, $sformatf("master[%0d]", i), "ahb_magent_config", env_cfg.magt_cfg[i]);
-     
+            
         end
 
         //create slaves and config items

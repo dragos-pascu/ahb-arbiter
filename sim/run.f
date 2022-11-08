@@ -15,7 +15,7 @@
 -svseed random
 
 
-+UVM_VERBOSITY=UVM_HIGH
++UVM_VERBOSITY=UVM_MEDIUM
 //+UVM_PHASE_TRACE
 //+UVM_OBJECTION_TRACE
 
@@ -42,6 +42,7 @@
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent
+-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/
 -incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tests
@@ -50,6 +51,7 @@
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/integration_pkg_lucian.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/master_pkg.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/slave_pkg.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent/reset_pkg.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_env_pkg.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tests/tests_pkg.sv
 
