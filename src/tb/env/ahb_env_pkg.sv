@@ -11,7 +11,6 @@ package ahb_env_pkg;
     
     `include "env_config.sv"
     `include "ahb_scoreboard.sv"
-    //`include "ahb_scoreboard1.sv"
 
     `include "request_scoreboard.sv"
 

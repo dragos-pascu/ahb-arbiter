@@ -12,8 +12,7 @@ class ahb_scoreboard extends uvm_scoreboard;
     uvm_analysis_port #(ahb_transaction) coverage_port;
 
     
-    ahb_transaction expected_transactions[master_number][$];
-    ahb_transaction actual_transactions[master_number][$];
+    ahb_transaction expected_transactions[slave_number][$];
 
 
     ahb_transaction expected_tx;
@@ -41,22 +40,20 @@ class ahb_scoreboard extends uvm_scoreboard;
 
     function void write_predictor(ahb_transaction master_item);
         int i;
-        // if (master_item.haddr[0]) begin
-        //     pass
-        // end
         
         for (i=0; i<slave_number; ++i) begin
             if((master_item.haddr[0] >= slave_low_address[i]) && (master_item.haddr[0] <= slave_high_address[i] )) begin
                 expected_transactions[i].push_back(master_item);
                 predictor_transactions++;
-                `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_MEDIUM);
+                `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_DEBUG);
 
                 break;
             end     
         end
         if (i>=slave_number) begin
             `uvm_info(get_type_name(),$sformatf("Unmaped transaction not to be matched, haddr: %h",master_item.haddr[0]),UVM_MEDIUM);
-
+            
+            //could implement a default slave here.
         end
 
 
@@ -64,7 +61,7 @@ class ahb_scoreboard extends uvm_scoreboard;
     endfunction
 
     function void write_evaluator(ahb_transaction slave_item);
-        `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_HIGH);
+        `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_DEBUG);
         fork 
             begin
                 #1;
