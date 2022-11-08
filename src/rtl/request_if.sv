@@ -7,7 +7,7 @@ interface request_if(input hclk, input hreset);
 
     //outputs from arbiter
     logic[3:0] hmaster;
-    logic hgrant;
+    logic hgrant; 
     logic hmastlock;  
 
     clocking req_cb @(posedge hclk);

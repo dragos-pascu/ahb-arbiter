@@ -51,14 +51,16 @@ class ahb_request_monitor extends uvm_monitor;
     ahb_request request_item;
         forever begin
                 
-            while (!vif.hreset) @vif.req_cb;;
+            while (!vif.hreset) @vif.req_cb;
              
             request_item = ahb_request::type_id::create("request_item");
-            @vif.req_cb;
             request_item.hbusreq = vif.req_cb.hbusreq;
             request_item.hlock = vif.req_cb.hlock;
             request_item.id = agent_config.agent_id;
             request_collect_port.write(request_item);
+
+            @vif.req_cb;
+
 
         end
 
