@@ -9,6 +9,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     mailbox mbx = new();
     int haddr_index=0;
     int was_busy = 0;
+    int prev_grant = master_number-1;
 
     function new(string name = "ahb_master_driver", uvm_component parent);
         super.new(name, parent);

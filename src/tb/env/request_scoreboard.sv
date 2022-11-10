@@ -1,15 +1,18 @@
 class request_scoreboard extends uvm_scoreboard;
     
     `uvm_component_utils(request_scoreboard)
-    `uvm_analysis_imp_decl(_predictor)
-    `uvm_analysis_imp_decl(_evaluator)
     `uvm_analysis_imp_decl(_request_port)
 
     uvm_tlm_analysis_fifo #(ahb_request) analysis_fifo[master_number];
+    uvm_tlm_analysis_fifo #(ahb_request) response;
 
+    int match_nr  = 0;
+    int mismatches =0;
     //ap for coverage
     uvm_analysis_port #(ahb_request) coverage_port;
-
+    
+    ahb_request expected_transactions[$];
+    ahb_request predicted_request;
 
     ahb_request requests_array[master_number];
 
@@ -17,6 +20,7 @@ class request_scoreboard extends uvm_scoreboard;
     bit hlock_map[master_number];
     bit req_and_lock[master_number];
 
+    int previous_grant = master_number - 1;
 
     function new(string name = "request_scoreboard", uvm_component parent);
         super.new(name, parent);
@@ -42,7 +46,14 @@ class request_scoreboard extends uvm_scoreboard;
 
         receive_requests();
         // block the execution and get requests for all masters
+        
+        fork
         predictor();
+        evaluator();
+        join    
+        
+        
+        
 
     end
 
@@ -59,15 +70,14 @@ class request_scoreboard extends uvm_scoreboard;
     endtask
 
     function void predictor();
-    for (int i=0; i<master_number; ++i) begin
-        `uvm_info(get_type_name(), $sformatf("Request from  master[%0d] : \n %s", requests_array[i].id,requests_array[i].convert2string()), UVM_HIGH);
-
+        for (int i=0; i<master_number; ++i) begin
+            `uvm_info(get_type_name(), $sformatf("Request from  master[%0d] : \n %s", requests_array[i].id,requests_array[i].convert2string()), UVM_DEBUG);
         end 
         store_in_map();
-        get_expected_grant();
+        predict_grant();
         clear_maps();
 
-         `uvm_info(get_type_name(),"///////////////////", UVM_HIGH);
+         `uvm_info(get_type_name(),"///////////////////", UVM_DEBUG);
     endfunction
     
     function void store_in_map();
@@ -80,12 +90,13 @@ class request_scoreboard extends uvm_scoreboard;
             end
             req_and_lock[requests_array[i].id] = busreq_map[requests_array[i].id] & hlock_map[requests_array[i].id];
         end 
-        `uvm_info(get_type_name(), $sformatf("busreq_map : %p \n ", busreq_map), UVM_HIGH);
-        `uvm_info(get_type_name(), $sformatf("hlock_map : %p \n ", hlock_map), UVM_HIGH);
-        `uvm_info(get_type_name(), $sformatf("req_and_lock : %p \n ", req_and_lock), UVM_HIGH);
+        `uvm_info(get_type_name(), $sformatf("busreq_map : %p \n ", busreq_map), UVM_DEBUG);
+        `uvm_info(get_type_name(), $sformatf("hlock_map : %p \n ", hlock_map), UVM_DEBUG);
+        //`uvm_info(get_type_name(), $sformatf("req_and_lock : %p \n ", req_and_lock), UVM_HIGH);
 
 
     endfunction
+
 
     function void clear_maps();
         for (int i=0; i<master_number; ++i) begin
@@ -94,21 +105,98 @@ class request_scoreboard extends uvm_scoreboard;
                 req_and_lock[requests_array[i].id] = 0;
             
         end 
-        `uvm_info(get_type_name(), $sformatf("clear_maps FINISHED \n "), UVM_HIGH);
-        `uvm_info(get_type_name(), $sformatf("busreq_map : %p \n ", busreq_map), UVM_HIGH);
-        `uvm_info(get_type_name(), $sformatf("hlock_map : %p \n ", hlock_map), UVM_HIGH);
-        `uvm_info(get_type_name(), $sformatf("req_and_lock : %p \n ", req_and_lock), UVM_HIGH);
+        `uvm_info(get_type_name(), $sformatf("clear_maps FINISHED \n "), UVM_DEBUG);
+        `uvm_info(get_type_name(), $sformatf("busreq_map : %p \n ", busreq_map), UVM_DEBUG);
+        `uvm_info(get_type_name(), $sformatf("hlock_map : %p \n ", hlock_map), UVM_DEBUG);
+        `uvm_info(get_type_name(), $sformatf("req_and_lock : %p \n ", req_and_lock), UVM_DEBUG);
 
 
     endfunction
 
-    function void get_expected_grant();
-        int highest_priority_master;
-        // for (int i=0; i<master_number; ++i) begin
-        //     // if (busreq_map) begin
-        //     //     pass
-        //     // end
+    function void predict_grant();
+
+        int highest_priority_master = master_number - 1;
+        for (int i=0; i<master_number; ++i) begin
+            if (busreq_map[i] == 1 ) begin
+                if( highest_priority_master > i )
+                    highest_priority_master = i;
+            end
+        end
+        predicted_request = ahb_request::type_id::create("predicted_request");
+        predicted_request.grant_number = highest_priority_master;
+        expected_transactions.push_back(predicted_request);
+        `uvm_info(get_type_name(), $sformatf("Grantul curent este : %d \n ", highest_priority_master), UVM_HIGH);
+
+
+        
+
+    endfunction
+
+    task evaluator();
+        
+        ahb_request temp_predicted = expected_transactions.pop_front();
+        ahb_request temp_actual = ahb_request::type_id::create("temp_actual");
+
+        response.get(temp_actual);
+        if (temp_actual.grant_number == temp_predicted.grant_number) begin
+            match_nr++;
+        end else begin
+            mismatches++;
+            `uvm_info(get_type_name(), $sformatf("Request scoreboard received an unmatched : %s",temp_predicted.convert2string()), UVM_MEDIUM);
+        end
+
+    endtask
+
+    // function void predict_grant();
+    //     int highest_priority_master = master_number - 1;
+    //     for (int i=0; i<master_number; ++i) begin
+    //         if (busreq_map[i] == 1 ) begin
+    //             if( highest_priority_master > i )
+    //                 highest_priority_master = i;
+    //         end
+    //     end
+    //     if (highest_priority_master < previous_grant) begin
+    //         if (busreq_map[previous_grant]) begin
+    //             if (hlock_map[previous_grant]) begin
+    //                 previous_grant = previous_grant;
+    //                 //send packet with grant being the same 
+    //                 `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_grant), UVM_HIGH);
+
+    //             end else begin
+    //                 //send packet with grant being highest_priority_master
+    //                 previous_grant = highest_priority_master;
+    //                 `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_grant), UVM_HIGH);
+
+    //             end
+                
+    //         end else begin
+    //             if (hlock_map[previous_grant]) begin
+    //                 previous_grant = previous_grant;
+    //                 `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_grant), UVM_HIGH);
+    //             end
+    //             else begin
+    //                 previous_grant = highest_priority_master;
+    //                 `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_grant), UVM_HIGH);
+    //             end
+                    
+
+
+    //         end 
+
+    //     end
+    // endfunction
+    virtual function void check_phase(uvm_phase phase);
+        
+
+        // if (predictor_transactions!=evaluator_transactions) begin
+        //     `uvm_error(get_type_name(),$sformatf(" Number of master/slave transactions mismatch; nr of master_tx = [%0d] , nr of slave_tx = [%0d] ",predictor_transactions, evaluator_transactions));
+        // end else begin
+        //     `uvm_info(get_type_name(),$sformatf("Scb recived %0d transactions .",predictor_transactions),UVM_MEDIUM);
         // end
+
+        `uvm_info(get_type_name(),$sformatf("Matches: %0d ",match_nr),UVM_MEDIUM);
+        `uvm_info(get_type_name(),$sformatf("Mismatches: %0d ",mismatches),UVM_MEDIUM);
+
     endfunction
 
 endclass

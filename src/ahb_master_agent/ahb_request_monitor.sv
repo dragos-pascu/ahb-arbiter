@@ -1,6 +1,7 @@
 class ahb_request_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_request_monitor)
     uvm_analysis_port #(ahb_request) request_collect_port;
+    uvm_analysis_port #(ahb_request) response_collect_port;
 
     ahb_magent_config agent_config;
     virtual request_if vif;
@@ -53,6 +54,7 @@ class ahb_request_monitor extends uvm_monitor;
 
     task send_request();
     ahb_request request_item;
+    ahb_request response_item;
         forever begin
                 
             while (!vif.hreset) @vif.req_cb;
@@ -65,6 +67,13 @@ class ahb_request_monitor extends uvm_monitor;
 
             @vif.req_cb;
 
+            if (vif.req_cb.hgrant) begin
+                response_item = ahb_request::type_id::create("response_item");
+                request_item.grant_number = agent_config.agent_id;
+                response_collect_port.write(request_item);
+            end
+            
+            
 
         end
 
