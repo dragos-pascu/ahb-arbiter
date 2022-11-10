@@ -33,12 +33,12 @@ class reset_driver extends uvm_driver#(reset_tx);
     task reset();
         if(req.hreset)
         begin
-                vif.hreset <= 1'b1;
+                //vif.hreset <= 1'b1;
                 @(vif.m_cb);
         end
         else
         begin
-                vif.hreset <= 1'b0;
+                //vif.hreset <= 1'b0;
                 @(vif.m_cb);
         end
     endtask

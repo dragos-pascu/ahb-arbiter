@@ -46,6 +46,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     endtask
 
     virtual task run_phase(uvm_phase phase);
+        initialize();
         repeat(2) @vif.m_cb;
         forever begin
             initialize();
