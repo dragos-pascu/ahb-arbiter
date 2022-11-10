@@ -46,7 +46,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     endtask
 
     virtual task run_phase(uvm_phase phase);
-        initialize();
+    initialize();
         repeat(2) @vif.m_cb;
         forever begin
             initialize();
@@ -74,20 +74,21 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
             seq_item_port.get(req);
             req.id = agent_config.agent_id;
-            
-            //request bus
-            vif.m_cb.hbusreq <= req.hbusreq;
-            vif.m_cb.hlock <= req.hlock;
-            
-            
+                      
             `uvm_info(get_type_name(), $sformatf("Driver req : \n %s",req.convert2string()),UVM_MEDIUM);
 
             haddr_index = 0 ;
             for (int i=0; i<req.htrans.size(); ++i) begin
 
-                //request bus
-                vif.m_cb.hbusreq <= req.hbusreq;
-                vif.m_cb.hlock <= req.hlock;
+                //wait(vif.m_cb.hgrant & vif.m_cb.hready); expresia se executa in timp 0 daca expresia este true
+                if (haddr_index == req.haddr.size()-1) begin
+                        vif.m_cb.hbusreq <= 0;  
+                        vif.m_cb.hlock <= 0;                  
+                end else if (haddr_index < req.haddr.size()-1) begin
+                            //request bus
+                        vif.m_cb.hbusreq <= req.hbusreq;
+                        vif.m_cb.hlock <= req.hlock;
+                end
 
                 //wait for bus to be granted
                 while (!(vif.m_cb.hgrant && vif.m_cb.hready && vif.hreset)) begin
@@ -122,11 +123,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                     
                 end
                 
-                //wait(vif.m_cb.hgrant & vif.m_cb.hready); expresia se executa in timp 0 daca expresia este true
-                if (haddr_index == req.haddr.size()-1) begin
-                        vif.m_cb.hbusreq <= 0;  
-                        vif.m_cb.hlock <= 0;                  
-                end
+
 
                 if(!was_busy) begin
                     @(vif.m_cb iff(vif.m_cb.hready && vif.hreset)); //executes at least while , eq is do while loop
