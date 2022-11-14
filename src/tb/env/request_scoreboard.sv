@@ -139,27 +139,27 @@ class request_scoreboard extends uvm_scoreboard;
         ahb_request temp_predicted;
         ahb_request temp_actual; //= ahb_request::type_id::create("temp_actual");
         forever begin 
-                `uvm_info(get_type_name(), $sformatf("Salut "), UVM_MEDIUM);
 
             fork : fork_evaluator
             for ( int  i=0; i<master_number; ++i) begin
                 automatic int j = i;
                 response_fifo[j].get(temp_actual);
             end
-            join_any
-            disable fork_evaluator;
-    
-            `uvm_info(get_type_name(), $sformatf("Hello"), UVM_MEDIUM);
-
+            join
+            // fork_evaluator;
 
             temp_predicted = predicted_transactions.pop_front();
-    
+
+            `uvm_info(get_type_name(), $sformatf("Debug 1 "), UVM_MEDIUM);
+
 
             if (temp_actual.grant_number == temp_predicted.grant_number) begin
                 match_nr++;
             end else begin
                 mismatches++;
-                `uvm_info(get_type_name(), $sformatf("Bus request was unmatched : %s",temp_predicted.convert2string()), UVM_MEDIUM);
+                `uvm_info(get_type_name(), $sformatf("Bus request was unmatched "), UVM_MEDIUM);
+                `uvm_info(get_type_name(), $sformatf("Predicted response : %s",temp_predicted.convert2string()), UVM_MEDIUM);
+                `uvm_info(get_type_name(), $sformatf("Actual response : %s",temp_actual.convert2string()), UVM_MEDIUM);
             end
 
 
