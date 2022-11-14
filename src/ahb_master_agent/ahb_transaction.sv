@@ -98,8 +98,10 @@ class ahb_transaction extends uvm_sequence_item;
         // }
 
         constraint requests{
-                hlock == 1;
-                hbusreq == 1;
+                // hlock == 1;
+                // hbusreq == 1;
+                hbusreq dist {0:/2,1:/1};
+                hlock dist {0:/2,1:/1};
         }
 
 

@@ -21,6 +21,7 @@ class request_scoreboard extends uvm_scoreboard;
     bit req_and_lock[master_number];
 
     int previous_grant = master_number - 1;
+    int response_ready;
 
     function new(string name = "request_scoreboard", uvm_component parent);
         super.new(name, parent);
@@ -44,22 +45,18 @@ class request_scoreboard extends uvm_scoreboard;
     forever begin
         
 
-        receive_requests();
         // block the execution and get requests for all masters
         
-        fork
+        
         predictor();
+        //#5;
         evaluator();
-        join    
-        
-        
-        
 
     end
 
     endtask
     
-    task receive_requests();
+    task predictor();
         fork
         for ( int  i=0; i<master_number; ++i) begin
             automatic int j = i;
@@ -67,9 +64,8 @@ class request_scoreboard extends uvm_scoreboard;
             analysis_fifo[j].get(requests_array[j]);
         end
         join
-    endtask
 
-    function void predictor();
+        
         for (int i=0; i<master_number; ++i) begin
             `uvm_info(get_type_name(), $sformatf("Request from  master[%0d] : \n %s", requests_array[i].id,requests_array[i].convert2string()), UVM_DEBUG);
         end 
@@ -78,7 +74,8 @@ class request_scoreboard extends uvm_scoreboard;
         clear_maps();
 
          `uvm_info(get_type_name(),"///////////////////", UVM_DEBUG);
-    endfunction
+    endtask
+
     
     function void store_in_map();
         for (int i=0; i<master_number; ++i) begin
@@ -124,27 +121,28 @@ class request_scoreboard extends uvm_scoreboard;
         end
         predicted_request = ahb_request::type_id::create("predicted_request");
         predicted_request.grant_number = highest_priority_master;
-        expected_transactions.push_back(predicted_request);
+        expected_transactions.push_front(predicted_request);
+        `uvm_info(get_type_name(), $sformatf("Grantul curent este : %s \n ", predicted_request.convert2string()), UVM_HIGH);
         `uvm_info(get_type_name(), $sformatf("Grantul curent este : %d \n ", highest_priority_master), UVM_HIGH);
-
-
         
 
     endfunction
 
     task evaluator();
-        
-        ahb_request temp_predicted = expected_transactions.pop_front();
-        ahb_request temp_actual = ahb_request::type_id::create("temp_actual");
-
+        ahb_request temp_predicted;
+        ahb_request temp_actual; //= ahb_request::type_id::create("temp_actual");
         response.get(temp_actual);
+
+
+        temp_predicted = expected_transactions.pop_front();
+ 
+        
         if (temp_actual.grant_number == temp_predicted.grant_number) begin
             match_nr++;
         end else begin
             mismatches++;
             `uvm_info(get_type_name(), $sformatf("Request scoreboard received an unmatched : %s",temp_predicted.convert2string()), UVM_MEDIUM);
         end
-
     endtask
 
     // function void predict_grant();

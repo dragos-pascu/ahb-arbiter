@@ -69,8 +69,8 @@ class ahb_request_monitor extends uvm_monitor;
 
             if (vif.req_cb.hgrant) begin
                 response_item = ahb_request::type_id::create("response_item");
-                request_item.grant_number = agent_config.agent_id;
-                response_collect_port.write(request_item);
+                response_item.grant_number = agent_config.agent_id;
+                response_collect_port.write(response_item);
             end
             
             
