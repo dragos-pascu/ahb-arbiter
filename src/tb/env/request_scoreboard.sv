@@ -17,6 +17,7 @@ class request_scoreboard extends uvm_scoreboard;
     ahb_request predicted_response;
 
     ahb_request requests_array[master_number];
+    ahb_request response_array[master_number];
 
     bit busreq_map[master_number];
     bit hlock_map[master_number];
@@ -143,17 +144,18 @@ class request_scoreboard extends uvm_scoreboard;
             fork : fork_evaluator
             for ( int  i=0; i<master_number; ++i) begin
                 automatic int j = i;
-                response_fifo[j].get(temp_actual);
+                response_fifo[j].get(response_array[j]);
+                //response_fifo[j].get(temp_actual);
             end
             join
-            // fork_evaluator;
+            //disable fork_evaluator;
 
             temp_predicted = predicted_transactions.pop_front();
 
             `uvm_info(get_type_name(), $sformatf("Debug 1 "), UVM_MEDIUM);
 
 
-            if (temp_actual.grant_number == temp_predicted.grant_number) begin
+            if (response_array[temp_predicted.grant_number].hgrant == 1) begin
                 match_nr++;
             end else begin
                 mismatches++;
