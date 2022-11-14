@@ -15,7 +15,7 @@ class ahb_request_monitor extends uvm_monitor;
         super.build_phase(phase);
 
         request_collect_port = new("request_collect_port",this);
-
+        response_collect_port = new("response_collect_port",this);
 
         if(!uvm_config_db #(ahb_magent_config)::get(null,get_parent().get_name(), "ahb_magent_config", agent_config)) 
 
@@ -60,20 +60,19 @@ class ahb_request_monitor extends uvm_monitor;
             while (!vif.hreset) @vif.req_cb;
              
             request_item = ahb_request::type_id::create("request_item");
+
             request_item.hbusreq = vif.req_cb.hbusreq;
             request_item.hlock = vif.req_cb.hlock;
             request_item.id = agent_config.agent_id;
             request_collect_port.write(request_item);
 
-            @vif.req_cb;
-            
             `uvm_info(get_type_name(), $sformatf("HGRANT : %d",vif.req_cb.hgrant), UVM_MEDIUM);
             if (vif.req_cb.hgrant) begin
-                response_item = ahb_request::type_id::create("response_item");
                 response_item.grant_number = agent_config.agent_id;
+                response_item = ahb_request::type_id::create("response_item");
+                response_collect_port.write(response_item);
                 `uvm_info(get_type_name(), $sformatf("Write to response port : %s",response_item.convert2string()), UVM_MEDIUM);
 
-                response_collect_port.write(response_item);
             end
             
             

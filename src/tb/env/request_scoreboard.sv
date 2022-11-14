@@ -131,7 +131,6 @@ class request_scoreboard extends uvm_scoreboard;
     task evaluator();
         ahb_request temp_predicted;
         ahb_request temp_actual; //= ahb_request::type_id::create("temp_actual");
-        #1
         response.get(temp_actual);
 
 
