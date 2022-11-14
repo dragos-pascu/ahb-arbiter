@@ -9,7 +9,7 @@ class request_scoreboard extends uvm_scoreboard;
 
 
     int match_nr  = 0;
-    int mismatches =0;
+    int mismatches = 0;
     //ap for coverage
     uvm_analysis_port #(ahb_request) coverage_port;
     
@@ -48,39 +48,38 @@ class request_scoreboard extends uvm_scoreboard;
 
 
     task run_phase(uvm_phase phase);
-    forever begin
-        
 
-        // block the execution and get requests for all masters
-        
         fork
-            predictor();
-            evaluator();
+        predictor();
+        evaluator();
         join
         
-
-    end
 
     endtask
     
     task predictor();
-        fork
-        for ( int  i=0; i<master_number; ++i) begin
-            automatic int j = i;
-            //https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.1d/html/files/tlm1/uvm_tlm_ifs-svh.html#uvm_tlm_if_base#(T1,T2)
-            request_fifo[j].get(requests_array[j]);
+        forever begin
+            
+            fork
+            for ( int  i=0; i<master_number; ++i) begin
+                automatic int j = i;
+                //https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.1d/html/files/tlm1/uvm_tlm_ifs-svh.html#uvm_tlm_if_base#(T1,T2)
+                request_fifo[j].get(requests_array[j]);
+            end
+            join
+
+
+            for (int i=0; i<master_number; ++i) begin
+                `uvm_info(get_type_name(), $sformatf("Request from  master[%0d] : \n %s", requests_array[i].id,requests_array[i].convert2string()), UVM_HIGH);
+            end 
+            store_in_map();
+            predict_grant();
+            clear_maps();
+
+             `uvm_info(get_type_name(),"///////////////////", UVM_DEBUG);
         end
-        join
 
         
-        for (int i=0; i<master_number; ++i) begin
-            `uvm_info(get_type_name(), $sformatf("Request from  master[%0d] : \n %s", requests_array[i].id,requests_array[i].convert2string()), UVM_DEBUG);
-        end 
-        store_in_map();
-        predict_grant();
-        clear_maps();
-
-         `uvm_info(get_type_name(),"///////////////////", UVM_DEBUG);
     endtask
 
     
@@ -139,25 +138,35 @@ class request_scoreboard extends uvm_scoreboard;
     task evaluator();
         ahb_request temp_predicted;
         ahb_request temp_actual; //= ahb_request::type_id::create("temp_actual");
+        forever begin 
+                `uvm_info(get_type_name(), $sformatf("Salut "), UVM_MEDIUM);
 
-        fork
-        for ( int  i=0; i<master_number; ++i) begin
-            automatic int j = i;
-            response_fifo[j].get(temp_actual);
+            fork : fork_evaluator
+            for ( int  i=0; i<master_number; ++i) begin
+                automatic int j = i;
+                response_fifo[j].get(temp_actual);
+            end
+            join_any
+            disable fork_evaluator;
+    
+            `uvm_info(get_type_name(), $sformatf("Hello"), UVM_MEDIUM);
+
+
+            temp_predicted = predicted_transactions.pop_front();
+    
+
+            if (temp_actual.grant_number == temp_predicted.grant_number) begin
+                match_nr++;
+            end else begin
+                mismatches++;
+                `uvm_info(get_type_name(), $sformatf("Bus request was unmatched : %s",temp_predicted.convert2string()), UVM_MEDIUM);
+            end
+
+
         end
-        join_any
-        disable fork;
-
-
-        temp_predicted = predicted_transactions.pop_front();
- 
         
-        if (temp_actual.grant_number == temp_predicted.grant_number) begin
-            match_nr++;
-        end else begin
-            mismatches++;
-            `uvm_info(get_type_name(), $sformatf("Bus request was unmatched : %s",temp_predicted.convert2string()), UVM_MEDIUM);
-        end
+        
+        
     endtask
 
     // function void predict_grant();
@@ -201,12 +210,7 @@ class request_scoreboard extends uvm_scoreboard;
     virtual function void check_phase(uvm_phase phase);
         
 
-        // if (predictor_transactions!=evaluator_transactions) begin
-        //     `uvm_error(get_type_name(),$sformatf(" Number of master/slave transactions mismatch; nr of master_tx = [%0d] , nr of slave_tx = [%0d] ",predictor_transactions, evaluator_transactions));
-        // end else begin
-        //     `uvm_info(get_type_name(),$sformatf("Scb recived %0d transactions .",predictor_transactions),UVM_MEDIUM);
-        // end
-
+        `uvm_info(get_type_name(),$sformatf("BUSREQ SCB: "),UVM_MEDIUM);
         `uvm_info(get_type_name(),$sformatf("Matches: %0d ",match_nr),UVM_MEDIUM);
         `uvm_info(get_type_name(),$sformatf("Mismatches: %0d ",mismatches),UVM_MEDIUM);
 
