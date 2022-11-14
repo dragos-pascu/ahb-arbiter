@@ -31,7 +31,7 @@ class ahb_request_monitor extends uvm_monitor;
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
         `uvm_info(get_type_name(), "Request monitor run phase.", UVM_MEDIUM)
-        repeat(2)   @vif.req_cb; //exit unknown state
+        repeat(4)   @vif.req_cb; //exit unknown state
         forever begin
             wait(vif.hreset==1)
             fork
@@ -66,10 +66,13 @@ class ahb_request_monitor extends uvm_monitor;
             request_collect_port.write(request_item);
 
             @vif.req_cb;
-
+            
+            `uvm_info(get_type_name(), $sformatf("HGRANT : %d",vif.req_cb.hgrant), UVM_MEDIUM);
             if (vif.req_cb.hgrant) begin
                 response_item = ahb_request::type_id::create("response_item");
                 response_item.grant_number = agent_config.agent_id;
+                `uvm_info(get_type_name(), $sformatf("Write to response port : %s",response_item.convert2string()), UVM_MEDIUM);
+
                 response_collect_port.write(response_item);
             end
             

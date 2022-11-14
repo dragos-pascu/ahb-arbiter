@@ -11,8 +11,8 @@ class request_scoreboard extends uvm_scoreboard;
     //ap for coverage
     uvm_analysis_port #(ahb_request) coverage_port;
     
-    ahb_request expected_transactions[$];
-    ahb_request predicted_request;
+    ahb_request predicted_transactions[$];
+    ahb_request predicted_response;
 
     ahb_request requests_array[master_number];
 
@@ -49,7 +49,6 @@ class request_scoreboard extends uvm_scoreboard;
         
         
         predictor();
-        //#5;
         evaluator();
 
     end
@@ -119,29 +118,31 @@ class request_scoreboard extends uvm_scoreboard;
                     highest_priority_master = i;
             end
         end
-        predicted_request = ahb_request::type_id::create("predicted_request");
-        predicted_request.grant_number = highest_priority_master;
-        expected_transactions.push_front(predicted_request);
-        `uvm_info(get_type_name(), $sformatf("Grantul curent este : %s \n ", predicted_request.convert2string()), UVM_HIGH);
-        `uvm_info(get_type_name(), $sformatf("Grantul curent este : %d \n ", highest_priority_master), UVM_HIGH);
+        predicted_response = ahb_request::type_id::create("predicted_response");
+        predicted_response.grant_number = highest_priority_master;
+        //`uvm_info(get_type_name(), $sformatf("Predicted response is : %s \n ", predicted_response.convert2string()), UVM_HIGH);
+        `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", highest_priority_master), UVM_HIGH);
         
+        predicted_transactions.push_front(predicted_response);
+
 
     endfunction
 
     task evaluator();
         ahb_request temp_predicted;
         ahb_request temp_actual; //= ahb_request::type_id::create("temp_actual");
+        #1
         response.get(temp_actual);
 
 
-        temp_predicted = expected_transactions.pop_front();
+        temp_predicted = predicted_transactions.pop_front();
  
         
         if (temp_actual.grant_number == temp_predicted.grant_number) begin
             match_nr++;
         end else begin
             mismatches++;
-            `uvm_info(get_type_name(), $sformatf("Request scoreboard received an unmatched : %s",temp_predicted.convert2string()), UVM_MEDIUM);
+            `uvm_info(get_type_name(), $sformatf("Bus request was unmatched : %s",temp_predicted.convert2string()), UVM_MEDIUM);
         end
     endtask
 
