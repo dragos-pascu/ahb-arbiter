@@ -4,7 +4,9 @@ class request_scoreboard extends uvm_scoreboard;
     `uvm_analysis_imp_decl(_request_port)
 
     uvm_tlm_analysis_fifo #(ahb_request) analysis_fifo[master_number];
-    uvm_tlm_analysis_fifo #(ahb_request) response;
+    //uvm_tlm_analysis_fifo #(ahb_request) response_fifo;
+    uvm_tlm_analysis_fifo #(ahb_request) response_fifo[master_number];
+
 
     int match_nr  = 0;
     int mismatches =0;
@@ -27,9 +29,13 @@ class request_scoreboard extends uvm_scoreboard;
         super.new(name, parent);
         
         coverage_port = new("coverage_port",this);
+        //response_fifo = new("response_fifo",this);
 
         for (int i=0; i<master_number; ++i) begin
             analysis_fifo[i] = new($sformatf("analysis_fifo[%0d]",i),this);
+        end
+        for (int i=0; i<master_number; ++i) begin
+            response_fifo[i] = new($sformatf("response_fifo[%0d]",i),this);
         end
         
     endfunction 
@@ -47,9 +53,11 @@ class request_scoreboard extends uvm_scoreboard;
 
         // block the execution and get requests for all masters
         
+        fork
+            predictor();
+            evaluator();
+        join
         
-        predictor();
-        evaluator();
 
     end
 
@@ -120,7 +128,7 @@ class request_scoreboard extends uvm_scoreboard;
         end
         predicted_response = ahb_request::type_id::create("predicted_response");
         predicted_response.grant_number = highest_priority_master;
-        //`uvm_info(get_type_name(), $sformatf("Predicted response is : %s \n ", predicted_response.convert2string()), UVM_HIGH);
+        //`uvm_info(get_type_name(), $sformatf("Predicted response_fifo is : %s \n ", predicted_response.convert2string()), UVM_HIGH);
         `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", highest_priority_master), UVM_HIGH);
         
         predicted_transactions.push_front(predicted_response);
@@ -131,7 +139,14 @@ class request_scoreboard extends uvm_scoreboard;
     task evaluator();
         ahb_request temp_predicted;
         ahb_request temp_actual; //= ahb_request::type_id::create("temp_actual");
-        response.get(temp_actual);
+
+        fork
+        for ( int  i=0; i<master_number; ++i) begin
+            automatic int j = i;
+            response_fifo[j].get(temp_actual);
+        end
+        join_any
+        disable fork;
 
 
         temp_predicted = predicted_transactions.pop_front();

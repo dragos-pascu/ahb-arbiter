@@ -38,6 +38,7 @@ class ahb_request_monitor extends uvm_monitor;
         
             send_request();
             reset_monitor();
+            send_grant();
         
             join_any
             disable fork;
@@ -54,7 +55,6 @@ class ahb_request_monitor extends uvm_monitor;
 
     task send_request();
     ahb_request request_item;
-    ahb_request response_item;
         forever begin
                 
             while (!vif.hreset) @vif.req_cb;
@@ -65,21 +65,28 @@ class ahb_request_monitor extends uvm_monitor;
             request_item.hlock = vif.req_cb.hlock;
             request_item.id = agent_config.agent_id;
             request_collect_port.write(request_item);
-
-            `uvm_info(get_type_name(), $sformatf("HGRANT : %d",vif.req_cb.hgrant), UVM_MEDIUM);
-            if (vif.req_cb.hgrant) begin
-                response_item.grant_number = agent_config.agent_id;
-                response_item = ahb_request::type_id::create("response_item");
-                response_collect_port.write(response_item);
-                `uvm_info(get_type_name(), $sformatf("Write to response port : %s",response_item.convert2string()), UVM_MEDIUM);
-
-            end
-            
-            
+            @vif.req_cb;
 
         end
 
 
+    endtask
+
+    task send_grant();
+        ahb_request response_item;
+        forever begin
+
+            while (!vif.hreset) @vif.req_cb;
+             if (vif.req_cb.hgrant) begin
+                response_item = ahb_request::type_id::create("response_item");
+                response_item.grant_number = agent_config.agent_id;
+                response_collect_port.write(response_item);
+                `uvm_info(get_type_name(), $sformatf("Write to response port : %s",response_item.convert2string()), UVM_MEDIUM);
+
+            end
+            @vif.req_cb;
+        end
+                   
     endtask
 
 endclass
