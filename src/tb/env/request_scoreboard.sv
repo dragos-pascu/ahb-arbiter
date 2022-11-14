@@ -24,13 +24,11 @@ class request_scoreboard extends uvm_scoreboard;
     bit req_and_lock[master_number];
 
     int previous_grant = master_number - 1;
-    int response_ready;
 
     function new(string name = "request_scoreboard", uvm_component parent);
         super.new(name, parent);
         
         coverage_port = new("coverage_port",this);
-        //response_fifo = new("response_fifo",this);
 
         for (int i=0; i<master_number; ++i) begin
             request_fifo[i] = new($sformatf("request_fifo[%0d]",i),this);
@@ -71,7 +69,7 @@ class request_scoreboard extends uvm_scoreboard;
 
 
             for (int i=0; i<master_number; ++i) begin
-                `uvm_info(get_type_name(), $sformatf("Request from  master[%0d] : \n %s", requests_array[i].id,requests_array[i].convert2string()), UVM_HIGH);
+                `uvm_info(get_type_name(), $sformatf("Request from  master[%0d] : \n %s", requests_array[i].id,requests_array[i].convert2string()), UVM_DEBUG);
             end 
             store_in_map();
             predict_grant();
@@ -145,23 +143,21 @@ class request_scoreboard extends uvm_scoreboard;
             for ( int  i=0; i<master_number; ++i) begin
                 automatic int j = i;
                 response_fifo[j].get(response_array[j]);
-                //response_fifo[j].get(temp_actual);
             end
             join
-            //disable fork_evaluator;
 
             temp_predicted = predicted_transactions.pop_front();
-
-            `uvm_info(get_type_name(), $sformatf("Debug 1 "), UVM_MEDIUM);
 
 
             if (response_array[temp_predicted.grant_number].hgrant == 1) begin
                 match_nr++;
+                //collect coverage
+                coverage_port.write(response_array[temp_predicted.grant_number]);
             end else begin
                 mismatches++;
                 `uvm_info(get_type_name(), $sformatf("Bus request was unmatched "), UVM_MEDIUM);
-                `uvm_info(get_type_name(), $sformatf("Predicted response : %s",temp_predicted.convert2string()), UVM_MEDIUM);
-                `uvm_info(get_type_name(), $sformatf("Actual response : %s",temp_actual.convert2string()), UVM_MEDIUM);
+                `uvm_info(get_type_name(), $sformatf("Predicted response was  : %d",temp_predicted.grant_number), UVM_MEDIUM);
+                `uvm_info(get_type_name(), $sformatf("Actual response : %s", response_array[temp_predicted.grant_number].convert2string()), UVM_MEDIUM);
             end
 
 

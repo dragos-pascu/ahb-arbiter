@@ -12,7 +12,7 @@
 -coverage all
 -covoverwrite
 //-cov_debuglog
--svseed 44
+-svseed random
 
 
 +UVM_VERBOSITY=UVM_HIGH

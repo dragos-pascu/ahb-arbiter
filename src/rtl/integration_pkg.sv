@@ -1,6 +1,8 @@
   `timescale 1ns/1ns
   package integration_pkg;
   
+  parameter[31:0] slave_low_address[] = {'d0,'d32,'d63,'d94,'d126,'d158,'d190,'d222,'d254,'d286,'d318};
+  parameter[31:0] slave_high_address[] = {'d31,'d62,'d93,'d125,'d157,'d189,'d221,'d253,'d285,'d317,'d349};
 
   parameter[31:0] low_addr[] = {'d0,'d32,'d63,'d94,'d126,'d158,'d190,'d222,'d254,'d286,'d318};
   parameter[31:0] high_addr[] = {'d31,'d62,'d93,'d125,'d157,'d189,'d221,'d253,'d285,'d317,'d349};
