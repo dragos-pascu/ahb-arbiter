@@ -3,7 +3,7 @@ class request_scoreboard extends uvm_scoreboard;
     `uvm_component_utils(request_scoreboard)
     `uvm_analysis_imp_decl(_request_port)
 
-    uvm_tlm_analysis_fifo #(ahb_request) analysis_fifo[master_number];
+    uvm_tlm_analysis_fifo #(ahb_request) request_fifo[master_number];
     //uvm_tlm_analysis_fifo #(ahb_request) response_fifo;
     uvm_tlm_analysis_fifo #(ahb_request) response_fifo[master_number];
 
@@ -32,7 +32,7 @@ class request_scoreboard extends uvm_scoreboard;
         //response_fifo = new("response_fifo",this);
 
         for (int i=0; i<master_number; ++i) begin
-            analysis_fifo[i] = new($sformatf("analysis_fifo[%0d]",i),this);
+            request_fifo[i] = new($sformatf("request_fifo[%0d]",i),this);
         end
         for (int i=0; i<master_number; ++i) begin
             response_fifo[i] = new($sformatf("response_fifo[%0d]",i),this);
@@ -68,7 +68,7 @@ class request_scoreboard extends uvm_scoreboard;
         for ( int  i=0; i<master_number; ++i) begin
             automatic int j = i;
             //https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.1d/html/files/tlm1/uvm_tlm_ifs-svh.html#uvm_tlm_if_base#(T1,T2)
-            analysis_fifo[j].get(requests_array[j]);
+            request_fifo[j].get(requests_array[j]);
         end
         join
 
