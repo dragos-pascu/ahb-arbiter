@@ -115,24 +115,24 @@ class request_scoreboard extends uvm_scoreboard;
 
     endfunction
 
-    function void predict_grant();
+    // function void predict_grant();
 
-        int highest_priority_master = master_number - 1;
-        for (int i=0; i<master_number; ++i) begin
-            if (busreq_map[i] == 1 ) begin
-                if( highest_priority_master > i )
-                    highest_priority_master = i;
-            end
-        end
-        predicted_response = ahb_request::type_id::create("predicted_response");
-        predicted_response.grant_number = highest_priority_master;
-        //`uvm_info(get_type_name(), $sformatf("Predicted response_fifo is : %s \n ", predicted_response.convert2string()), UVM_HIGH);
-        `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", highest_priority_master), UVM_HIGH);
+    //     int highest_priority_master = master_number - 1;
+    //     for (int i=0; i<master_number; ++i) begin
+    //         if (busreq_map[i] == 1 ) begin
+    //             if( highest_priority_master > i )
+    //                 highest_priority_master = i;
+    //         end
+    //     end
+    //     predicted_response = ahb_request::type_id::create("predicted_response");
+    //     predicted_response.grant_number = highest_priority_master;
+    //     //`uvm_info(get_type_name(), $sformatf("Predicted response_fifo is : %s \n ", predicted_response.convert2string()), UVM_HIGH);
+    //     `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", highest_priority_master), UVM_HIGH);
         
-        predicted_transactions.push_front(predicted_response);
+    //     predicted_transactions.push_front(predicted_response);
 
 
-    endfunction
+    // endfunction
 
     task evaluator();
         ahb_request temp_predicted;
@@ -181,22 +181,42 @@ class request_scoreboard extends uvm_scoreboard;
                 if (hlock_map[previous_granted_master]) begin
                     previous_granted_master = previous_granted_master;
                     //if busreq and hlock is 1 the granted master will remain the same 
-                    `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_granted_master), UVM_HIGH);
+                    predicted_response = ahb_request::type_id::create("predicted_response");
+                    predicted_response.grant_number = previous_granted_master;
+                    `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", predicted_response.grant_number), UVM_HIGH);
+
+                    predicted_transactions.push_front(predicted_response);
+
                 end
                 else begin
                     previous_granted_master = highest_priority_master;
                     //if busreq is 1 and hlock is 0 the granted master will become "highest_priority_master" 
-                    `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_granted_master), UVM_HIGH);
-                end
+                    predicted_response = ahb_request::type_id::create("predicted_response");
+                    predicted_response.grant_number = previous_granted_master;
+                    `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", predicted_response.grant_number), UVM_HIGH);
+
+                    predicted_transactions.push_front(predicted_response);                end
             end else begin
                 //if busreq is 0 the bus goes to "highest_priority_master"
                 previous_granted_master = highest_priority_master;
+
+                predicted_response = ahb_request::type_id::create("predicted_response");
+                predicted_response.grant_number = previous_granted_master;
+                `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", predicted_response.grant_number), UVM_HIGH);
+
+                predicted_transactions.push_front(predicted_response);     
 
             end
 
         end else begin
             //if the busreq with highest priority is from "highest_priority_master"
             previous_granted_master = highest_priority_master;
+
+            predicted_response = ahb_request::type_id::create("predicted_response");
+            predicted_response.grant_number = previous_granted_master;
+            `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", predicted_response.grant_number), UVM_HIGH);
+
+            predicted_transactions.push_front(predicted_response);     
 
         end 
 
