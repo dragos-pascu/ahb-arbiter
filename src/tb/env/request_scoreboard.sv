@@ -23,7 +23,7 @@ class request_scoreboard extends uvm_scoreboard;
     bit hlock_map[master_number];
     bit req_and_lock[master_number];
 
-    int previous_grant = master_number - 1;
+    int previous_granted_master = master_number - 1;
 
     function new(string name = "request_scoreboard", uvm_component parent);
         super.new(name, parent);
@@ -167,44 +167,44 @@ class request_scoreboard extends uvm_scoreboard;
         
     endtask
 
-    // function void predict_grant();
-    //     int highest_priority_master = master_number - 1;
-    //     for (int i=0; i<master_number; ++i) begin
-    //         if (busreq_map[i] == 1 ) begin
-    //             if( highest_priority_master > i )
-    //                 highest_priority_master = i;
-    //         end
-    //     end
-    //     if (highest_priority_master < previous_grant) begin
-    //         if (busreq_map[previous_grant]) begin
-    //             if (hlock_map[previous_grant]) begin
-    //                 previous_grant = previous_grant;
-    //                 //send packet with grant being the same 
-    //                 `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_grant), UVM_HIGH);
+    function void predict_grant();
+        int highest_priority_master = master_number - 1;
+        for (int i=0; i<master_number; ++i) begin
+            if (busreq_map[i] == 1 ) begin
+                if( highest_priority_master > i )
+                    highest_priority_master = i;
+            end
+        end
+        //check which master number is lower to asses priority
+        if (highest_priority_master > previous_granted_master) begin
+            if (busreq_map[previous_granted_master]) begin
+                if (hlock_map[previous_granted_master]) begin
+                    previous_granted_master = previous_granted_master;
+                    //if busreq and hlock is 1 the granted master will remain the same 
+                    `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_granted_master), UVM_HIGH);
+                end
+                else begin
+                    previous_granted_master = highest_priority_master;
+                    //if busreq is 1 and hlock is 0 the granted master will become "highest_priority_master" 
+                    `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_granted_master), UVM_HIGH);
+                end
+            end else begin
+                //if busreq is 0 the bus goes to "highest_priority_master"
+                previous_granted_master = highest_priority_master;
 
-    //             end else begin
-    //                 //send packet with grant being highest_priority_master
-    //                 previous_grant = highest_priority_master;
-    //                 `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_grant), UVM_HIGH);
+            end
 
-    //             end
-                
-    //         end else begin
-    //             if (hlock_map[previous_grant]) begin
-    //                 previous_grant = previous_grant;
-    //                 `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_grant), UVM_HIGH);
-    //             end
-    //             else begin
-    //                 previous_grant = highest_priority_master;
-    //                 `uvm_info(get_type_name(), $sformatf("Urmatorul grant o sa fie : %d \n ", previous_grant), UVM_HIGH);
-    //             end
-                    
+        end else begin
+            //if the busreq with highest priority is from "highest_priority_master"
+            previous_granted_master = highest_priority_master;
+
+        end 
+
+        
+    endfunction
 
 
-    //         end 
 
-    //     end
-    // endfunction
     virtual function void check_phase(uvm_phase phase);
         
 
