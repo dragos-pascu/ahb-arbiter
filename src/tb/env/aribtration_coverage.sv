@@ -14,9 +14,6 @@ class arbitration_coverage extends uvm_subscriber#(ahb_request);
         busreq: coverpoint position iff (busreq_map[position]==1) {
             bins busreq[] = {[0:master_number-1]};
         }
-        hlock: coverpoint position iff (hlock_map[position]==1 ) {
-            bins hlock[] = {[0:master_number-1]};
-        }
         busreqXhlock : coverpoint position iff ( busreq_map[position]==1 && hlock_map[position]==1 ) {
             bins busreqXhlock[] = {[0:master_number-1]};
         }
