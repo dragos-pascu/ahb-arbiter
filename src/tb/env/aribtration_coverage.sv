@@ -6,46 +6,9 @@ class arbitration_coverage extends uvm_subscriber#(ahb_request);
     ahb_request tx;
     env_config cfg;
 
-    // covergroup arbitration_cg ;
-
-    //     option.per_instance = 1;
-
-    //     // hbusreq: coverpoint tx.hbusreq{
-    //     //     bins hbusreq0 = {'b000000001};
-    //     //     bins hbusreq1 = {'b000000010};
-    //     //     bins hbusreq2 = {'b000000100};
-    //     //     bins hbusreq3 = {'b000001000};
-    //     //     bins hbusreq4 = {'b000010000};
-    //     //     bins hbusreq5 = {'b000100000};
-    //     //     bins hbusreq6 = {'b001000000};
-    //     //     bins hbusreq7 = {'b010000000};
-    //     //     bins hbusreq8 = {'b100000000};
-    //     // }
-
-    //     // hlock: coverpoint tx.hlock{
-    //     //     bins hlock0 = {'b000000001};
-    //     //     bins hlock1 = {'b000000010};
-    //     //     bins hlock2 = {'b000000100};
-    //     //     bins hlock3 = {'b000001000};
-    //     //     bins hlock4 = {'b000010000};
-    //     //     bins hlock5 = {'b000100000};
-    //     //     bins hlock6 = {'b001000000};
-    //     //     bins hlock7 = {'b010000000};
-    //     //     bins hlock8 = {'b100000000};
-    //     // }
-        
-    //     // hbusreqxhlock: cross hbusreq, hlock;
-
-    //     // hgrant: coverpoint tx.grant_number {
-    //     //     bins grant[] = {[0:master_number-1]};
-    //     // }
-
-
-    // endgroup
-
     //https://www.amiq.com/consulting/2015/09/18/functional-coverage-patterns-bitwise-coverage/
 
-    covergroup arbitration_cg with function sample(bit busreq_map[master_number-1:0], bit hlock_map[master_number-1:0] ,int position);
+    covergroup arbitration_cg with function sample(bit busreq_map[master_number], bit hlock_map[master_number] ,int position);
         option.per_instance = 1;
         busreq: coverpoint position iff (busreq_map[position]==1) {
             bins busreq[] = {[0:master_number-1]};
@@ -53,10 +16,12 @@ class arbitration_coverage extends uvm_subscriber#(ahb_request);
         hlock: coverpoint position iff (hlock_map[position]==1 ) {
             bins hlock[] = {[0:master_number-1]};
         }
-        busreqXhlock : cross busreq, hlock;
+        busreqXhlock : coverpoint position iff ( busreq_map[position]==1 && hlock_map[position]==1 ) {
+            bins busreqXhlock[] = {[0:master_number-1]};
+        }
     endgroup
     
-    function void sample_arbitration(bit busreq_map[master_number-1:0] , bit hlock_map[master_number-1:0]);
+    function void sample_arbitration(bit busreq_map[master_number] , bit hlock_map[master_number]);
        for(int i=0;i<master_number;i++)begin
           arbitration_cg.sample(busreq_map,hlock_map,i);
        end
