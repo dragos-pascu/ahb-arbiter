@@ -3,8 +3,8 @@ class ahb_request extends uvm_sequence_item;
     //id of the coresponding master
     int id; 
     int grant_number;
-    int busreq_number;
-    int hlock_number;
+    bit busreq_map[master_number];
+    bit hlock_map[master_number];
 
     //bus req signals
     logic  hlock; 
