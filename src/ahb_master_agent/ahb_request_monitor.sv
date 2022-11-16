@@ -85,21 +85,6 @@ class ahb_request_monitor extends uvm_monitor;
 
     endtask
 
-    // task send_grant();
-    //     ahb_request response_item;
-    //     forever begin
 
-    //         while (!vif.hreset) @vif.req_cb;
-    //          if (vif.req_cb.hgrant) begin
-    //             response_item = ahb_request::type_id::create("response_item");
-    //             response_item.grant_number = agent_config.agent_id;
-    //             response_collect_port.write(response_item);
-    //             //`uvm_info(get_type_name(), $sformatf("Write to response port : %s",response_item.convert2string()), UVM_MEDIUM);
-
-    //         end
-    //         @vif.req_cb;
-    //     end
-                   
-    // endtask
 
 endclass
