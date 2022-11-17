@@ -1,12 +1,11 @@
 class request_scoreboard extends uvm_scoreboard;
     
     `uvm_component_utils(request_scoreboard)
-    `uvm_analysis_imp_decl(_request_port)
 
     uvm_tlm_analysis_fifo #(ahb_request) request_fifo[master_number];
     //uvm_tlm_analysis_fifo #(ahb_request) response_fifo;
     uvm_tlm_analysis_fifo #(ahb_request) response_fifo[master_number];
-
+    uvm_tlm_analysis_fifo #(ahb_request) slave_response_fifo[slave_number];
 
     int match_nr  = 0;
     int mismatches = 0;
@@ -35,6 +34,9 @@ class request_scoreboard extends uvm_scoreboard;
         end
         for (int i=0; i<master_number; ++i) begin
             response_fifo[i] = new($sformatf("response_fifo[%0d]",i),this);
+        end
+        for (int i=0; i<slave_number; ++i) begin
+            slave_response_fifo[i] = new($sformatf("slave_response_fifo[%0d]",i),this);
         end
         
     endfunction 

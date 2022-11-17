@@ -34,7 +34,7 @@ class ahb_slave_agent extends uvm_agent;
             //connect driver to sequencer port
             ahb_sdriver.seq_item_port.connect(sequencer.seq_item_export);
             //connect monitor port to export port
-            ahb_smonitor.m_req_port.connect(sequencer.m_request_export);
+            ahb_smonitor.slave_transaction_port.connect(sequencer.m_request_export);
         end
 
 

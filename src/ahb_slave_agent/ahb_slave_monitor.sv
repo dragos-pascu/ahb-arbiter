@@ -3,10 +3,13 @@ class ahb_slave_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_slave_monitor)
 
 
-    uvm_analysis_port #(ahb_transaction) m_req_port; // partial transaction
+    uvm_analysis_port #(ahb_transaction) slave_transaction_port; // partial transaction
+
+    uvm_analysis_port #(ahb_request) busreq_collect_port; // on this port the information about hmastlock and hmaster will be sent. 
 
     virtual salve_if vif;
     ahb_transaction data_packet;
+    ahb_request request_item;
 
     ahb_sagent_config agent_config;
 
@@ -24,7 +27,9 @@ class ahb_slave_monitor extends uvm_monitor;
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
 
-        m_req_port = new("m_req_port",this);
+        slave_transaction_port = new("slave_transaction_port",this);
+        busreq_collect_port = new("busreq_collect_port",this);
+
         storage = memory::type_id::create("storage",this);
         uvm_config_db #(memory)::set(null,"", "storage", storage); 
 
@@ -39,19 +44,20 @@ class ahb_slave_monitor extends uvm_monitor;
 
 
     virtual task run_phase(uvm_phase phase);
-          super.run_phase(phase);
-          `uvm_info(get_type_name(), "Slave monitor run phase", UVM_MEDIUM)
-          forever begin
-              wait(vif.hreset==1)
-                fork
-                  monitor_addr_phase();
-                  monitor_data_phase();
-                  reset_monitor();
-                  
-                join_any
-                disable fork;
-
-          end
+        super.run_phase(phase);
+        `uvm_info(get_type_name(), "Slave monitor run phase", UVM_MEDIUM)
+        forever begin
+            wait(vif.hreset==1)
+            fork
+            
+                monitor_addr_phase();
+                monitor_data_phase();
+                reset_monitor();
+                monitor_request();
+              
+            join_any
+            disable fork;
+        end
 
     endtask
 
@@ -113,10 +119,25 @@ class ahb_slave_monitor extends uvm_monitor;
 
  
             `uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_MEDIUM);
-            m_req_port.write(item);
+            slave_transaction_port.write(item);
             
         end
     endtask
     
+    task monitor_request();
+        forever begin
+                
+            while (!vif.hreset) @vif.s_cb;
+             
+            request_item = ahb_request::type_id::create("request_item");
+
+            request_item.hmastlock = vif.s_cb.hmastlock;
+            request_item.hmaster = vif.s_cb.hmaster;
+            busreq_collect_port.write(request_item);
+            `uvm_info(get_type_name(), $sformatf("Hmaster and hmastlock were collected :"), UVM_DEBUG);
+
+            @vif.s_cb;
+        end
+    endtask
     
 endclass

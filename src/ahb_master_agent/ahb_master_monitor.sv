@@ -2,7 +2,7 @@ class ahb_master_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_master_monitor)
 
 
-    uvm_analysis_port #(ahb_transaction) item_collect_port;
+    uvm_analysis_port #(ahb_transaction) master_transaction_port;
 
     virtual master_if vif;
 
@@ -22,7 +22,7 @@ class ahb_master_monitor extends uvm_monitor;
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
 
-        item_collect_port = new("item_collected_port",this);
+        master_transaction_port = new("master_transaction_port",this);
 
         if(!uvm_config_db #(ahb_magent_config)::get(null,get_parent().get_name(), "ahb_magent_config", agent_config)) 
 
@@ -114,7 +114,7 @@ class ahb_master_monitor extends uvm_monitor;
 
             `uvm_info(get_type_name(), $sformatf("item from master_monitor is : %s ", item.convert2string()), UVM_MEDIUM)
 
-            item_collect_port.write(item);
+            master_transaction_port.write(item);
         end
     endtask
     

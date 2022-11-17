@@ -12,7 +12,7 @@ class ahb_request extends uvm_sequence_item;
         logic hgrant;
 
         //signals for slave
-        logic hmaster;
+        logic[3:0] hmaster;
         logic hmastlock;
 
         function new(string name = "ahb_request");
