@@ -3,12 +3,13 @@ class ahb_slave_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_slave_monitor)
 
 
-    uvm_analysis_port #(ahb_transaction) slave_transaction_port; // partial transaction
+    uvm_analysis_port #(ahb_transaction) slave_transaction_port; // full transaction
+    
+    uvm_analysis_port #(ahb_transaction) reactive_transaction_port; // partial transaction
+
 
 
     virtual salve_if vif;
-    ahb_transaction data_packet;
-    ahb_request request_item;
 
     ahb_sagent_config agent_config;
 
@@ -17,9 +18,7 @@ class ahb_slave_monitor extends uvm_monitor;
     mailbox mbx = new();
     
     function new(string name, uvm_component parent);
-        super.new(name,parent);
-        data_packet = ahb_transaction::type_id::create("data_packet",this);
-        
+        super.new(name,parent);        
 
     endfunction
 
@@ -27,6 +26,9 @@ class ahb_slave_monitor extends uvm_monitor;
         super.build_phase(phase);
 
         slave_transaction_port = new("slave_transaction_port",this);
+
+        reactive_transaction_port = new("reactive_transaction_port",this);
+
 
         storage = memory::type_id::create("storage",this);
         uvm_config_db #(memory)::set(null,"", "storage", storage); 
@@ -119,6 +121,29 @@ class ahb_slave_monitor extends uvm_monitor;
             slave_transaction_port.write(item);
             
         end
+    endtask
+
+    task monitor_reads();
+        ahb_transaction item;
+
+        forever begin
+
+            if ( ( vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ ) && vif.s_cb.hwrite == READ && 
+            vif.s_cb.hsel == 1 && vif.s_cb.hready == 1 && vif.hreset == 1) begin
+                item = ahb_transaction::type_id::create("item");
+                item.htrans = new[1];
+                item.hburst =  burst_t'(vif.s_cb.hburst);
+                item.htrans[0] =  transfer_t'(vif.s_cb.htrans);
+                item.hsize =   size_t'(vif.s_cb.hsize) ;
+                item.hwrite =  rw_t'(vif.s_cb.hwrite);   
+
+                reactive_transaction_port.write(item);
+
+            end
+
+        end
+
+        
     endtask
     
  
