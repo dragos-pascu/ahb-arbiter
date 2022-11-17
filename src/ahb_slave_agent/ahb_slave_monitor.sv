@@ -5,7 +5,6 @@ class ahb_slave_monitor extends uvm_monitor;
 
     uvm_analysis_port #(ahb_transaction) slave_transaction_port; // partial transaction
 
-    uvm_analysis_port #(ahb_request) busreq_collect_port; // on this port the information about hmastlock and hmaster will be sent. 
 
     virtual salve_if vif;
     ahb_transaction data_packet;
@@ -28,7 +27,6 @@ class ahb_slave_monitor extends uvm_monitor;
         super.build_phase(phase);
 
         slave_transaction_port = new("slave_transaction_port",this);
-        busreq_collect_port = new("busreq_collect_port",this);
 
         storage = memory::type_id::create("storage",this);
         uvm_config_db #(memory)::set(null,"", "storage", storage); 
@@ -53,7 +51,6 @@ class ahb_slave_monitor extends uvm_monitor;
                 monitor_addr_phase();
                 monitor_data_phase();
                 reset_monitor();
-                monitor_request();
               
             join_any
             disable fork;
@@ -124,20 +121,6 @@ class ahb_slave_monitor extends uvm_monitor;
         end
     endtask
     
-    task monitor_request();
-        forever begin
-                
-            while (!vif.hreset) @vif.s_cb;
-             
-            request_item = ahb_request::type_id::create("request_item");
-
-            request_item.hmastlock = vif.s_cb.hmastlock;
-            request_item.hmaster = vif.s_cb.hmaster;
-            busreq_collect_port.write(request_item);
-            `uvm_info(get_type_name(), $sformatf("Hmaster and hmastlock were collected :"), UVM_DEBUG);
-
-            @vif.s_cb;
-        end
-    endtask
+ 
     
 endclass
