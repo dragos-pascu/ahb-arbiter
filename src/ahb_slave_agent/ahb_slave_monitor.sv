@@ -85,6 +85,7 @@ class ahb_slave_monitor extends uvm_monitor;
                 item.hresp = resp_t'(vif.s_cb.hresp);
                 item.hrdata = vif.s_cb.hrdata;
                 item.id = agent_config.agent_id;
+                item.hsel = vif.s_cb.hsel;
 
                 @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
                 mbx.put(item);

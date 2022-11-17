@@ -25,10 +25,11 @@ class ahb_transaction extends uvm_sequence_item;
         rand bit hready;
         rand resp_t hresp; 
         rand bit [31:0] hrdata;
+
         rand bit no_of_waits[];
 
-        
-
+        //slave select
+        logic hsel;
         
         /*****Add other signals for sampling******/
 
@@ -50,7 +51,7 @@ class ahb_transaction extends uvm_sequence_item;
                 $sformat (s, "%S\n   htrans  = %p", s, htrans);
                 $sformat (s, "%S\n   hsize   = %0d", s, hsize);
                 $sformat (s, "%S\n   hready  = %0d", s, hready);
-                // $sformat (s, "%S\n   hsel  = %0d", s, hsel);
+                $sformat (s, "%S\n   hsel  = %0d", s, hsel);
                 $sformat (s, "%S\n   hresp   = %0d", s, hresp);
                 $sformat (s, "%S\n   hrdata  = %0d", s, hrdata);
                 $sformat (s, "%S\n   no_of_waits  = %p", s, no_of_waits);
@@ -68,7 +69,7 @@ class ahb_transaction extends uvm_sequence_item;
                 
                 res = super.do_compare(rhs,comparer) &&
                         //the master that initiates the transaction
-                        // (id ===       tx_rhs.id) && id from master and one from slave.
+                        // (id === tx_rhs.id) && id from master and one from slave.
                         //data that was sent by master vs received by slave
                         (haddr    === tx_rhs.haddr ) &&
                         (hwdata   === tx_rhs.hwdata) &&
@@ -78,7 +79,8 @@ class ahb_transaction extends uvm_sequence_item;
                         (hwrite   === tx_rhs.hwrite) &&
                         //the slave response vs what master received
                         // (hready   === tx_rhs.hready) &&
-                        (hresp   === tx_rhs.hresp) ;
+                        (hresp   === tx_rhs.hresp) &&
+                        (hsel   === tx_rhs.hsel) ;
                         //(hrdata   === tx_rhs.hrdata);
                 return res;
                 

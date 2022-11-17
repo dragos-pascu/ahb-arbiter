@@ -1,22 +1,26 @@
 class ahb_request extends uvm_sequence_item;
         `uvm_object_utils(ahb_request)
-    //id of the coresponding master
-    int id; 
-    int grant_number;
-    bit busreq_map[master_number];
-    bit hlock_map[master_number];
+        //id of the coresponding master
+        int id; 
+        int grant_number;
+        bit busreq_map[master_number];
+        bit hlock_map[master_number];
 
-    //bus req signals
-    logic  hlock; 
-    logic  hbusreq; 
-    logic hgrant;
+        //bus req signals
+        logic  hlock; 
+        logic  hbusreq; 
+        logic hgrant;
 
-    function new(string name = "ahb_request");
-            super.new(name);
+        //signals for slave
+        logic hmaster;
+        logic hmastlock;
 
-    endfunction
+        function new(string name = "ahb_request");
+                super.new(name);
 
-    virtual function string convert2string();
+        endfunction
+
+        virtual function string convert2string();
                 string s = super.convert2string();
                 //$sformat (s, "%s\n   ahb_transaction with id = %0d :", s,id);
                 $sformat (s, "%s\n   hbusreq = %0d", s, hbusreq);

@@ -43,7 +43,8 @@ class ahb_scoreboard extends uvm_scoreboard;
         
         for (i=0; i<slave_number; ++i) begin
             if((master_item.haddr[0] >= slave_low_address[i]) && (master_item.haddr[0] <= slave_high_address[i] )) begin
-                expected_transactions[i].push_back(master_item);
+                master_item.hsel = 1;
+                expected_transactions[i].push_back(master_item); // i represents the slave number.
                 predictor_transactions++;
                 `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_DEBUG);
 
