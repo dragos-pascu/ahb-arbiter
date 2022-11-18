@@ -19,15 +19,6 @@ class ahb_slave_base_seq extends uvm_sequence#(ahb_transaction);
         } )
         `uvm_fatal(get_type_name(), "Can't randomize the item!")
         finish_item(temp_item);
-        // forever begin
-            
-            
-        //     ahb_transaction temp_item = ahb_transaction::type_id::create("temp_item");
-        //     p_sequencer.m_request_fifo.get(temp_item);
-            
-               
-        //     //code response with cases.      
-        // end
 
     endtask
 
@@ -45,7 +36,8 @@ class slave_response_seq extends ahb_slave_base_seq;
         forever begin
         
         p_sequencer.m_request_fifo.get(req);
-            
+        `uvm_info(get_type_name(),"Inside body of slave_response_seq.",UVM_MEDIUM)
+
             case (req.hwrite)
                 
                 READ: begin

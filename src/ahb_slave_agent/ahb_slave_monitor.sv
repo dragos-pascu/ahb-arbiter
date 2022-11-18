@@ -53,6 +53,7 @@ class ahb_slave_monitor extends uvm_monitor;
                 monitor_addr_phase();
                 monitor_data_phase();
                 reset_monitor();
+                monitor_reads();
               
             join_any
             disable fork;
@@ -130,6 +131,7 @@ class ahb_slave_monitor extends uvm_monitor;
 
             if ( ( vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ ) && vif.s_cb.hwrite == READ && 
             vif.s_cb.hsel == 1 && vif.s_cb.hready == 1 && vif.hreset == 1) begin
+                #1;
                 item = ahb_transaction::type_id::create("item");
                 item.htrans = new[1];
                 item.hburst =  burst_t'(vif.s_cb.hburst);
@@ -138,7 +140,11 @@ class ahb_slave_monitor extends uvm_monitor;
                 item.hwrite =  rw_t'(vif.s_cb.hwrite);   
 
                 reactive_transaction_port.write(item);
+                `uvm_info(get_type_name(), $sformatf("Slave monitor send read signal : \n "), UVM_MEDIUM);
 
+            end
+            else begin
+                @vif.s_cb;
             end
 
         end

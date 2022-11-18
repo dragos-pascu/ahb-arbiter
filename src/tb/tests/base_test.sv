@@ -57,7 +57,9 @@ class base_test extends uvm_test;
                     automatic int j=i;
                     fork begin
                         ahb_slave_base_seq slave_seq;
-                        slave_seq = ahb_slave_base_seq::type_id::create("slave_seq");
+                        //slave_seq = ahb_slave_base_seq::type_id::create("slave_seq");
+                        slave_seq = slave_response_seq::type_id::create("slave_seq");
+
                         slave_seq.start(env.s_agent[j].sequencer);
                     end    
                     join_none

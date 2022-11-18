@@ -63,21 +63,29 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
     task drive();
       
       forever begin
-        //`uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s",req.convert2string()), UVM_MEDIUM);
-        @(vif.s_cb iff vif.s_cb.hsel && vif.hreset == 1);
-        seq_item_port.get_next_item(req);
-        foreach (req.no_of_waits[i]) begin
-          if (vif.s_cb.htrans != IDLE) begin
-            vif.s_cb.hready <= req.no_of_waits[i];
-            @vif.s_cb;
-          end else begin
-            vif.s_cb.hready <= 1;
-            vif.s_cb.hresp <= OKAY;
-          end  
+        // @(vif.s_cb iff vif.s_cb.hsel && vif.hreset == 1);
+        while (!(vif.s_cb.hsel && vif.hreset)) begin
+          @vif.s_cb;
         end
-      
+        
+        seq_item_port.get_next_item(req);
+        `uvm_info(get_type_name(), $sformatf("Hello"), UVM_MEDIUM);
+        `uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s",req.convert2string()), UVM_MEDIUM);
 
-      
+        // foreach (req.no_of_waits[i]) begin
+        //   if (vif.s_cb.htrans != IDLE) begin
+        //     vif.s_cb.hready <= req.no_of_waits[i];
+        //     @vif.s_cb;
+        //   end else begin
+        //     vif.s_cb.hready <= 1;
+        //     vif.s_cb.hresp <= OKAY;
+        //   end  
+        // end
+
+        vif.s_cb.hrdata <= req.hrdata;
+        vif.s_cb.hready <= 1;
+        vif.s_cb.hresp <= OKAY;
+
         seq_item_port.item_done();
       
       end
