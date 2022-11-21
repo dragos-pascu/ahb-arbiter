@@ -1,15 +1,15 @@
 //sequences for master
 class single_write_sequence extends uvm_sequence#(ahb_transaction);
     
-    `uvm_object_utils(simple_write_sequence)
+    `uvm_object_utils(single_write_sequence)
 
-    function new(string name="simple_write_sequence");
+    function new(string name="single_write_sequence");
         super.new(name);
     endfunction
 
     
     virtual task body();
-        `uvm_info(get_type_name(),"Inside body of simple_write_sequence.",UVM_MEDIUM)
+        `uvm_info(get_type_name(),"Inside body of single_write_sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
         repeat(2)begin

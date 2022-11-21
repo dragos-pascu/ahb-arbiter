@@ -1,9 +1,8 @@
 -uvm
 -access +rwc
 -clean 
-
 -timescale 1ns/1ns
--access +rw
+
 
 //-linedebug
 //-debug
@@ -15,27 +14,38 @@
 -svseed random
 
 
-+UVM_VERBOSITY=UVM_HIGH
++UVM_VERBOSITY=UVM_LOW
 //+UVM_PHASE_TRACE
 //+UVM_OBJECTION_TRACE
 
+///////////////////////////////////////////////////
 // *** include test ***
-//+UVM_TESTNAME=simple_write_test
+
+//+UVM_TESTNAME=single_write_test
+//+UVM_TESTNAME=simple_read_test
 
 //+UVM_TESTNAME=incr_write_test
+//+UVM_TESTNAME=incr_read_test
 
 //+UVM_TESTNAME=incr_write_4_test
 //+UVM_TESTNAME=incr_write_8_test
 //+UVM_TESTNAME=incr_write_16_test
 
+//+UVM_TESTNAME=incr_read_4_test
+//+UVM_TESTNAME=incr_read_8_test
+//+UVM_TESTNAME=incr_read_16_test
+
 //+UVM_TESTNAME=wrap_write_4_test
 //+UVM_TESTNAME=wrap_write_8_test
 //+UVM_TESTNAME=wrap_write_16_test
 
-+UVM_TESTNAME=incr_read_4_test
+//+UVM_TESTNAME=wrap_read_4_test
+//+UVM_TESTNAME=wrap_read_8_test
+//+UVM_TESTNAME=wrap_read_16_test
+
 //+UVM_TESTNAME=random_test
 
-
+///////////////////////////////////////////////////
 // *** include compile files ***
 
 
