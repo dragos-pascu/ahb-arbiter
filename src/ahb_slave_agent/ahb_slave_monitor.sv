@@ -92,8 +92,8 @@ class ahb_slave_monitor extends uvm_monitor;
 
 
                 if (item.hwrite == READ) begin
-                    reactive_transaction_port.write(item);
                     @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
+                    reactive_transaction_port.write(item);
                     mbx.put(item);
                 end else if (item.hwrite == WRITE) begin
                     @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
@@ -119,7 +119,7 @@ class ahb_slave_monitor extends uvm_monitor;
                 item.hwdata[0] = vif.s_cb.hwdata;
             end
             else if (item.hwrite == READ) begin
-                item.hrdata[0] = vif.s_cb.hrdata;
+                item.hrdata = vif.s_cb.hrdata;
             end
 
  

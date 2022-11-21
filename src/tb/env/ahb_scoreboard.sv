@@ -72,6 +72,8 @@ class ahb_scoreboard extends uvm_scoreboard;
                     // temp_tx1 = ahb_transaction::type_id::create("temp_tx1");
                     temp_tx1 =  expected_transactions[slave_item.id].pop_front();
                     if (slave_item.compare(temp_tx1)) begin
+                    `uvm_info(get_type_name(), $sformatf("MATCH : \n %s",slave_item.convert2string()),UVM_MEDIUM);
+
                     match++;
                     coverage_port.write(temp_tx1);
                     end
