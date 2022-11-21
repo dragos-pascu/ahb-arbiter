@@ -61,13 +61,13 @@ class request_scoreboard extends uvm_scoreboard;
     task predictor();
         forever begin
             
-            fork
+            //fork
             for ( int  i=0; i<master_number; ++i) begin
                 automatic int j = i;
                 //https://verificationacademy.com/verification-methodology-reference/uvm/docs_1.1d/html/files/tlm1/uvm_tlm_ifs-svh.html#uvm_tlm_if_base#(T1,T2)
                 request_fifo[j].get(requests_array[j]);
             end
-            join
+            //join
 
         
 
@@ -125,13 +125,11 @@ class request_scoreboard extends uvm_scoreboard;
         ahb_request temp_actual; //= ahb_request::type_id::create("temp_actual");
         forever begin 
 
-            fork : fork_evaluator
             for ( int  i=0; i<master_number; ++i) begin
                 automatic int j = i;
                 response_fifo[j].get(response_array[j]);
             end
 
-            join
 
             temp_predicted = predicted_transactions.pop_front();
 
@@ -161,66 +159,46 @@ class request_scoreboard extends uvm_scoreboard;
         for (int i=0; i<master_number; ++i) begin
             if (busreq_map[i] == 1 ) begin
                 if( highest_priority_master > i )
+                begin
                     highest_priority_master = i;
+                    break;
+                end      
             end
+            
         end
-        //check which master number is lower to asses priority
-        if (highest_priority_master > previous_granted_master) begin
-            if (busreq_map[previous_granted_master]) begin
-                if (hlock_map[previous_granted_master]) begin
-                    previous_granted_master = previous_granted_master;
-                    //if busreq and hlock is 1 the granted master will remain the same 
-                    predicted_response = ahb_request::type_id::create("predicted_response");
-                    predicted_response.grant_number = previous_granted_master;
-                    // busreq signals to send for coverage
-                    predicted_response.busreq_map = busreq_map;
-                    predicted_response.hlock_map = hlock_map;
-                    `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", predicted_response.grant_number), UVM_DEBUG);
+        // //check which master number is lower to asses priority
+        // if (highest_priority_master != previous_granted_master) begin
+        //     if (busreq_map[previous_granted_master]) begin
+        //         if (hlock_map[previous_granted_master]) begin
+        //             previous_granted_master = previous_granted_master;
+        //             //if busreq and hlock is 1 the granted master will remain the same 
+        //         end
+        //         else begin
+        //             previous_granted_master = highest_priority_master;
+        //             //if busreq is 1 and hlock is 0 the granted master will become "highest_priority_master" 
+        //         end
+        //     end else begin
+        //         //if busreq is 0 the bus goes to "highest_priority_master"
+        //         previous_granted_master = highest_priority_master;
 
-                    predicted_transactions.push_front(predicted_response);
+        //     end
 
-                end
-                else begin
-                    previous_granted_master = highest_priority_master;
-                    //if busreq is 1 and hlock is 0 the granted master will become "highest_priority_master" 
-                    predicted_response = ahb_request::type_id::create("predicted_response");
-                    predicted_response.grant_number = previous_granted_master;
-                    // busreq signals to send for coverage
-                    predicted_response.busreq_map = busreq_map;
-                    predicted_response.hlock_map = hlock_map;
-                    `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", predicted_response.grant_number), UVM_DEBUG);
+        // end else begin
+        //     //if the busreq with highest priority is from "highest_priority_master"
+        //     previous_granted_master = highest_priority_master;
+        // end 
 
-                    predicted_transactions.push_front(predicted_response);                
-                end
-            end else begin
-                //if busreq is 0 the bus goes to "highest_priority_master"
-                previous_granted_master = highest_priority_master;
-
-                predicted_response = ahb_request::type_id::create("predicted_response");
-                predicted_response.grant_number = previous_granted_master;
-                // busreq signals to send for coverage
-                predicted_response.busreq_map = busreq_map;
-                predicted_response.hlock_map = hlock_map;
-                `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", predicted_response.grant_number), UVM_DEBUG);
-
-                predicted_transactions.push_front(predicted_response);     
-
-            end
-
-        end else begin
-            //if the busreq with highest priority is from "highest_priority_master"
+        if (!(busreq_map[previous_granted_master] && hlock_map[previous_granted_master])) begin
             previous_granted_master = highest_priority_master;
-
-            predicted_response = ahb_request::type_id::create("predicted_response");
-            predicted_response.grant_number = previous_granted_master;
-            // busreq signals to send for coverage
-            predicted_response.busreq_map = busreq_map;
-            predicted_response.hlock_map = hlock_map;
-            `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", predicted_response.grant_number), UVM_DEBUG);
-
-            predicted_transactions.push_front(predicted_response);     
-
         end 
+
+        predicted_response = ahb_request::type_id::create("predicted_response");
+        predicted_response.grant_number = previous_granted_master;
+        // busreq signals to send for coverage
+        predicted_response.busreq_map = busreq_map;
+        predicted_response.hlock_map = hlock_map;
+        `uvm_info(get_type_name(), $sformatf("Predicted grant is : %d \n ", predicted_response.grant_number), UVM_DEBUG);
+        predicted_transactions.push_front(predicted_response);     
 
         
     endfunction

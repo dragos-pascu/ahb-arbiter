@@ -47,12 +47,17 @@ module generic_arbiter_full(m_busreq,m_hlock,hclk,hreset,s_hmaster_lock
         end
         else begin
             int m;
-            for (m = 0; m <= `LAST_MASTER; m++ )
-            begin
-                if (m_busreq[m] || m == `LAST_MASTER) begin
-                    break;
+            if (m_busreq[master_phase[ARBITRATION]] & m_hlock[master_phase[ARBITRATION]]) begin  // comment for bug 3 V V V V V V V
+                m = master_phase[ARBITRATION];
+            end   
+            else begin  // comment for bug 3 A A A A A A
+                for (m = 0; m <= `LAST_MASTER; m++ )
+                begin
+                    if (m_busreq[m] || m == `LAST_MASTER) begin
+                        break;
+                    end
                 end
-            end
+            end // comment for bug 3
             master_phase[ARBITRATION] <= m;
             hgrant <= 1 << m;
         end
