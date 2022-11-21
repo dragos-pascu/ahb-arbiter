@@ -79,6 +79,9 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             `uvm_info(get_type_name(), $sformatf("Driver req : \n %s",req.convert2string()),UVM_MEDIUM);
 
             haddr_index = 0 ;
+            vif.m_cb.hbusreq <= req.hbusreq;
+            vif.m_cb.hlock <= req.hlock;
+            @vif.m_cb;
             for (int i=0; i<req.htrans.size(); ++i) begin
 
                 //wait(); expresia se executa in timp 0 daca expresia este true
@@ -159,6 +162,9 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             seq_item_port.put(item);
             i=0;
             end  
+
+            `uvm_info(get_type_name(), $sformatf("Driver put item : \n "),UVM_MEDIUM);
+
             
         end
         

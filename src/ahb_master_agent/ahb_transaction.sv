@@ -107,7 +107,12 @@ class ahb_transaction extends uvm_sequence_item;
                         busy_pos < haddr.size - 1;
                         no_of_busy >= 0;
                         no_of_busy < 6;
+                } else {
+                        busy_pos == 0;
+                        no_of_busy == 0;
+                
                 }
+                        
                 
         }
 
