@@ -13,7 +13,9 @@ package tests_pkg;
 
     `include "base_test.sv"
     
-    `include "simple_write_test.sv"
+////////// WRITE ///////////////
+
+    `include "single_write_test.sv"
     `include "incr_write_test.sv"
     `include "incr_write_4_test.sv"
     `include "incr_write_8_test.sv"
@@ -25,8 +27,19 @@ package tests_pkg;
     `include "wrap_write_16_test.sv"
 
     `include "random_test.sv"
-    
+
+///////////// READ ///////////////    
+
+    `include "single_read_test.sv"
+    `include "incr_read_test.sv"
+
 
     `include "incr_read_4_test.sv"
+    `include "incr_read_8_test.sv"
+    `include "incr_read_16_test.sv"
+
+    `include "wrap_read_4_test.sv"
+    `include "wrap_read_8_test.sv"
+    `include "wrap_read_16_test.sv"
 
 endpackage
