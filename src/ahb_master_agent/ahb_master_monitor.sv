@@ -109,7 +109,7 @@ class ahb_master_monitor extends uvm_monitor;
             if(item.hwrite == WRITE) begin
                 item.hwdata[0] = vif.m_cb.hwdata;
             end else if (item.hwrite == READ) begin
-                item.hready = vif.m_cb.hready;
+                item.hrdata = vif.m_cb.hrdata;
             end
 
             `uvm_info(get_type_name(), $sformatf("item from master_monitor is : %s ", item.convert2string()), UVM_MEDIUM)
