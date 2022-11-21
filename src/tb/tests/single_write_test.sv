@@ -1,5 +1,5 @@
 class single_write_test extends base_test;
-    `uvm_component_utils(simple_write_test)
+    `uvm_component_utils(single_write_test)
 
     function new(string name="single_write_test", uvm_component parent);
         super.new(name,parent);

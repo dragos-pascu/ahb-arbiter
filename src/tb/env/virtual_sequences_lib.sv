@@ -46,8 +46,8 @@ class virtual_random_sequence extends virtual_base_sequence;
             randcase
 
             1: begin
-                simple_write_sequence wr_seq_h;
-                wr_seq_h = simple_write_sequence::type_id::create("simple_write_sequence");
+                single_write_sequence wr_seq_h;
+                wr_seq_h = single_write_sequence::type_id::create("single_write_sequence");
                 wr_seq_h.start(p_sequencer.master_seqr[j]);
             end
 
@@ -105,7 +105,7 @@ class virtual_random_sequence extends virtual_base_sequence;
 endclass
 
 class virtual_single_write_sequence extends virtual_base_sequence;
-    `uvm_object_utils(virtual_simple_write_sequence)
+    `uvm_object_utils(virtual_single_write_sequence)
     function new(string name="virtual_single_write_sequence");
         super.new(name);
     endfunction
