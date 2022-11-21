@@ -14,7 +14,7 @@ class ahb_transaction extends uvm_sequence_item;
         rand logic [31:0] hwdata[];  
         
         //busy transfer
-        rand int no_of_busy = 0; 
+        rand int no_of_busy; 
         rand int busy_pos;
 
         //bus req signals
@@ -78,7 +78,7 @@ class ahb_transaction extends uvm_sequence_item;
                         (hsize    === tx_rhs.hsize ) &&
                         (hwrite   === tx_rhs.hwrite) &&
                         //the slave response vs what master received
-                        // (hready   === tx_rhs.hready) &&
+                        (hready   === tx_rhs.hready) &&
                         (hresp   === tx_rhs.hresp) &&
                         (hsel   === tx_rhs.hsel) &&
                         (hrdata   === tx_rhs.hrdata);
