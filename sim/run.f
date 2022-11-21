@@ -11,7 +11,7 @@
 -coverage all
 -covoverwrite
 //-cov_debuglog
--svseed random
+-svseed 740173484
 
 
 +UVM_VERBOSITY=UVM_HIGH
@@ -24,8 +24,8 @@
 //+UVM_TESTNAME=single_write_test
 //+UVM_TESTNAME=simple_read_test
 
-//+UVM_TESTNAME=incr_write_test
-+UVM_TESTNAME=incr_read_test
++UVM_TESTNAME=incr_write_test
+//+UVM_TESTNAME=incr_read_test
 
 //+UVM_TESTNAME=incr_write_4_test
 //+UVM_TESTNAME=incr_write_8_test
@@ -67,9 +67,9 @@
 
 
 
-
-/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/request_if.sv
-/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/arbiter_if.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent/reset_if.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/request_if.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/arbiter_if.sv
 #/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_full_v6.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_comb.sv
 

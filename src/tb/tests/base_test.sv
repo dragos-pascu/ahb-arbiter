@@ -13,6 +13,9 @@ class base_test extends uvm_test;
     //virtual sequence base
 
 
+    //reset sequence
+    reset_seq reset_seq_h;
+
     function new(string name="base_test", uvm_component parent = null);
         super.new(name,parent);
 
@@ -70,7 +73,11 @@ class base_test extends uvm_test;
             begin
                 vseq_h.start(env.vsequencer);
             end
-
+            begin
+                reset_seq_h = reset_seq::type_id::create("reset_seq");
+                reset_seq_h.start(env.reset_agent_h.reset_seqr_h);
+            end
+            
         join    
             
         // join_none

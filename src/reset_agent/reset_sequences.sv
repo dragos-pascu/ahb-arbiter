@@ -18,10 +18,7 @@ class reset_seq extends reset_base_seq;
     endfunction
 
     task body();
-        req = reset_tx::type_id::create("req");
-        start_item(req);
-            assert(req.randomize() with {hreset == 0;});
-        finish_item(req);
+        `uvm_do(req);
     endtask
 
 endclass: reset_seq

@@ -19,14 +19,10 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         if(!uvm_config_db #(ahb_magent_config)::get(null,get_parent().get_name(), "ahb_magent_config", agent_config)) 
-
           `uvm_fatal(get_type_name(), "Failed to get config inside Master Driver")
 
         if(!uvm_config_db #(virtual master_if)::get(this, "", $sformatf("master[%0d]", agent_config.agent_id), vif)) 
-
           `uvm_fatal(get_type_name(), "Failed to get VIF inside Master Driver")
-
-        //`uvm_info(get_type_name(), "Finished build_phase for driver", UVM_MEDIUM)
 
     endfunction
 
@@ -48,7 +44,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
     virtual task run_phase(uvm_phase phase);
     initialize();
-        repeat(2) @vif.m_cb;
+    repeat(2) @vif.m_cb;
         forever begin
             initialize();
             wait(vif.hreset==1);
@@ -70,17 +66,22 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
     task address_phase();
         forever begin
+            
+
+            seq_item_port.get(req);
+
             //dont drive when reset is 0
             while (!vif.hreset) @vif.m_cb;
 
-            seq_item_port.get(req);
             req.id = agent_config.agent_id;
                       
             `uvm_info(get_type_name(), $sformatf("Driver req : \n %s",req.convert2string()),UVM_MEDIUM);
 
             haddr_index = 0 ;
+            
             vif.m_cb.hbusreq <= req.hbusreq;
             vif.m_cb.hlock <= req.hlock;
+
             @vif.m_cb;
             for (int i=0; i<req.htrans.size(); ++i) begin
 

@@ -14,7 +14,19 @@ module top(
     logic reset;
     time moment_reset;
 
+    reset_if r_if (.hclk(clk));
+
+    assign reset = r_if.hreset;
+
     test_harness th (.hclk(clk), .hreset(reset));
+
+    
+
+    initial begin
+        uvm_config_db #(virtual reset_if)::set(null,"", "reset_if", r_if); 
+    end
+    
+
     
     generic_arbiter_full DUT( .m_busreq(th.m_hbusreq),
                             .m_hlock(th.m_hlock),
@@ -50,22 +62,22 @@ module top(
     forever #5ns  clk = ~clk;
     end
     
-    initial begin
-    reset <=1;
-    #10ns;
-    reset <= 0;
-    #15ns
-    reset <= 1;
+    // initial begin
+    // reset <=1;
+    // #10ns;
+    // reset <= 0;
+    // #15ns
+    // reset <= 1;
 
     // forever begin
     //     automatic int ticks_before_reset = $urandom_range(10, 100);
     //     automatic int reset_ticks = $urandom_range(1, 10);
-    //     repeat (ticks_before_reset) @(posedge clk) begin end
+    //     repeat (ticks_before_reset) @(posedge clk);
     //     reset <= 0;
-    //     repeat (reset_ticks) @(posedge clk) begin end
+    //     repeat (reset_ticks) @(posedge clk) ;
     //     reset <= 1;
     // end
-    end
+    // end
 
 
     initial begin
