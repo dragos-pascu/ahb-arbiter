@@ -28,13 +28,21 @@ class reset_driver extends uvm_driver#(reset_tx);
         vif.hreset <= 1'b0;
         repeat(3) @vif.hclk;
         vif.hreset <= 1'b1;
-    
 
-        forever begin
-            seq_item_port.get_next_item(req);
-            reset();
-            seq_item_port.item_done(req);
-        end
+        repeat(300) @vif.hclk;
+        seq_item_port.get_next_item(req);
+        //reset();
+        vif.hreset <= 1'b0;
+        repeat(300) @vif.hclk;
+        vif.hreset <= 1'b1;
+
+        seq_item_port.item_done(req);
+
+        // forever begin
+        //     seq_item_port.get_next_item(req);
+        //     reset();
+        //     seq_item_port.item_done(req);
+        // end
     endtask
 
     task reset();

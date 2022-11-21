@@ -18,6 +18,7 @@ class reset_seq extends reset_base_seq;
     endfunction
 
     task body();
+        reset_tx req = reset_tx::type_id::create("req");
         `uvm_do(req);
     endtask
 

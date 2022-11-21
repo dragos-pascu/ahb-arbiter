@@ -60,7 +60,8 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
     task reset_monitor();
         
-        wait(vif.hreset==0);        
+        wait(vif.hreset==0);  
+        seq_item_port.put(req);      
         
     endtask
 
@@ -78,7 +79,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             `uvm_info(get_type_name(), $sformatf("Driver req : \n %s",req.convert2string()),UVM_MEDIUM);
 
             haddr_index = 0 ;
-            
+
             vif.m_cb.hbusreq <= req.hbusreq;
             vif.m_cb.hlock <= req.hlock;
 
