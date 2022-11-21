@@ -3,7 +3,7 @@
 class ahb_transaction extends uvm_sequence_item;
         `uvm_object_utils(ahb_transaction)
 
-        //id of the coresponding master
+        //id of the coresponding agent
         int id; 
         //address, control and data
         rand logic [31:0] haddr[];
@@ -85,19 +85,6 @@ class ahb_transaction extends uvm_sequence_item;
                 return res;
                 
         endfunction
-
-        // function void post_randomize(int haddr);
-        //         address_list.push_back(haddr);       
-        // endfunction
-
-        // constraint read_address{
-        //         if (hwrite==READ) {
-        //               foreach (haddr[i]) {
-        //                 haddr[i] inside {address_list};
-        //               }   
-        //         }
-       
-        // }
 
         constraint requests{
                 hlock == 1;
@@ -277,21 +264,6 @@ class ahb_transaction extends uvm_sequence_item;
         }  
 
 
-         
-        // function void post_randomize();
-        //         int flag = 1;
-        //         foreach (htrans[i]) begin
-        //                 if (i>= busy_pos && i<busy_pos + no_of_busy) begin
-        //                         if (flag) begin
-        //                                 htrans[i] = BUSY;
-        //                                 flag = 0;
-        //                         end else begin
-        //                                 htrans[i] = IDLE;
-        //                         end
-        //                 end
-        //         end
-
-        // endfunction
 
         function void post_randomize();
                 int temp = no_of_busy;
