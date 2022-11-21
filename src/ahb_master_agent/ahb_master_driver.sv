@@ -81,7 +81,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             haddr_index = 0 ;
             for (int i=0; i<req.htrans.size(); ++i) begin
 
-                //wait(vif.m_cb.hgrant & vif.m_cb.hready); expresia se executa in timp 0 daca expresia este true
+                //wait(); expresia se executa in timp 0 daca expresia este true
                 if (haddr_index == req.haddr.size()-1) begin
                         vif.m_cb.hbusreq <= 0;  
                         vif.m_cb.hlock <= 0;                  

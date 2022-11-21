@@ -81,11 +81,12 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
         //     vif.s_cb.hresp <= OKAY;
         //   end  
         // end
+        @vif.s_cb;
         vif.s_cb.hrdata <= req.hrdata;
         vif.s_cb.hready <= 1;
         vif.s_cb.hresp <= OKAY;
 
-        @vif.s_cb;
+        
 
         seq_item_port.item_done();
       

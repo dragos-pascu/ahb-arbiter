@@ -53,7 +53,7 @@ class ahb_transaction extends uvm_sequence_item;
                 $sformat (s, "%S\n   hready  = %0d", s, hready);
                 $sformat (s, "%S\n   hsel  = %0d", s, hsel);
                 $sformat (s, "%S\n   hresp   = %0d", s, hresp);
-                $sformat (s, "%S\n   hrdata  = %0p", s, hrdata);
+                $sformat (s, "%S\n   hrdata  = %h", s, hrdata);
                 $sformat (s, "%S\n   no_of_waits  = %p", s, no_of_waits);
                 $sformat (s, "%S\n   busy_pos  = %0d", s, busy_pos);
                 $sformat (s, "%S\n   no_of_busy  = %0d", s, no_of_busy);
