@@ -12,6 +12,7 @@ package tests_pkg;
     
 
     `include "base_test.sv"
+    `include "random_test.sv"
     
 ////////// WRITE ///////////////
 
@@ -26,7 +27,6 @@ package tests_pkg;
     `include "wrap_write_8_test.sv"
     `include "wrap_write_16_test.sv"
 
-    `include "random_test.sv"
 
 ///////////// READ ///////////////    
 
