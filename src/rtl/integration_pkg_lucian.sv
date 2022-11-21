@@ -4,7 +4,7 @@ timeunit 1ns/1ns;
 //import uvm_pkg::*;
 
 parameter master_number=9;
-parameter slave_number=4;
+parameter slave_number=7;
 parameter size_out=4; 
 parameter size_out_s=3;
 parameter number_trans = 4; //numarul de secvente pentru un master

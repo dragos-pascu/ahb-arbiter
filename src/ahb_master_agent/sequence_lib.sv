@@ -112,7 +112,7 @@ class incr_read_4sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of incr_read_4sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(3)begin
+        repeat(1)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == INCR4);
