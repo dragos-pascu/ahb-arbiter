@@ -78,7 +78,7 @@ class incr_write_sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of incr_write_sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(30)begin
+        repeat(2)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == INCR);

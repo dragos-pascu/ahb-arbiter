@@ -113,9 +113,10 @@ interface test_harness(input hclk, input  hreset);
       // assign s_hmaster  = req_if[i].bus_req.hmaster;
       // assign hgrant[i]  = req_if[i].bus_req.hgrant;
       // assign s_hmastlock = req_if[i].bus_req.hmastlock;    
-
+      
 
       initial begin 
+      bus_req.interface_number = i;
       uvm_config_db #(virtual request_if)::set(null,"", $sformatf("bus_req[%0d]", i), bus_req); 
       end
 

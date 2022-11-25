@@ -1,6 +1,8 @@
 interface request_if(input hclk, input hreset);
     import integration_pkg::*;
     
+    int interface_number;
+
     //outputs from master 
     logic hbusreq;
     logic hlock;
@@ -25,6 +27,23 @@ interface request_if(input hclk, input hreset);
 
     endproperty
 
+    /*When hgrant changes, next cyle the hmaster changes*/
+    property next_bus_master_p;
+
+        @(posedge hclk) disable iff(!hreset)
+            $rose(hgrant) |=> hmaster == interface_number;
+
+    endproperty
+
+    /*If the master is granted, it's hlock is propagated combitional to hmastlock*/
+    property hmastlock_same_as_hlock_p;
+
+        @(posedge hclk) disable iff(!hreset)
+            (hgrant == 1) |=> hmastlock == hlock;
+
+    endproperty
+
+
     /*When no master requests the bus, the master lowest priority receive the bus . (increments from master_number to 0)*/
     property default_master_p;
         @(posedge hclk) disable iff(!hreset)
@@ -33,7 +52,8 @@ interface request_if(input hclk, input hreset);
 
 
     // ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
-    // ONLY_ONE_HSEL: assert property(only_one_hsel_p);
+    NEXT_BUS_MASTER: assert property(next_bus_master_p);
+    HMASTLOCK_SAME_AS_HLOCK: assert property(hmastlock_same_as_hlock_p);
     // DEFAULT_BUS_MASTER: assert property(default_master_p);
 
     
