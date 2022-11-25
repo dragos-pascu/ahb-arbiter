@@ -11,6 +11,7 @@ interface request_if(input hclk, input hreset);
     logic[3:0] hmaster;
     logic hgrant; 
     logic hmastlock;  
+    logic hready;
 
     clocking req_cb @(posedge hclk);
 
@@ -27,11 +28,11 @@ interface request_if(input hclk, input hreset);
 
     endproperty
 
-    /*When hgrant changes, next cyle the hmaster changes*/
+    /*When hgrant and hready are 1 , next cyle the hmaster changes*/
     property next_bus_master_p;
 
         @(posedge hclk) disable iff(!hreset)
-            $rose(hgrant) |=> hmaster == interface_number;
+            $rose(hgrant) |-> hgrant == 1 & hready [->1] ##1 hmaster == interface_number;
 
     endproperty
 
