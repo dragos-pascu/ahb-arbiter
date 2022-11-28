@@ -77,9 +77,7 @@ class ahb_master_monitor extends uvm_monitor;
                 item.hsize =   size_t'(vif.m_cb.hsize) ;
                 item.hwrite =  rw_t'(vif.m_cb.hwrite);   
                 item.id = agent_config.agent_id;
-                // slave response
-                item.hready = vif.m_cb.hready;
-                item.hresp = resp_t'(vif.m_cb.hresp);
+                
                 end
 
                 @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
@@ -103,7 +101,10 @@ class ahb_master_monitor extends uvm_monitor;
             end else if (item.hwrite == READ) begin
                 item.hrdata = vif.m_cb.hrdata;
             end
-
+            // slave response
+            item.hready = vif.m_cb.hready;
+            item.hresp = resp_t'(vif.m_cb.hresp);
+            
             `uvm_info(get_type_name(), $sformatf("item from master_monitor is : %s ", item.convert2string()), UVM_MEDIUM)
 
             master_transaction_port.write(item);

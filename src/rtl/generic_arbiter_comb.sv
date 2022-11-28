@@ -47,17 +47,17 @@ module generic_arbiter_full(m_busreq,m_hlock,hclk,hreset,s_hmaster_lock
         end
         else begin
             int m;
-            if (m_busreq[master_phase[ARBITRATION]] & m_hlock[master_phase[ARBITRATION]]) begin  // comment for bug 3 V V V V V V V
+            if (m_busreq[master_phase[ARBITRATION]] & m_hlock[master_phase[ARBITRATION]]) begin  // comment for bug 2 V V V V V V V
                 m = master_phase[ARBITRATION];
             end   
-            else begin  // comment for bug 3 A A A A A A
+            else begin  // comment for bug 2 A A A A A A
                 for (m = 0; m <= `LAST_MASTER; m++ )
                 begin
                     if (m_busreq[m] || m == `LAST_MASTER) begin
                         break;
                     end
                 end
-            end // comment for bug 3
+            end // comment for bug 2
             master_phase[ARBITRATION] <= m;
             hgrant <= 1 << m;
         end
@@ -110,7 +110,8 @@ module generic_arbiter_full(m_busreq,m_hlock,hclk,hreset,s_hmaster_lock
 
     assign m_hready = data_selected_slave < slave_number ? s_hready[data_selected_slave] : 1;
 
-    wire selected_slave_valid = address_selected_slave < slave_number;
+    //wire selected_slave_valid = address_selected_slave < slave_number; //bug 3
+    wire selected_slave_valid = data_selected_slave < slave_number;
     assign m_hrdata = selected_slave_valid ? s_hrdata >> 32*data_selected_slave : 0;
     assign m_hresp  = selected_slave_valid ? s_hresp >> 2*data_selected_slave : 0;
 

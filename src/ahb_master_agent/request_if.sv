@@ -21,12 +21,12 @@ interface request_if(input hclk, input hreset);
 
     /*Only one hgrant can be asserted on the bus at a time*/
     /*onehot0 because the hgrant starts with all to 0 to avoid assertion*/
-    property only_one_hgrant_p;
+    // property only_one_hgrant_p;
 
-        @(posedge hclk) disable iff(!hreset)
-        $onehot0(hgrant);
+    //     @(posedge hclk) disable iff(!hreset)
+    //     $onehot0(hgrant);
 
-    endproperty
+    // endproperty
 
     /*When hgrant and hready are 1 , next cyle the hmaster changes*/
     property next_bus_master_p;
@@ -46,10 +46,10 @@ interface request_if(input hclk, input hreset);
 
 
     /*When no master requests the bus, the master lowest priority receive the bus . (increments from master_number to 0)*/
-    property default_master_p;
-        @(posedge hclk) disable iff(!hreset)
-        hbusreq == 0 |-> ##3 hgrant == 1 << (master_number - 1);
-    endproperty
+    // property default_master_p;
+    //     @(posedge hclk) disable iff(!hreset)
+    //     hbusreq == 0 |-> ##3 hgrant == 1 << (master_number - 1);
+    // endproperty
 
 
     // ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);

@@ -86,6 +86,10 @@ class ahb_transaction extends uvm_sequence_item;
                 
         endfunction
 
+        constraint hrdata_value {
+                hrdata > 0;
+        }
+
         constraint requests{
                 hlock == 1;
                 hbusreq == 1;
