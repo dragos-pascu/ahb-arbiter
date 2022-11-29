@@ -79,10 +79,10 @@ class ahb_master_monitor extends uvm_monitor;
                 item.id = agent_config.agent_id;
                 
                 end
-
+                
                 @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
                 mbx.put(item);
-        
+                
             end else begin
                 @vif.m_cb;
             end
@@ -95,7 +95,7 @@ class ahb_master_monitor extends uvm_monitor;
         ahb_transaction item;
         forever begin
             mbx.get(item);
-            
+
             if(item.hwrite == WRITE) begin
                 item.hwdata[0] = vif.m_cb.hwdata;
             end else if (item.hwrite == READ) begin

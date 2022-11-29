@@ -132,7 +132,9 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
 
                 if(!was_busy) begin
-                    @(vif.m_cb iff(vif.m_cb.hready && vif.hreset)); //executes at least while , eq is do while loop
+                    //executes at least while , eq is do while loop
+                    //@(vif.m_cb iff(vif.hreset));
+                    @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
                     mbx.put(req);
                 end
                 
@@ -153,16 +155,19 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         forever begin
             
             //drive data items
-            
             mbx.get(item);
-            if(item.hwrite == WRITE) begin
-            vif.m_cb.hwdata <= item.hwdata[i];
-            end
+            
+            //while (!vif.m_cb.hready) @vif.m_cb;
+            if(item.hwrite == WRITE ) begin
+                vif.m_cb.hwdata <= item.hwdata[i];
+            end  
+
+
             i++;
             
             if(item.haddr.size() == i) begin
-            seq_item_port.put(item);
-            i=0;
+                seq_item_port.put(item);
+                i=0;
             end  
 
             `uvm_info(get_type_name(), $sformatf("Driver put item : \n "),UVM_MEDIUM);

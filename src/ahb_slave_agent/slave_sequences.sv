@@ -32,7 +32,7 @@ class slave_response_seq extends ahb_slave_base_seq;
             case (req.hwrite)
                 
                 READ: begin
-                    `uvm_do_with(req,{req.hresp == OKAY;req.no_of_waits.size == 1;})
+                    `uvm_do_with(req,{req.hresp == OKAY;/*req.no_of_waits.size == 1;*/})
                 end
 
                 WRITE: begin
