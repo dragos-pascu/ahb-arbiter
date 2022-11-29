@@ -71,7 +71,7 @@ class ahb_slave_monitor extends uvm_monitor;
         forever begin
         
 
-            if ( ( vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ ) && vif.s_cb.hsel == 1 && vif.s_cb.hready == 1 && vif.hreset == 1) begin
+            if ( ( vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ ) && vif.s_cb.hsel == 1  && vif.hreset == 1) begin
 
                 item = ahb_transaction::type_id::create("item");
                 item.htrans = new[1];
@@ -94,15 +94,13 @@ class ahb_slave_monitor extends uvm_monitor;
                 if (item.hwrite == READ) begin
                     reactive_transaction_port.write(item);
                     @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
-                    //@(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
-                    
                     mbx.put(item);
+                    
                 end else if (item.hwrite == WRITE) begin
                     @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
                     mbx.put(item);
                 end 
                     
-                
                 
             end 
             else begin
