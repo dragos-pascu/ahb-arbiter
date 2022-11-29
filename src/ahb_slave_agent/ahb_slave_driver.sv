@@ -78,8 +78,7 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
             vif.s_cb.hrdata <= req.hrdata;
             end
           end
-          
-            
+           
         end
 
 

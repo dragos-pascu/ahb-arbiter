@@ -90,17 +90,12 @@ class ahb_slave_monitor extends uvm_monitor;
                 item.id = agent_config.agent_id;
                 item.hsel = vif.s_cb.hsel;
 
+                
+                reactive_transaction_port.write(item);
 
-                if (item.hwrite == READ) begin
-                    reactive_transaction_port.write(item);
-                    @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
-                    mbx.put(item);
-                    
-                end else if (item.hwrite == WRITE) begin
-                    @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
-                    mbx.put(item);
-                end 
-                    
+                // put item for address phase
+                @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
+                mbx.put(item);    
                 
             end 
             else begin
