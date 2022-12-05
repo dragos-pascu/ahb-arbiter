@@ -61,7 +61,7 @@ class ahb_master_monitor extends uvm_monitor;
 
         forever begin
             
-            if (vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ ) begin
+            if ( ( vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ ) && vif.m_cb.hready) begin
                 item = ahb_transaction::type_id::create("item");
                 item.htrans = new[1];
                 item.haddr = new[1];
@@ -79,8 +79,10 @@ class ahb_master_monitor extends uvm_monitor;
                 item.id = agent_config.agent_id;
                 
                 end
-                
+                `uvm_info(get_type_name(), $sformatf("haddr is (addr_phase)  : %h ", item.haddr[0]), UVM_MEDIUM)
                 @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
+                `uvm_info(get_type_name(), $sformatf("haddr is data_phase : %h ", item.haddr[0]), UVM_MEDIUM)
+
                 mbx.put(item);
                 
             end else begin

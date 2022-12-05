@@ -54,7 +54,7 @@ interface request_if(input hclk, input hreset);
 
     // ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
     NEXT_BUS_MASTER: assert property(next_bus_master_p);
-    //HMASTLOCK_SAME_AS_HLOCK: assert property(hmastlock_same_as_hlock_p);
+    //HMASTLOCK_TIMING: assert property(hmastlock_same_as_hlock_p);
     // DEFAULT_BUS_MASTER: assert property(default_master_p);
 
     

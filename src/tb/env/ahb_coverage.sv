@@ -4,17 +4,15 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
     /************** COVERAGE FOR DATA TRANSFER ACCORDING TO AHB *****************/
 
     ahb_transaction tx;
-
     env_config cfg;
 
-    covergroup ahb_transaction_cg ;
-        
+    covergroup ahb_master_cg ;
+
         option.per_instance = 1;
-
-        hbusreq: coverpoint tx.hbusreq;
-        hlock: coverpoint tx.hlock;
-
-        read_write: coverpoint tx.hwrite {bins write_bin = {WRITE};}
+        read_write: coverpoint tx.hwrite {
+            bins write_bin = {WRITE};
+            bins read_bin = {READ};
+            }
         htrans: coverpoint tx.htrans[0]{
             bins idle = {IDLE};
             bins nonseq = {NONSEQ};
@@ -36,34 +34,43 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
 			bins single 	= {SINGLE};
         }
         hsize: coverpoint tx.hsize {bins word_bin = {WORD};}
-
         hwdata: coverpoint tx.hwdata[0]{option.auto_bin_max = 6;}
-
-        //cross cov
         read_writeXhburstXhsize: cross read_write, hburst, hsize;
-
-
 
     endgroup
 
+    covergroup ahb_slave_cg ;
+
+        hrdata: coverpoint tx.hrdata iff(tx.hwrite == READ)
+        {option.auto_bin_max = 6;}
+        hready: coverpoint tx.hready;
+        hresp: coverpoint tx.hresp;
+
+        hreadyXhresp : cross hready, hresp;
+
+    endgroup
 
 
     virtual function void write(ahb_transaction t);
 
         tx = t;
-        ahb_transaction_cg.sample();
+        ahb_master_cg.sample();
+        ahb_slave_cg.sample();
 
     endfunction
 
     function new(string name = "ahb_coverage", uvm_component parent);
         super.new(name, parent);
-        ahb_transaction_cg = new();
+        ahb_master_cg = new();
+        ahb_slave_cg = new();
         cfg = new();
     endfunction
 
     //Report
     function void report_phase(uvm_phase phase);
-            `uvm_info(get_type_name(), $sformatf("AHB Transaction coverage is: %f", ahb_transaction_cg.get_coverage()), UVM_MEDIUM)
+        `uvm_info(get_type_name(), $sformatf("Master data coverage is: %f", ahb_master_cg.get_coverage()), UVM_MEDIUM)
+        `uvm_info(get_type_name(), $sformatf("Slave data coverage is: %f", ahb_slave_cg.get_coverage()), UVM_MEDIUM)
+
     endfunction
 
 endclass

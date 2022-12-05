@@ -27,15 +27,12 @@ class arbitration_coverage extends uvm_subscriber#(ahb_request);
 
 
     virtual function void write(ahb_request t);
-
         sample_arbitration(t.busreq_map, t.hlock_map);
         
-
     endfunction
 
     function new(string name = "arbitration_coverage", uvm_component parent);
         super.new(name, parent);
-        //walking_1_cg = new();
         arbitration_cg = new();
         cfg = new();
     endfunction
@@ -43,7 +40,5 @@ class arbitration_coverage extends uvm_subscriber#(ahb_request);
     //Report
     function void report_phase(uvm_phase phase);
             `uvm_info(get_type_name(), $sformatf("Arbitration coverage is: %f", arbitration_cg.get_coverage()), UVM_MEDIUM)
-            //`uvm_info(get_type_name(), $sformatf("Arbitration coverage is: %f", walking_1_cg.get_coverage()), UVM_MEDIUM)
-
     endfunction
 endclass

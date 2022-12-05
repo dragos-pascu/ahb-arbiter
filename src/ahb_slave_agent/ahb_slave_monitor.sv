@@ -71,7 +71,7 @@ class ahb_slave_monitor extends uvm_monitor;
         forever begin
         
 
-            if ( ( vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ ) && vif.s_cb.hsel == 1  && vif.hreset == 1) begin
+            if ( ( vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ ) && vif.s_cb.hsel == 1 && vif.s_cb.hready == 1 && vif.hreset == 1) begin
 
                 item = ahb_transaction::type_id::create("item");
                 item.htrans = new[1];
@@ -93,7 +93,7 @@ class ahb_slave_monitor extends uvm_monitor;
                 
                 reactive_transaction_port.write(item);
 
-                // put item for address phase
+                // put item for data phase
                 @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
                 mbx.put(item);    
                 

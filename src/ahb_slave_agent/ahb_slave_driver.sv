@@ -26,11 +26,13 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
     endfunction
 
     task run_phase(uvm_phase phase);
+      vif.s_cb.hready <= 1;
+      vif.s_cb.hresp <= OKAY;
+      vif.s_cb.hrdata <= 0;
       forever begin
-        
+
         initialize();
         wait(vif.hreset==1);
-        
         fork
           
           drive();
@@ -51,12 +53,19 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
     endtask
 
     task initialize();
+      
       vif.s_cb.hready <= 1;
       vif.s_cb.hresp <= OKAY;
       vif.s_cb.hrdata <= 0;
-      repeat(1)begin
-        @(vif.s_cb);
-      end
+      // repeat(4)begin
+      // @(vif.s_cb);
+      // end
+      // vif.s_cb.hready <= 0;
+      // vif.s_cb.hresp <= OKAY;
+      // vif.s_cb.hrdata <= 0;
+      
+      
+      
       
     endtask
 
@@ -67,7 +76,9 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
         while (!(vif.s_cb.hsel && vif.hreset)) begin
           @vif.s_cb;
         end
+
         `uvm_info(get_type_name(), $sformatf("Slave driver item : \n %s", req.convert2string()), UVM_MEDIUM);
+        `uvm_info(get_type_name(), $sformatf("Slave responds to address : \n %h", vif.s_cb.haddr ), UVM_MEDIUM);
         
         foreach (req.no_of_waits[i]) begin
           vif.s_cb.hready <= req.no_of_waits[i];

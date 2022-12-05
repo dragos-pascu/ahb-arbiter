@@ -9,8 +9,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     mailbox mbx = new();
     int haddr_index=0;
     int was_busy = 0;
-    int prev_grant = master_number-1;
-
+    
     function new(string name = "ahb_master_driver", uvm_component parent);
         super.new(name, parent);
     endfunction: new
@@ -54,14 +53,17 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                 reset_monitor();
             join_any
             disable fork;
-        end
-        
+        end  
     endtask
 
     task reset_monitor();
         
         wait(vif.hreset==0);  
-        seq_item_port.put(req);      
+        //req = ahb_transaction::type_id::create("dummy_req");
+        if (req!=null) begin
+            seq_item_port.put(req);
+        end
+              
         
     endtask
 
@@ -83,18 +85,9 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             vif.m_cb.hbusreq <= req.hbusreq;
             vif.m_cb.hlock <= req.hlock;
 
-            @vif.m_cb;
-            for (int i=0; i<req.htrans.size(); ++i) begin
 
-                //wait(); expresia se executa in timp 0 daca expresia este true
-                if (haddr_index == req.haddr.size()-1) begin
-                        vif.m_cb.hbusreq <= 0;  
-                        vif.m_cb.hlock <= 0;                  
-                end else if (haddr_index < req.haddr.size()-1) begin
-                            //request bus
-                        vif.m_cb.hbusreq <= req.hbusreq;
-                        vif.m_cb.hlock <= req.hlock;
-                end
+            // @vif.m_cb;
+            for (int i=0; i<req.htrans.size(); ++i) begin
 
                 //wait for bus to be granted
                 while (!(vif.m_cb.hgrant && vif.m_cb.hready && vif.hreset)) begin
@@ -113,7 +106,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                     vif.m_cb.hsize   <= req.hsize;
                     vif.m_cb.hburst  <= req.hburst;
                 end else if(req.htrans[i] == BUSY ) begin
-                    was_busy=1;
                     while (req.no_of_busy>0) begin
                             vif.m_cb.htrans <= req.htrans[i];
                             vif.m_cb.haddr <= req.haddr[haddr_index];
@@ -130,15 +122,20 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                 end
                 
 
-
                 if(!was_busy) begin
-                    //executes at least while , eq is do while loop
-                    //@(vif.m_cb iff(vif.hreset));
                     @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
                     mbx.put(req);
                 end
-                
-                was_busy = 0;
+                                
+                //wait(); expresia se executa in timp 0 daca expresia este true
+                if (haddr_index == req.haddr.size()-1) begin
+                        vif.m_cb.hbusreq <= 0;  
+                        vif.m_cb.hlock <= 0;                  
+                end else if (haddr_index < req.haddr.size()-1) begin
+                            //request bus
+                        vif.m_cb.hbusreq <= req.hbusreq;
+                        vif.m_cb.hlock <= req.hlock;
+                end
 
             end
             haddr_index = 0 ;
@@ -155,13 +152,10 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
         forever begin
             
             //drive data items
-            mbx.get(item);
-            
-            //while (!vif.m_cb.hready) @vif.m_cb;
+            mbx.get(item);            
             if(item.hwrite == WRITE ) begin
                 vif.m_cb.hwdata <= item.hwdata[i];
             end  
-
 
             i++;
             
@@ -171,8 +165,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             end  
 
             `uvm_info(get_type_name(), $sformatf("Driver put item : \n "),UVM_MEDIUM);
-
-            
+           
         end
         
     endtask

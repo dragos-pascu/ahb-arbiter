@@ -46,7 +46,7 @@ class ahb_scoreboard extends uvm_scoreboard;
                 master_item.hsel = 1;
                 expected_transactions[i].push_back(master_item); // i represents the slave number.
                 predictor_transactions++;
-                `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_DEBUG);
+                `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_MEDIUM);
 
                 break;
             end     
@@ -56,8 +56,6 @@ class ahb_scoreboard extends uvm_scoreboard;
             
             //could implement a default slave here.
         end
-
-
         
     endfunction
 
@@ -69,7 +67,6 @@ class ahb_scoreboard extends uvm_scoreboard;
                 if (expected_transactions[slave_item.id].size == 0) begin
                     `uvm_error(get_type_name(),"Queue is empty")
                 end else begin
-                    // temp_tx1 = ahb_transaction::type_id::create("temp_tx1");
                     temp_tx1 =  expected_transactions[slave_item.id].pop_front();
                     if (slave_item.compare(temp_tx1)) begin
                     `uvm_info(get_type_name(), $sformatf("MATCH : \n %s",slave_item.convert2string()),UVM_MEDIUM);
@@ -80,7 +77,7 @@ class ahb_scoreboard extends uvm_scoreboard;
                     else begin
 
                         mismatch++;
-                        `uvm_error(get_type_name(),"Mismatch : ")
+                        `uvm_error(get_type_name(),"MISMATCH : ")
                         `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_tx1.convert2string()));
                         `uvm_error(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()));
 
