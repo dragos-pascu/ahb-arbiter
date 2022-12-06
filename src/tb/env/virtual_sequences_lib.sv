@@ -178,32 +178,6 @@ class virtual_incr_write_sequence extends virtual_base_sequence;
 
 endclass
 
-class virtual_incr_write_sequence_with_lock extends virtual_base_sequence;
-    `uvm_object_utils(virtual_incr_write_sequence_with_lock)
-    function new(string name="virtual_incr_write_sequence_with_lock");
-        super.new(name);
-    endfunction
-
-
-    virtual task body();
-        `uvm_info(get_type_name(), "Executing virtual_incr_write_sequence_with_lock", UVM_MEDIUM)
-   
-        begin
-            for(int i=master_number;i>0;i++)begin
-                automatic int j=i;
-                fork begin
-                    incr_write_sequence wr_seq_h;
-                    wr_seq_h = incr_write_sequence::type_id::create("incr_write_sequence");
-                    wr_seq_h.start(p_sequencer.master_seqr[j]);
-                end
-                join_none
-            end
-        end
-       
-
-    endtask
-
-endclass
 
 class virtual_incr_read_sequence extends virtual_base_sequence;
     `uvm_object_utils(virtual_incr_read_sequence)

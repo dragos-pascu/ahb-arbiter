@@ -20,6 +20,7 @@ class ahb_transaction extends uvm_sequence_item;
         //bus req signals
         rand logic  hlock; 
         rand logic  hbusreq; 
+        rand int lock_duration; // how many cycles lock will be 1.
 
         //slave response signals
         rand bit hready;
@@ -45,6 +46,7 @@ class ahb_transaction extends uvm_sequence_item;
                 $sformat (s, "%s\n   ahb_transaction with id = %0d :", s,id);
                 $sformat (s, "%s\n   hbusreq = %0d", s, hbusreq);
                 $sformat (s, "%s\n   hlock   = %0d", s, hlock);
+                $sformat (s, "%s\n   lock_duration   = %0d", s, lock_duration);
                 $sformat (s, "%s\n   haddr   = %p", s, haddr);
                 $sformat (s, "%S\n   hwdata  = %p", s, hwdata);
                 $sformat (s, "%S\n   hburst  = %0d", s, hburst);
@@ -91,12 +93,14 @@ class ahb_transaction extends uvm_sequence_item;
         }
 
         constraint requests{
-                hlock == 0;
+                // hlock == 0;
                 hbusreq == 1;
                 // hbusreq dist {0:/2,1:/1};
                 // if (hbusreq) {
                 //     hlock dist {0:/2,1:/1};    
                 // }
+                lock_duration < haddr.size; 
+                lock_duration > 0; 
                         
                 
                 
@@ -243,6 +247,10 @@ class ahb_transaction extends uvm_sequence_item;
                                 solve haddr before busy_pos;
                                 solve hsize before haddr;
                                 }
+
+        constraint solve_hlock {
+                solve haddr before lock_duration;
+        }
 
                     
         constraint write_data {

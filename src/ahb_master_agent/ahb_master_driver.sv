@@ -9,6 +9,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     mailbox mbx = new();
     int haddr_index=0;
     int was_busy = 0;
+    int is_zero = 0;
     
     function new(string name = "ahb_master_driver", uvm_component parent);
         super.new(name, parent);
@@ -88,19 +89,22 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
             // @vif.m_cb;
             for (int i=0; i<req.htrans.size(); ++i) begin
-
                 //wait for bus to be granted
                 while (!(vif.m_cb.hgrant && vif.m_cb.hready && vif.hreset)) begin
                     vif.m_cb.htrans <= IDLE;
                     @vif.m_cb; 
                 end
 
-                
-
                 if(req.htrans[i] == NONSEQ || req.htrans[i] == SEQ) begin
-
                     vif.m_cb.haddr  <= req.haddr[haddr_index];
                     haddr_index++;
+                    /* construct to make a variable hlock */
+                    if (!is_zero) begin
+                        req.lock_duration--;
+                        if (req.lock_duration == 0) begin
+                            is_zero = 1;
+                        end
+                    end
                     vif.m_cb.htrans <= req.htrans[i];
                     vif.m_cb.hwrite  <= req.hwrite;
                     vif.m_cb.hsize   <= req.hsize;
@@ -121,20 +125,26 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                     
                 end
                 
-
                 if(!was_busy) begin
                     @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
                     mbx.put(req);
                 end
-                                
+
+                
+
                 //wait(); expresia se executa in timp 0 daca expresia este true
-                if (haddr_index == req.haddr.size()-1) begin
+                if (haddr_index == req.haddr.size()-1 ) begin
                         vif.m_cb.hbusreq <= 0;  
                         vif.m_cb.hlock <= 0;                  
                 end else if (haddr_index < req.haddr.size()-1) begin
                             //request bus
                         vif.m_cb.hbusreq <= req.hbusreq;
-                        vif.m_cb.hlock <= req.hlock;
+                        if (req.lock_duration == 0) begin
+                            vif.m_cb.hlock <= 0;
+                        end else begin
+                            vif.m_cb.hlock <= req.hlock;
+                        end
+                        
                 end
 
             end
