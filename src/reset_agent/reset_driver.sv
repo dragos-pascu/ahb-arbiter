@@ -22,50 +22,25 @@ class reset_driver extends uvm_driver#(reset_tx);
 
 
     task run_phase(uvm_phase phase);
-                `uvm_info(get_type_name(), $sformatf("Reset driver run_phase : \n "),UVM_MEDIUM);
+        `uvm_info(get_type_name(), $sformatf("Reset driver run_phase : \n "),UVM_MEDIUM);
         
-       
-        vif.hreset <= 1'b0;
-        repeat(3) @vif.hclk;
-        vif.hreset <= 1'b1;
+        vif.r_cb.hreset <= 1'b1;
 
-        repeat(300) @vif.hclk;
-        seq_item_port.get_next_item(req);
-        //reset();
-        vif.hreset <= 1'b0;
-        repeat(300) @vif.hclk;
-        vif.hreset <= 1'b1;
+        forever begin
+        
+            seq_item_port.get_next_item(req);
+            `uvm_info(get_type_name(), $sformatf("reset item %p : \n ",req),UVM_MEDIUM);
 
-        seq_item_port.item_done(req);
+            vif.r_cb.hreset <= 1'b1;
+            repeat(req.ticks_before_reset) @vif.hclk;
+            vif.r_cb.hreset <= 1'b0;
+            repeat(req.ticks_during_reset) @vif.hclk;
+            vif.r_cb.hreset <= 1'b1;
+            seq_item_port.item_done(req);
 
-        // forever begin
-        //     seq_item_port.get_next_item(req);
-        //     reset();
-        //     seq_item_port.item_done(req);
-        // end
-    endtask
-
-    task reset();
-
-            // forever begin
-            // vif.r_cb.hreset <= 0;
-            // #5;
-            // vif.r_cb.hreset <=1;
-            // end
-    
-        if(req.hreset)
-        begin
-                vif.hreset <= 1'b1;
-                @(vif.hclk);
         end
-        else
-        begin
-                vif.hreset <= 1'b0;
-                @(vif.hclk);
-        end
+        
     endtask
-
-
 
 endclass: reset_driver
 

@@ -33,9 +33,7 @@ class ahb_scoreboard extends uvm_scoreboard;
     endfunction 
 
     function void build_phase(uvm_phase phase);
-    super.build_phase(phase);
-        
-
+        super.build_phase(phase);
     endfunction
 
     function void write_predictor(ahb_transaction master_item);
@@ -53,8 +51,6 @@ class ahb_scoreboard extends uvm_scoreboard;
         end
         if (i>=slave_number) begin
             `uvm_info(get_type_name(),$sformatf("Unmaped transaction not to be matched, haddr: %h",master_item.haddr[0]),UVM_MEDIUM);
-            
-            //could implement a default slave here.
         end
         
     endfunction

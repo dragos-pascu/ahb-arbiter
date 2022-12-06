@@ -71,7 +71,6 @@ class ahb_transaction extends uvm_sequence_item;
                 
                 res = super.do_compare(rhs,comparer) &&
                         //the master that initiates the transaction
-                        // (id === tx_rhs.id) && id from master and one from slave.
                         //data that was sent by master vs received by slave
                         (haddr    === tx_rhs.haddr ) &&
                         (hwdata   === tx_rhs.hwdata) &&
