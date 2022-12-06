@@ -94,15 +94,19 @@ class ahb_transaction extends uvm_sequence_item;
 
         constraint requests{
                 // hlock == 0;
-                hbusreq == 1;
-                // hbusreq dist {0:/2,1:/1};
-                // if (hbusreq) {
-                //     hlock dist {0:/2,1:/1};    
-                // }
-                lock_duration < haddr.size; 
-                lock_duration > 0; 
-                        
+                //hbusreq == 1;
+                hbusreq dist {0:/2,1:/1};
+                if (hbusreq) {
+                    hlock dist {0:/2,1:/1};    
+                }
+                   
                 
+        }
+        constraint locked_cycles {
+                if (hlock) {
+                        lock_duration < haddr.size; 
+                        lock_duration > 0;   
+                }
                 
         }
 
@@ -248,8 +252,9 @@ class ahb_transaction extends uvm_sequence_item;
                                 solve hsize before haddr;
                                 }
 
-        constraint solve_hlock {
+        constraint solve_hlock_duration {
                 solve haddr before lock_duration;
+                solve hlock before lock_duration;
         }
 
                     
