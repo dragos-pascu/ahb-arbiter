@@ -93,6 +93,56 @@ class virtual_random_sequence extends virtual_base_sequence;
                 wr_seq_h.start(p_sequencer.master_seqr[j]);
             end
 
+            /// READ
+
+            1: begin
+                single_read_sequence wr_seq_h;
+                wr_seq_h = single_read_sequence::type_id::create("single_read_sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                incr_read_sequence wr_seq_h;
+                wr_seq_h = incr_read_sequence::type_id::create("incr_read_sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                incr_read_4sequence wr_seq_h;
+                wr_seq_h = incr_read_4sequence::type_id::create("incr_read_4sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                incr_read_8sequence wr_seq_h;
+                wr_seq_h = incr_read_8sequence::type_id::create("incr_read_8sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                incr_read_16sequence wr_seq_h;
+                wr_seq_h = incr_read_16sequence::type_id::create("incr_read_16sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                wrap_read_4sequence wr_seq_h;
+                wr_seq_h = wrap_read_4sequence::type_id::create("wrap_read_4sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                wrap_read_8sequence wr_seq_h;
+                wr_seq_h = wrap_read_8sequence::type_id::create("wrap_read_8sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
+            1: begin
+                wrap_read_16sequence wr_seq_h;
+                wr_seq_h = wrap_read_16sequence::type_id::create("wrap_read_16sequence");
+                wr_seq_h.start(p_sequencer.master_seqr[j]);
+            end
+
             endcase
 
             
