@@ -3,10 +3,14 @@ class reset_driver extends uvm_driver#(reset_tx);
     `uvm_component_utils(reset_driver)
 
     virtual reset_if vif;
+    rand int reset_time_ps;
+    constraint rst_cnstr { reset_time_ps inside {[1:1000000]}; }
         
     function new(string name = "reset_driver", uvm_component parent);
         super.new(name, parent);
     endfunction
+
+    
 
     
     function void build_phase(uvm_phase phase);
@@ -19,6 +23,15 @@ class reset_driver extends uvm_driver#(reset_tx);
         end
     endfunction
 
+    // virtual task reset_phase(uvm_phase phase);
+    //     phase.raise_objection(this);
+    //     vif.r_cb.hreset <= 1'b1;
+    //     #15;
+    //     vif.r_cb.hreset <= 0;
+    //     #( reset_time_ps );
+    //     vif.r_cb.hreset <= 1;
+    //     phase.drop_objection(this);
+    // endtask : reset_phase
 
 
     task run_phase(uvm_phase phase);
@@ -29,8 +42,6 @@ class reset_driver extends uvm_driver#(reset_tx);
         forever begin
         
             seq_item_port.get_next_item(req);
-            `uvm_info(get_type_name(), $sformatf("reset item %p : \n ",req),UVM_MEDIUM);
-
             vif.r_cb.hreset <= 1'b1;
             repeat(req.ticks_before_reset) @vif.hclk;
             vif.r_cb.hreset <= 1'b0;
