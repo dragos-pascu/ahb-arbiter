@@ -30,6 +30,31 @@ class virtual_base_sequence extends uvm_sequence;
     
 
 endclass
+
+//error virtual sequence
+
+    
+class virtual_error_sequence extends virtual_base_sequence;
+    `uvm_object_utils(virtual_error_sequence)
+    function new(string name="virtual_error_sequence");
+        super.new(name);
+    endfunction
+
+    virtual task body();
+        `uvm_info(get_type_name(), "Executing virtual_error_sequence", UVM_MEDIUM)
+        for(int i=0;i<master_number;i++)begin
+        automatic int j=i;
+        fork begin
+            error_sequence wr_seq_h;
+            wr_seq_h = error_sequence::type_id::create("error_sequence");
+            wr_seq_h.start(p_sequencer.master_seqr[j]);
+         end
+        join
+      end
+    endtask
+
+endclass   
+
  
 class virtual_random_sequence extends virtual_base_sequence;
     `uvm_object_utils(virtual_random_sequence)

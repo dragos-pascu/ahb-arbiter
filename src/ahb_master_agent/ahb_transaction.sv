@@ -93,8 +93,8 @@ class ahb_transaction extends uvm_sequence_item;
 
         constraint requests{
                 // hlock == 0;
-                //hbusreq == 1;
-                hbusreq dist {0:/2,1:/1};
+                hbusreq == 1;
+                //hbusreq dist {0:/2,1:/1};
                 if (hbusreq) {
                     hlock dist {0:/2,1:/1};    
                 }
@@ -239,7 +239,6 @@ class ahb_transaction extends uvm_sequence_item;
                 }
         }   
 
-
         constraint addr_wrap8_word{
                 if((hburst == WRAP8) && (hsize == WORD)){
                         foreach(haddr[i]){
@@ -267,6 +266,7 @@ class ahb_transaction extends uvm_sequence_item;
                         haddr[i] < 350;
                 
         }  
+
         constraint addr_size_limit {
                 haddr.size > 0;
         }

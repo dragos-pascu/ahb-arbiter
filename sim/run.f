@@ -21,10 +21,12 @@
 ///////////////////////////////////////////////////
 // *** include test ***
 
++UVM_TESTNAME=error_test
+
 //+UVM_TESTNAME=single_write_test
 //+UVM_TESTNAME=simple_read_test
 
-+UVM_TESTNAME=incr_write_test
+//+UVM_TESTNAME=incr_write_test
 //+UVM_TESTNAME=incr_read_test
 
 //+UVM_TESTNAME=incr_write_4_test

@@ -1,3 +1,35 @@
+//error sequence 
+
+    class error_sequence extends uvm_sequence#(ahb_transaction);
+    `uvm_object_utils(error_sequence)
+
+    function new(string name="error_sequence");
+        super.new(name);
+    endfunction
+
+    
+    virtual task body();
+        `uvm_info(get_type_name(),"Inside body of error_sequence.",UVM_MEDIUM)
+
+        req = ahb_transaction::type_id::create("req");
+        repeat(2)begin
+        start_item(req);
+        if(!req.randomize() with {
+            (htrans[0] == NONSEQ); 
+        })
+        `uvm_fatal(get_type_name(), "Error sequence randomize failed!")
+        req.hwdata[0] = $urandom();
+        foreach(req.haddr[i])
+                req.haddr[i] = $urandom_range(350,600); 
+        finish_item(req);
+        get_response(req);
+        end
+        `uvm_info(get_type_name(), "Single write sequence finished", UVM_MEDIUM)
+
+    endtask
+
+
+endclass
 //sequences for master
 class single_write_sequence extends uvm_sequence#(ahb_transaction);
     

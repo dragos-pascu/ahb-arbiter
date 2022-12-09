@@ -14,6 +14,8 @@ package tests_pkg;
 
     `include "base_test.sv"
     `include "random_test.sv"
+
+    `include "error_test.sv"
     
 ////////// WRITE ///////////////
 
