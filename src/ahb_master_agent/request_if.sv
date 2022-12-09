@@ -20,27 +20,26 @@ interface request_if(input hclk, input hreset);
     endclocking
 
     /*Only one hgrant can be asserted on the bus at a time*/
-    /*onehot0 because the hgrant starts with all to 0 to avoid assertion*/
     // property only_one_hgrant_p;
 
     //     @(posedge hclk) disable iff(!hreset)
-    //     $onehot0(hgrant);
+    //     $onehot(hgrant);
 
     // endproperty
 
-    /*When hgrant and hready are 1 , next cyle the hmaster changes*/
+    /*When hgrant and hready are 1 , next cyle the hmaster changes*/ // Add 
     property next_bus_master_p;
 
         @(posedge hclk) disable iff(!hreset)
-            $rose(hgrant) |-> hgrant == 1 & hready [->1] ##1 hmaster == interface_number;
+            $rose(hgrant) |-> hgrant == 1 & hready [->1] /*& htrans != IDLE*/ ##1 hmaster == interface_number;
 
     endproperty
 
-    /*If the master is granted, it's hlock is propagated combitional to hmastlock*/
+    /*If the master is granted, it's hlock is propagated through combinatorial logic to hmastlock*/
     property hmastlock_same_as_hlock_p;
 
         @(posedge hclk) disable iff(!hreset)
-            (hgrant == 1) |=> hmastlock == hlock;
+            (hgrant == 1) |-> hmastlock == hlock;
 
     endproperty
 

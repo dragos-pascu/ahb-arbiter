@@ -15,10 +15,10 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
             bins read_bin = {READ};
             }
         htrans: coverpoint tx.htrans[0]{
-            bins idle = {IDLE};
+            bins idle = {IDLE}; // ilegal bins
             bins nonseq = {NONSEQ};
             bins seq = {SEQ};
-            bins busy = {BUSY};
+            bins busy = {BUSY}; // ilegal bins
             
         }
         haddr : coverpoint tx.haddr[0]{
@@ -36,10 +36,12 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
 			bins single 	= {SINGLE};
         }
         hsize: coverpoint tx.hsize{
+            bins bytes_bin = {BYTE};
+            bins halfword_bin = {HALFWORD};
             bins word_bin = {WORD};
             }
         hwdata: coverpoint tx.hwdata[0]{option.auto_bin_max = 6;}
-        read_writeXhburstXhsize: cross read_write, hburst, hsize;
+        read_writeXhburstXhsizeXhtrans: cross read_write, hburst, hsize , htrans;
 
     endgroup
 

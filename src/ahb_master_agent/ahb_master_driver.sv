@@ -99,11 +99,9 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
                     vif.m_cb.haddr  <= req.haddr[haddr_index];
                     haddr_index++;
                     /* construct to make a variable hlock */
-                    if (!is_zero) begin
+
+                    if (req.lock_duration > 0) begin
                         req.lock_duration--;
-                        if (req.lock_duration == 0) begin
-                            is_zero = 1;
-                        end
                     end
                     vif.m_cb.htrans <= req.htrans[i];
                     vif.m_cb.hwrite  <= req.hwrite;

@@ -283,31 +283,31 @@ class ahb_transaction extends uvm_sequence_item;
         }     
 
         constraint word_boundary{
-                if(htrans == HALFWORD){
+                if(hsize == HALFWORD){
                 foreach(haddr[i])
                         haddr[i][0] == 1'b0;
                 }
-                if(htrans == WORD){
+                if(hsize == WORD){
                         foreach(haddr[i])
                                 haddr[i][1:0] == 2'b0;
                 }
-                if(htrans == WORDx2){
+                if(hsize == WORDx2){
                         foreach(haddr[i])
                                 haddr[i][2:0] == 3'b0;
                 }
-                if(htrans == WORDx4){
+                if(hsize == WORDx4){
                         foreach(haddr[i])
                                 haddr[i][3:0] == 4'b0;
                 }
-                if(htrans == WORDx8){
+                if(hsize == WORDx8){
                         foreach(haddr[i])
                                 haddr[i][4:0] == 5'b0;
                 }
-                if(htrans == WORDx16){
+                if(hsize == WORDx16){
                         foreach(haddr[i])
                                 haddr[i][5:0] == 6'b0;
                 }
-                if(htrans == WORDx32){
+                if(hsize == WORDx32){
                         foreach(haddr[i])
                                 haddr[i][6:0] == 7'b0;
                 }

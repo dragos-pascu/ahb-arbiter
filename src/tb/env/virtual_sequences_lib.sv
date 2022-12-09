@@ -30,7 +30,7 @@ class virtual_base_sequence extends uvm_sequence;
     
 
 endclass
-
+ 
 class virtual_random_sequence extends virtual_base_sequence;
     `uvm_object_utils(virtual_random_sequence)
     function new(string name="virtual_random_sequence");
