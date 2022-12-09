@@ -61,7 +61,7 @@ class ahb_master_monitor extends uvm_monitor;
 
         forever begin
             
-            if ( ( vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ ) && vif.m_cb.hready) begin
+            if ( /*( vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ ) &&*/ vif.m_cb.hready) begin
                 item = ahb_transaction::type_id::create("item");
                 item.htrans = new[1];
                 item.haddr = new[1];

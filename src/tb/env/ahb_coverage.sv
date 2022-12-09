@@ -9,6 +9,7 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
     covergroup ahb_master_cg ;
 
         option.per_instance = 1;
+        type_option.merge_instances = 1;
         read_write: coverpoint tx.hwrite {
             bins write_bin = {WRITE};
             bins read_bin = {READ};
@@ -29,11 +30,14 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
         }
         hburst : coverpoint tx.hburst {
             option.at_least = 1;
+            /*A minimum number of hits for each bin. A bin with a hit count that is less than the number is not considered covered. the default value is ‘1’.*/
             bins increment 	= {INCR, INCR4, INCR8, INCR16};
 			bins wrap 	= {WRAP4, WRAP8, WRAP16};
 			bins single 	= {SINGLE};
         }
-        hsize: coverpoint tx.hsize {bins word_bin = {WORD};}
+        hsize: coverpoint tx.hsize{
+            bins word_bin = {WORD};
+            }
         hwdata: coverpoint tx.hwdata[0]{option.auto_bin_max = 6;}
         read_writeXhburstXhsize: cross read_write, hburst, hsize;
 

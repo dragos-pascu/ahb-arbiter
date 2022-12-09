@@ -5,7 +5,7 @@ class ahb_transaction extends uvm_sequence_item;
 
         //id of the coresponding agent
         int id; 
-        //address, control and data
+        //haddr, control and data
         rand logic [31:0] haddr[];
         rand size_t  hsize; 
         rand burst_t hburst;  
@@ -34,7 +34,7 @@ class ahb_transaction extends uvm_sequence_item;
         
         /*****Add other signals for sampling******/
 
-        logic [31:0] address_list[$];
+        logic [31:0] haddr_list[$];
 
         function new(string name = "ahb_transaction");
             super.new(name);
@@ -146,7 +146,7 @@ class ahb_transaction extends uvm_sequence_item;
                 }
         }
 
-        constraint address_size {
+        constraint haddr_size {
                 //haddr Based on hburst and hsize
                 if(hburst == SINGLE)
                         haddr.size == 1;
@@ -160,6 +160,73 @@ class ahb_transaction extends uvm_sequence_item;
                 if(hburst == WRAP16 || hburst == INCR16)
                         haddr.size == 16;
         }     
+
+        constraint addr_wrap4_byte{
+                if((hburst == WRAP4) && (hsize == BYTE)){
+                        foreach(haddr[i]){
+                                if(i != 0){
+                                haddr[i][1:0] == haddr[i-1][1:0] + 1;
+                                haddr[i][31:2] == haddr[i-1][31:2];
+                                }
+                        }
+                }
+        }
+
+        constraint addr_wrap8_byte{
+                if((hburst == WRAP8) && (hsize == BYTE)){
+                        foreach(haddr[i]){
+                                if(i != 0){
+                                haddr[i][2:0] == haddr[i-1][2:0] + 1;
+                                haddr[i][31:3] == haddr[i-1][31:3];
+                                }
+                        }
+                }
+        }
+        
+        constraint addr_wrap16_byte{
+                if((hburst == WRAP16) && (hsize == BYTE)){
+                        foreach(haddr[i]){
+                                if(i != 0){
+                                        haddr[i][3:0] == haddr[i-1][3:0] + 1;
+                                        haddr[i][31:4] == haddr[i-1][31:4];
+                                }
+                        }
+                }
+        }
+
+        constraint addr_wrap4_halfword{
+                if((hburst == WRAP4) && (hsize == HALFWORD)){
+                        foreach(haddr[i]){
+                                if(i != 0){
+                                        haddr[i][2:1] == haddr[i-1][2:1] + 1;
+                                        haddr[i][31:3] == haddr[i-1][31:3];
+                                }
+                        }
+                }
+        }
+
+        constraint addr_wrap8_halfword{
+                if((hburst == WRAP8) && (hsize == HALFWORD)){
+                        foreach(haddr[i]){
+                                if(i != 0){
+                                        haddr[i][3:1] == haddr[i-1][3:1] + 1;
+                                        haddr[i][31:4] == haddr[i-1][31:4];
+                                }
+                        }
+                }
+        }
+
+        constraint addr_wrap16_halfword{
+                if((hburst == WRAP16) && (hsize == HALFWORD)){
+                        foreach(haddr[i]){
+                                if(i != 0){
+                                        haddr[i][4:1] == haddr[i-1][4:1] + 1;
+                                        haddr[i][31:5] == haddr[i-1][31:5];
+                                }
+                        }
+                }
+        }
+
 
         constraint addr_wrap4_word{
                 if((hburst == WRAP4) && (hsize == WORD)){
@@ -216,18 +283,39 @@ class ahb_transaction extends uvm_sequence_item;
         }     
 
         constraint word_boundary{
-                if(hsize == HALFWORD){
-                        foreach(haddr[i])
-                                haddr[i][0] == 1'b0;
+                if(htrans == HALFWORD){
+                foreach(haddr[i])
+                        haddr[i][0] == 1'b0;
                 }
-                if(hsize == WORD){
+                if(htrans == WORD){
                         foreach(haddr[i])
                                 haddr[i][1:0] == 2'b0;
                 }
+                if(htrans == WORDx2){
+                        foreach(haddr[i])
+                                haddr[i][2:0] == 3'b0;
+                }
+                if(htrans == WORDx4){
+                        foreach(haddr[i])
+                                haddr[i][3:0] == 4'b0;
+                }
+                if(htrans == WORDx8){
+                        foreach(haddr[i])
+                                haddr[i][4:0] == 5'b0;
+                }
+                if(htrans == WORDx16){
+                        foreach(haddr[i])
+                                haddr[i][5:0] == 6'b0;
+                }
+                if(htrans == WORDx32){
+                        foreach(haddr[i])
+                                haddr[i][6:0] == 7'b0;
+                }
+
         }
 
         constraint hsize_value{
-                hsize == WORD;  
+                hsize <= WORD;  
         }
 
         constraint addr_val {
