@@ -13,6 +13,10 @@ interface request_if(input hclk, input hreset);
     logic hmastlock;  
     logic hready;
 
+    // used only for SVA
+    logic [master_number-1:0] hgrant_array;
+    logic [master_number-1:0] hbusreq_array;
+
     clocking req_cb @(posedge hclk);
 
         //output hgrant,hmaster ,hmastlock; 
@@ -20,12 +24,12 @@ interface request_if(input hclk, input hreset);
     endclocking
 
     /*Only one hgrant can be asserted on the bus at a time*/
-    // property only_one_hgrant_p;
+    property only_one_hgrant_p;
 
-    //     @(posedge hclk) disable iff(!hreset)
-    //     $onehot(hgrant);
+        @(posedge hclk) disable iff(!hreset)
+        $onehot(hgrant_array);
 
-    // endproperty
+    endproperty
 
     /*When hgrant and hready are 1 , next cyle the hmaster changes*/ // Add 
     property next_bus_master_p;
@@ -36,7 +40,7 @@ interface request_if(input hclk, input hreset);
     endproperty
 
     /*If the master is granted, it's hlock is propagated through combinatorial logic to hmastlock*/
-    property hmastlock_same_as_hlock_p;
+    property hmaster_check_p;
 
         @(posedge hclk) disable iff(!hreset)
             (hgrant == 1) |-> hmastlock == hlock;
@@ -45,16 +49,16 @@ interface request_if(input hclk, input hreset);
 
 
     /*When no master requests the bus, the master lowest priority receive the bus . (increments from master_number to 0)*/
-    // property default_master_p;
-    //     @(posedge hclk) disable iff(!hreset)
-    //     hbusreq == 0 |-> ##3 hgrant == 1 << (master_number - 1);
-    // endproperty
+    property default_master_p;
+        @(posedge hclk) disable iff(!hreset)
+        hbusreq_array == 0 && hready == 1|-> ##1 hgrant_array == 1 << (master_number - 1);
+    endproperty
 
 
-    // ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
-    NEXT_BUS_MASTER: assert property(next_bus_master_p);
+    ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
+    HMASTER_CHECK: assert property(hmaster_check_p);
     HMASTLOCK_TIMING: assert property(hmastlock_same_as_hlock_p);
-    // DEFAULT_BUS_MASTER: assert property(default_master_p);
+    DEFAULT_BUS_MASTER: assert property(default_master_p);
 
     
 

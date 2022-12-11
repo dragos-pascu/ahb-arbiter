@@ -104,10 +104,12 @@ interface test_harness(input hclk, input  hreset);
       request_if bus_req(.*);
 
       assign req_if[i].bus_req.hbusreq = m_hbusreq[i];
+      assign req_if[i].bus_req.hbusreq_array = m_hbusreq;
       assign req_if[i].bus_req.hlock = m_hlock[i];
 
       assign req_if[i].bus_req.hmaster = s_hmaster ;
       assign req_if[i].bus_req.hgrant  = hgrant[i];
+      assign req_if[i].bus_req.hgrant_array = hgrant;
       assign req_if[i].bus_req.hmastlock  = s_hmastlock ; 
       assign req_if[i].bus_req.hready  = hready ; 
 
