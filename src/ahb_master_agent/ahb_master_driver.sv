@@ -9,7 +9,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     mailbox mbx = new();
     int haddr_index=0;
     int was_busy = 0;
-    int is_zero = 0;
     
     function new(string name = "ahb_master_driver", uvm_component parent);
         super.new(name, parent);
@@ -60,7 +59,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
     task reset_monitor();
         
         wait(vif.hreset==0);  
-        //req = ahb_transaction::type_id::create("dummy_req");
         if (req!=null) begin
             seq_item_port.put(req);
         end
@@ -86,8 +84,6 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
             vif.m_cb.hbusreq <= req.hbusreq;
             vif.m_cb.hlock <= req.hlock;
 
-
-            // @vif.m_cb;
             for (int i=0; i<req.htrans.size(); ++i) begin
                 //wait for bus to be granted
                 while (!(vif.m_cb.hgrant && vif.m_cb.hready && vif.hreset)) begin

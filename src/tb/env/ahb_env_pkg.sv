@@ -13,7 +13,7 @@ package ahb_env_pkg;
     `include "env_config.sv"
     `include "ahb_scoreboard.sv"
 
-    `include "request_scoreboard.sv"
+    `include "arbitration_scoreboard.sv"
 
 
     `include "ahb_vsequencer.sv"

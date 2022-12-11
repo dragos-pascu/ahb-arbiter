@@ -4,7 +4,6 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
     /************** COVERAGE FOR DATA TRANSFER ACCORDING TO AHB *****************/
 
     ahb_transaction tx;
-    env_config cfg;
 
     covergroup ahb_master_cg ;
 
@@ -69,7 +68,7 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
         super.new(name, parent);
         ahb_master_cg = new();
         ahb_slave_cg = new();
-        cfg = new();
+        
     endfunction
 
     //Report

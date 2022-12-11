@@ -1,10 +1,12 @@
-class request_scoreboard extends uvm_scoreboard;
+class arbitration_scoreboard extends uvm_scoreboard;
     
-    `uvm_component_utils(request_scoreboard)
+    `uvm_component_utils(arbitration_scoreboard)
 
     uvm_tlm_analysis_fifo #(ahb_request) request_fifo[master_number];
-    //uvm_tlm_analysis_fifo #(ahb_request) response_fifo;
     uvm_tlm_analysis_fifo #(ahb_request) response_fifo[master_number];
+
+    bit enable_coverage;
+
 
     int match_nr  = 0;
     int mismatches = 0;
@@ -26,10 +28,10 @@ class request_scoreboard extends uvm_scoreboard;
 
     int previous_granted_master = master_number - 1;
 
-    function new(string name = "request_scoreboard", uvm_component parent);
+    function new(string name = "arbitration_scoreboard", uvm_component parent);
         super.new(name, parent);
         
-        coverage_port = new("coverage_port",this);
+
 
         for (int i=0; i<master_number; ++i) begin
             request_fifo[i] = new($sformatf("request_fifo[%0d]",i),this);
@@ -42,8 +44,11 @@ class request_scoreboard extends uvm_scoreboard;
     endfunction 
 
     function void build_phase(uvm_phase phase);
-    super.build_phase(phase);
+        super.build_phase(phase);
         
+        if (enable_coverage) begin
+            coverage_port = new("coverage_port",this);
+        end
 
     endfunction
 
@@ -136,10 +141,10 @@ class request_scoreboard extends uvm_scoreboard;
 
             if (response_array[temp_predicted.grant_number].hgrant == 1) begin
                 match_nr++;
-                //collect coverage
-                //coverage_port.write(response_array[temp_predicted.grant_number]);
-                coverage_port.write(temp_predicted);
+                if (enable_coverage) begin
+                    coverage_port.write(temp_predicted);
 
+                end
             end else begin
                 mismatches++;
                 `uvm_info(get_type_name(), $sformatf("Bus request was unmatched "), UVM_MEDIUM);
@@ -166,27 +171,6 @@ class request_scoreboard extends uvm_scoreboard;
             end
             
         end
-        // //check which master number is lower to asses priority
-        // if (highest_priority_master != previous_granted_master) begin
-        //     if (busreq_map[previous_granted_master]) begin
-        //         if (hlock_map[previous_granted_master]) begin
-        //             previous_granted_master = previous_granted_master;
-        //             //if busreq and hlock is 1 the granted master will remain the same 
-        //         end
-        //         else begin
-        //             previous_granted_master = highest_priority_master;
-        //             //if busreq is 1 and hlock is 0 the granted master will become "highest_priority_master" 
-        //         end
-        //     end else begin
-        //         //if busreq is 0 the bus goes to "highest_priority_master"
-        //         previous_granted_master = highest_priority_master;
-
-        //     end
-
-        // end else begin
-        //     //if the busreq with highest priority is from "highest_priority_master"
-        //     previous_granted_master = highest_priority_master;
-        // end 
 
         if (!(busreq_map[previous_granted_master] && hlock_map[previous_granted_master])) begin
             previous_granted_master = highest_priority_master;

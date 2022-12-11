@@ -20,7 +20,7 @@
         `uvm_fatal(get_type_name(), "Error sequence randomize failed!")
         req.hwdata[0] = $urandom();
         foreach(req.haddr[i])
-                req.haddr[i] = $urandom_range(350,600); 
+                req.haddr[i] = $urandom_range(352,600); 
         finish_item(req);
         get_response(req);
         end

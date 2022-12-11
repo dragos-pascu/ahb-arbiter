@@ -3,14 +3,12 @@ class ahb_scoreboard extends uvm_scoreboard;
     `uvm_component_utils(ahb_scoreboard)
     `uvm_analysis_imp_decl(_predictor)
     `uvm_analysis_imp_decl(_evaluator)
-    `uvm_analysis_imp_decl(_request_port)
-    `uvm_analysis_imp_decl(_cov_port)
 
     uvm_analysis_imp_predictor #(ahb_transaction,ahb_scoreboard) item_collect_predictor;
     uvm_analysis_imp_evaluator #(ahb_transaction,ahb_scoreboard) item_collect_evaluator;
 
     uvm_analysis_port #(ahb_transaction) coverage_port;
-
+    bit enable_coverage;
     
     ahb_transaction expected_transactions[slave_number][$];
 
@@ -21,11 +19,12 @@ class ahb_scoreboard extends uvm_scoreboard;
     int match, mismatch;
     int predictor_transactions;
     int evaluator_transactions;
+
+
     function new(string name = "ahb_scoreboard", uvm_component parent);
         super.new(name, parent);
         item_collect_predictor = new("item_collect_predictor",this);
         item_collect_evaluator =  new("item_collect_evaluator",this);
-        coverage_port = new("coverage_port",this);
         match = 0;
         mismatch = 0;
         predictor_transactions = 0;
@@ -34,6 +33,9 @@ class ahb_scoreboard extends uvm_scoreboard;
 
     function void build_phase(uvm_phase phase);
         super.build_phase(phase);
+        if (enable_coverage) begin
+            coverage_port = new("coverage_port",this);
+        end
     endfunction
 
     function void write_predictor(ahb_transaction master_item);
@@ -68,7 +70,10 @@ class ahb_scoreboard extends uvm_scoreboard;
                     `uvm_info(get_type_name(), $sformatf("MATCH : \n %s",slave_item.convert2string()),UVM_MEDIUM);
 
                     match++;
-                    coverage_port.write(temp_tx1);
+                    if (enable_coverage) begin
+                        coverage_port.write(temp_tx1);
+
+                    end
                     end
                     else begin
 

@@ -5,8 +5,7 @@ class ahb_sagent_config extends uvm_object;
     virtual salve_if vif;
     int agent_id;
     bit is_active;
-    bit enable_coverage;
-
+    
     function new(string name= "ahb_sagent_config"); 
 
         super.new(name);

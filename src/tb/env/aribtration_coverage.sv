@@ -4,9 +4,7 @@ class arbitration_coverage extends uvm_subscriber#(ahb_request);
     /************** COVERAGE FOR DUT ARBITRATION *****************/
 
     ahb_request tx;
-    env_config cfg;
 
-    //ca sa nu poluezi ahb_request puteai sa extinzi din scoreboard clasa de arbitration_coverage.
     //https://www.amiq.com/consulting/2015/09/18/functional-coverage-patterns-bitwise-coverage/
 
     covergroup arbitration_cg with function sample(bit busreq_map[master_number], bit hlock_map[master_number] ,int position);
@@ -34,7 +32,7 @@ class arbitration_coverage extends uvm_subscriber#(ahb_request);
     function new(string name = "arbitration_coverage", uvm_component parent);
         super.new(name, parent);
         arbitration_cg = new();
-        cfg = new();
+        
     endfunction
 
     //Report
