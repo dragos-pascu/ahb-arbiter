@@ -99,8 +99,8 @@ interface master_if(input hclk, input hreset);
     //After BUSY address and control signals must reflect the next transfer in the burst
     // property busy_write_p;
     //     @(posedge hclk) disable iff(!hreset)
-    //         ((htrans == BUSY) && ##1 (htrans != IDLE) |=> (($past(HWDATA, 1) == $past(HWDATA, 2)) &&
-    //         ($past(HADDR, 1) == $past(HADDR, 2)));
+    //         ((htrans == BUSY) && ##1 (htrans != BUSY) |-> (($past(hwdata, 1) != hwdata) &&
+    //         ($past(haddr, 1) != haddr);
     // endproperty
 
 
@@ -144,11 +144,11 @@ ping) but with a SEQ.*/
     // WRAP16__WORD_ADDR : assert property (wrap16_word_addr_p);       
     // ADDR_ALIGNMENT : assert property(addr_alignment_word_p);
     // SINGLE_NO_BUSY: assert property(no_busy_single_burst_p);
-    //SAME_CTRL_SIG : assert property(ctrl_sig_same_p);
+    // SAME_CTRL_SIG : assert property(ctrl_sig_same_p);
     // WAITED_TRANSFER: assert property(same_transfer_tye_p);
     // NO_BUSY_AFTER_SINGLE : assert property(no_busy_after_single_p);
-    //ADDR_PHASE_DURATION : assert property(adr_phase_duration_p);
-    //SINGLE_HTRANS_VALUE : assert property(single_htrans_value_p);
+    // ADDR_PHASE_DURATION : assert property(adr_phase_duration_p);
+    // SINGLE_HTRANS_VALUE : assert property(single_htrans_value_p);
 
 
     
@@ -197,13 +197,6 @@ interface salve_if(input hclk, input hreset);
         @(posedge hclk) disable iff(!hreset)
             hsel == 1 || hready == 1 |=> haddr != $past(haddr, 1);
     endproperty
-
-    //Reset will be asserted asserted asynchronously but deasserted synchronously after rising edge of HCLK.
-    // property reset_timing_p;
-    //     @(posedge hclk)
-    //         hreset == 0 
-    // endproperty
-
 
     
     // SLAVE_RESPONSE: assert property(slave_reponse_p);

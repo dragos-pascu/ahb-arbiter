@@ -19,7 +19,6 @@ class reset_seq extends reset_base_seq;
     task body();
         repeat(3) begin
         reset_tx req = reset_tx::type_id::create("req");
-            // `uvm_do(req);
             start_item(req);
         if(!req.randomize())
             `uvm_fatal(get_type_name(), "Single read randomize failed!")

@@ -12,7 +12,7 @@
         `uvm_info(get_type_name(),"Inside body of error_sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (htrans[0] == NONSEQ); 
@@ -44,7 +44,7 @@ class single_write_sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of single_write_sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == SINGLE);
@@ -76,7 +76,7 @@ class single_read_sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of single_read_sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == SINGLE);
@@ -110,7 +110,7 @@ class incr_write_sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of incr_write_sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == INCR);
@@ -300,7 +300,7 @@ class incr_write_16sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of incr_write_16sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == INCR16);
@@ -331,7 +331,7 @@ class incr_read_16sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of incr_read_16sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == INCR16);
@@ -363,7 +363,7 @@ class wrap_write_4sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of wrap_write_4sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == WRAP4);
@@ -394,7 +394,7 @@ class wrap_read_4sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of wrap_read_4sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == WRAP4);
@@ -426,7 +426,7 @@ class wrap_write_8sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of wrap_write_8sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == WRAP8);
@@ -457,7 +457,7 @@ class wrap_read_8sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of wrap_read_8sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == WRAP8);
@@ -488,7 +488,7 @@ class wrap_write_16sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of wrap_write_16sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == WRAP16);
@@ -519,7 +519,7 @@ class wrap_read_16sequence extends uvm_sequence#(ahb_transaction);
         `uvm_info(get_type_name(),"Inside body of wrap_read_16sequence.",UVM_MEDIUM)
 
         req = ahb_transaction::type_id::create("req");
-        repeat(2)begin
+        repeat(10)begin
         start_item(req);
         if(!req.randomize() with {
             (hburst == WRAP16);

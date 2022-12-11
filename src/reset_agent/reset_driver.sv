@@ -36,8 +36,9 @@ class reset_driver extends uvm_driver#(reset_tx);
 
     task run_phase(uvm_phase phase);
         `uvm_info(get_type_name(), $sformatf("Reset driver run_phase : \n "),UVM_MEDIUM);
-        
-        vif.r_cb.hreset <= 1'b1;
+        // vif.r_cb.hreset <= 1'b0;
+        // #15ns;
+        // vif.r_cb.hreset <= 1'b1;
 
         forever begin
         

@@ -14,11 +14,9 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
             bins read_bin = {READ};
             }
         htrans: coverpoint tx.htrans[0]{
-            bins idle = {IDLE}; // ilegal bins
             bins nonseq = {NONSEQ};
             bins seq = {SEQ};
-            bins busy = {BUSY}; // ilegal bins
-            
+            ignore_bins ignore_vals = {IDLE,BUSY};
         }
         haddr : coverpoint tx.haddr[0]{
             bins range_0  = {['d0:'d69]};
