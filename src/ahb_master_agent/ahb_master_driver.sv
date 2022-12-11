@@ -77,7 +77,7 @@ class ahb_master_driver extends uvm_driver#(ahb_transaction);
 
             req.id = agent_config.agent_id;
                       
-            `uvm_info(get_type_name(), $sformatf("Driver req : \n %s",req.convert2string()),UVM_MEDIUM);
+            `uvm_info(get_type_name(), $sformatf("Master Driver item : \n %s",req.convert2string()),UVM_MEDIUM);
 
             haddr_index = 0 ;
 

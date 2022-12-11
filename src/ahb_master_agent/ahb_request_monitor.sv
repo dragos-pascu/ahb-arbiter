@@ -38,8 +38,7 @@ class ahb_request_monitor extends uvm_monitor;
         
             send_request();
             reset_monitor();
-            //send_grant();
-        
+
             join_any
             disable fork;
         end
@@ -78,11 +77,8 @@ class ahb_request_monitor extends uvm_monitor;
                 response_collect_port.write(response_item);
                 `uvm_info(get_type_name(), $sformatf("Write to response port : %s",response_item.convert2string()), UVM_DEBUG);
 
-            
-
         end
-
-
+        
     endtask
 
 

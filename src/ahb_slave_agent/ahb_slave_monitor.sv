@@ -2,18 +2,11 @@
 class ahb_slave_monitor extends uvm_monitor;
     `uvm_component_utils(ahb_slave_monitor)
 
-
     uvm_analysis_port #(ahb_transaction) slave_transaction_port; // full transaction
-    
     uvm_analysis_port #(ahb_transaction) reactive_transaction_port; // partial transaction
 
-
-
     virtual salve_if vif;
-
     ahb_sagent_config agent_config;
-
-    memory storage;
 
     mailbox mbx = new();
     
@@ -26,12 +19,7 @@ class ahb_slave_monitor extends uvm_monitor;
         super.build_phase(phase);
 
         slave_transaction_port = new("slave_transaction_port",this);
-
         reactive_transaction_port = new("reactive_transaction_port",this);
-
-
-        storage = memory::type_id::create("storage",this);
-        uvm_config_db #(memory)::set(null,"", "storage", storage); 
 
         if(!uvm_config_db #(ahb_sagent_config)::get(null,get_parent().get_name(), "ahb_sagent_config", agent_config)) 
 

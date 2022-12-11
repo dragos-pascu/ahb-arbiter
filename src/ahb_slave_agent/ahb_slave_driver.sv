@@ -1,10 +1,8 @@
-class ahb_slave_driver extends uvm_driver#(ahb_transaction);
-    
+class ahb_slave_driver extends uvm_driver#(ahb_transaction);    
     `uvm_component_utils(ahb_slave_driver)
 
     virtual salve_if vif;
     ahb_sagent_config agent_config;
-    memory storage;
     
     function new(string name = "ahb_slave_driver", uvm_component parent = null);
         super.new(name, parent);
@@ -14,15 +12,11 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
         super.build_phase(phase);
         //add virtual interface
         if(!uvm_config_db #(ahb_sagent_config)::get(null,get_parent().get_name(), "ahb_sagent_config", agent_config)) 
-
           `uvm_fatal(get_type_name(), "Failed to get config inside Slave Driver")
 
-
-        if (!uvm_config_db #(virtual salve_if)::get(null, "", $sformatf("slave[%0d]", agent_config.agent_id), vif))
-      
+        if (!uvm_config_db #(virtual salve_if)::get(null, "", $sformatf("slave[%0d]", agent_config.agent_id), vif))      
         `uvm_fatal(get_type_name(), "Failed to get VIF inside Slave Driver");
-        storage = memory::type_id::create("storage",this);
-        uvm_config_db #(memory)::set(null,"", "storage", storage);
+
     endfunction
 
     task run_phase(uvm_phase phase);

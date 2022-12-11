@@ -107,7 +107,7 @@ class ahb_master_monitor extends uvm_monitor;
             item.hready = vif.m_cb.hready;
             item.hresp = resp_t'(vif.m_cb.hresp);
             
-            `uvm_info(get_type_name(), $sformatf("item from master_monitor is : %s ", item.convert2string()), UVM_MEDIUM)
+            `uvm_info(get_type_name(), $sformatf("Item received by Master Monitor is : %s ", item.convert2string()), UVM_MEDIUM)
 
             master_transaction_port.write(item);
         end

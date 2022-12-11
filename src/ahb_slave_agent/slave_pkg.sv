@@ -10,7 +10,6 @@ package slave_pkg;
     //import ahb_seq_pkg::*;
     import master_pkg::ahb_transaction;
     
-    `include "memory.sv"
     `include "ahb_sagent_config.sv"
     `include "slave_sequencer.sv"
     `include "slave_sequences.sv"

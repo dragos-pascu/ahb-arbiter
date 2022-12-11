@@ -6,8 +6,6 @@ package master_pkg;
     `include "uvm_macros.svh"
 
     import integration_pkg::*;
-    //import ahb_seq_pkg::*;
-
 
     `include "ahb_magent_config.sv"
     `include "ahb_transaction.sv"
