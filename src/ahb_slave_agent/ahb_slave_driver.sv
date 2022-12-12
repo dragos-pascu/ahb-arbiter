@@ -81,7 +81,17 @@ class ahb_slave_driver extends uvm_driver#(ahb_transaction);
               vif.s_cb.hrdata <= req.hrdata;
               end
             end
-
+              // if (vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ) begin
+              //   randcase
+              //     1:vif.s_cb.hresp <= OKAY;
+              //     1:vif.s_cb.hresp <= ERROR;
+              //   endcase 
+              // end else if (vif.s_cb.htrans == BUSY || vif.s_cb.htrans == IDLE) begin
+              //     vif.s_cb.hresp <= OKAY;
+              //   end
+              //   if (vif.s_cb.hwrite == READ) begin
+              //     vif.s_cb.hrdata <= req.hrdata;
+              //   end
           end
         seq_item_port.item_done();
         end
