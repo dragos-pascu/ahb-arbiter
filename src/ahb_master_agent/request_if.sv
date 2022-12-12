@@ -55,10 +55,10 @@ interface request_if(input hclk, input hreset);
     endproperty
 
 
-    ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
-    HMASTER_CHECK: assert property(hmaster_check_p);
-    HMASTLOCK_TIMING: assert property(hmastlock_timing_p);
-    DEFAULT_BUS_MASTER: assert property(default_master_p);
+    // ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
+    // HMASTER_CHECK: assert property(hmaster_check_p);
+    // HMASTLOCK_TIMING: assert property(hmastlock_timing_p);
+    // DEFAULT_BUS_MASTER: assert property(default_master_p);
 
     
 
