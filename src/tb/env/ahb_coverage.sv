@@ -46,8 +46,14 @@ class ahb_coverage extends uvm_subscriber#(ahb_transaction);
 
         hrdata: coverpoint tx.hrdata iff(tx.hwrite == READ)
         {option.auto_bin_max = 6;}
-        hready: coverpoint tx.hready;
-        hresp: coverpoint tx.hresp;
+        hready: coverpoint tx.hready{
+            ignore_bins ignore_vals = {0};
+        }
+        hresp: coverpoint tx.hresp{
+            ignore_bins ignore_vals = {RETRY,SPLIT};
+            bins okay_bin = {OKAY};
+            bins error_bin = {ERROR};
+        }
 
         hreadyXhresp : cross hready, hresp;
 

@@ -32,7 +32,7 @@ interface request_if(input hclk, input hreset);
     endproperty
 
     /*When hgrant and hready are 1 , next cyle the hmaster changes*/ // Add 
-    property next_bus_master_p;
+    property hmaster_check_p;
 
         @(posedge hclk) disable iff(!hreset)
             $rose(hgrant) |-> hgrant == 1 & hready [->1] /*& htrans != IDLE*/ ##1 hmaster == interface_number;
@@ -40,7 +40,7 @@ interface request_if(input hclk, input hreset);
     endproperty
 
     /*If the master is granted, it's hlock is propagated through combinatorial logic to hmastlock*/
-    property hmaster_check_p;
+    property hmastlock_timing_p;
 
         @(posedge hclk) disable iff(!hreset)
             (hgrant == 1) |-> hmastlock == hlock;
@@ -57,7 +57,7 @@ interface request_if(input hclk, input hreset);
 
     ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
     HMASTER_CHECK: assert property(hmaster_check_p);
-    HMASTLOCK_TIMING: assert property(hmastlock_same_as_hlock_p);
+    HMASTLOCK_TIMING: assert property(hmastlock_timing_p);
     DEFAULT_BUS_MASTER: assert property(default_master_p);
 
     
