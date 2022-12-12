@@ -76,6 +76,7 @@ interface test_harness(input hclk, input  hreset);
       begin: s_if
           salve_if slave(.*);
           assign s_if[i].slave.hsel=s_hsel[i];
+          assign s_if[i].slave.hsel_array=s_hsel;
           assign s_if[i].slave.hwdata=s_hwdata;
           assign s_if[i].slave.haddr=s_haddr;
           assign s_if[i].slave.hburst=s_hburst;

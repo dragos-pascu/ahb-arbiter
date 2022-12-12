@@ -181,7 +181,8 @@ interface salve_if(input hclk, input hreset);
     logic      hsel;           
     logic      hmastlock;               
                          
-
+    //these signals are used only for SVA
+    logic[slave_number-1:0] hsel_array;
 
     clocking s_cb @(posedge hclk);
     //default input #1step output `Tdrive;
@@ -191,7 +192,7 @@ interface salve_if(input hclk, input hreset);
     endclocking
 
 
-    //Slave response to IDLE and BUSY is OKAY
+    //Slave response to IDLE and BUSY is OKAY.
     property idle_busy_response_p;
         @(posedge hclk) disable iff(!hreset)
             (htrans == IDLE || htrans == BUSY && hready == 1) |-> hresp == OKAY;
@@ -203,9 +204,22 @@ interface salve_if(input hclk, input hreset);
             hsel == 1 || hready == 1 |=> haddr != $past(haddr, 1);
     endproperty
 
+    //Only one slave is selected at a time.
+    property only_one_selected_slave_p;
+        @(posedge hclk) disable iff(!hreset)
+           $onehot0(hsel_array);
+    endproperty
+
+    //Check that when a slave inserts a number of wait states prior to completing the response,it must drive HRESP to OKAY.
+
+    property slave_wait_states_p;
+        @(posedge hclk) disable iff(!hreset)
+        hready == 0 |-> hresp == OKAY;
+    endproperty
     
     IDLE_BUSY_RESPONSE: assert property(idle_busy_response_p);
-    // SLAVE_SAMPLE: assert property(slave_sample_p);
+    ONLY_ONE_SELECTED_SLAVE: assert property(only_one_selected_slave_p);
+    SLAVE_WAIT_STATES: assert property(slave_wait_states_p);
     
 
 

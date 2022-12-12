@@ -27,7 +27,7 @@ interface request_if(input hclk, input hreset);
     property only_one_hgrant_p;
 
         @(posedge hclk) disable iff(!hreset)
-        $onehot(hgrant_array);
+        $onehot0(hgrant_array);
 
     endproperty
 
@@ -40,6 +40,7 @@ interface request_if(input hclk, input hreset);
     endproperty
 
     /*If the master is granted, it's hlock is propagated through combinatorial logic to hmastlock*/
+    /*This is going to fail because hmastlock is not propagated if htrants is IDLE*/
     property hmastlock_timing_p;
 
         @(posedge hclk) disable iff(!hreset)
@@ -55,10 +56,10 @@ interface request_if(input hclk, input hreset);
     endproperty
 
 
-    // ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
-    // HMASTER_CHECK: assert property(hmaster_check_p);
-    // HMASTLOCK_TIMING: assert property(hmastlock_timing_p);
-    // DEFAULT_BUS_MASTER: assert property(default_master_p);
+    ONLY_ONE_HGRANT: assert property(only_one_hgrant_p);
+    HMASTER_CHECK: assert property(hmaster_check_p);
+    HMASTLOCK_TIMING: assert property(hmastlock_timing_p);
+    DEFAULT_BUS_MASTER: assert property(default_master_p);
 
     
 
