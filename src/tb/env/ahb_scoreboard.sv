@@ -12,6 +12,11 @@ class ahb_scoreboard extends uvm_scoreboard;
     
     ahb_transaction expected_transactions[slave_number][$];
 
+    int transfer_size;
+    int transfer_index = 0;
+    ahb_transaction mapped_transaction;
+    int unmapped[];
+
 
     ahb_transaction expected_tx;
     ahb_transaction temp_tx;
@@ -38,21 +43,58 @@ class ahb_scoreboard extends uvm_scoreboard;
         end
     endfunction
 
-    function void write_predictor(ahb_transaction master_item);
-        int i;
-        
-        for (i=0; i<slave_number; ++i) begin
-            if((master_item.haddr[0] >= slave_low_address[i]) && (master_item.haddr[0] <= slave_high_address[i] )) begin
-                master_item.hsel = 1;
-                expected_transactions[i].push_back(master_item); // i represents the slave number.
-                predictor_transactions++;
-                `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_MEDIUM);
+    function ahb_transaction create_item(ahb_transaction tx);
+        ahb_transaction item;
+        item = ahb_transaction::type_id::create("item");
+        case (tx.hburst)
+        SINGLE : transfer_size = 1;
+        INCR4 : transfer_size = 4;
+        WRAP4 : transfer_size = 4;
+        INCR8 : transfer_size = 8;
+        WRAP8 : transfer_size = 8;
+        INCR16 : transfer_size = 16;
+        WRAP16 : transfer_size = 16;
+        endcase
+    
+        item.htrans = new[transfer_size];
+        item.haddr = new[transfer_size];
+        item.hwdata = new[transfer_size];
+        unmapped = new[transfer_size];
+        //addresses_maped = new[transfer_size];
 
-                break;
-            end     
+        return item;
+    endfunction
+
+
+    function void write_predictor(ahb_transaction master_item);
+        
+        int i;
+        int k=0;
+        mapped_transaction = create_item(master_item); // created a transaction with size of transfer_size
+        
+        //check for each address inside the master_item if it is inside any of the slave_low of slave_high;
+        for (int j=0; j<transfer_size; ++j) begin
+            for (i=0; i<slave_number; ++i) begin
+                if((master_item.haddr[j] >= slave_low_address[i]) && (master_item.haddr[j] <= slave_high_address[i] )) begin
+                    
+                    mapped_transaction.copy(master_item);
+                    mapped_transaction.haddr[k] = master_item.haddr[j];
+                    mapped_transaction.hwdata[k] = master_item.hwdata[j];
+                    mapped_transaction.htrans[k] = master_item.htrans[j];
+                    k++;
+                    unmapped[j] = 1;
+                    //copy in the new transaction item the mapped address,data and htrans and in a hashmap put 1 so you know it was mapped.
+            end
+            end
+            
         end
-        if (i>=slave_number) begin
-            `uvm_info(get_type_name(),$sformatf("Unmaped transaction not to be matched, haddr: %h",master_item.haddr[0]),UVM_MEDIUM);
+        expected_transactions[i].push_back(mapped_transaction); // i represents the slave number.
+        predictor_transactions++;
+        `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", mapped_transaction.id,mapped_transaction.convert2string()), UVM_MEDIUM);
+        for (i=0; i<transfer_size; ++i) begin
+            if (!unmapped[i]) begin
+                `uvm_info(get_type_name(),$sformatf("Unmapped transaction not to be matched, haddr: %h",master_item.haddr[i]),UVM_MEDIUM);
+            end
         end
         
     endfunction

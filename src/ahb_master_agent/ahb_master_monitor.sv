@@ -11,7 +11,9 @@ class ahb_master_monitor extends uvm_monitor;
 
     ahb_magent_config agent_config;
 
-
+    int transfer_size = 1;
+    int i = 0;
+    int j = 0;
     
 
     function new(string name, uvm_component parent);
@@ -56,32 +58,47 @@ class ahb_master_monitor extends uvm_monitor;
         
     endtask
 
+    function ahb_transaction create_item(burst_t hburst);
+        ahb_transaction item;
+        case (hburst)
+            SINGLE : transfer_size = 1;
+            WRAP4, INCR4 : transfer_size = 4;
+            WRAP8, INCR8 : transfer_size = 4;
+            WRAP16, WRAP16 : transfer_size = 16;
+        endcase
+        item = ahb_transaction::type_id::create("item");
+        item.htrans = new[transfer_size];
+        item.haddr = new[transfer_size];
+        item.hwdata = new[transfer_size];
+
+        return item;
+
+    endfunction
+
     task monitor_addr_phase();
         ahb_transaction item;
 
         forever begin
-            
             if ( ( vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ ) /*&& vif.m_cb.hgrant*/ && vif.m_cb.hready && vif.hreset) begin
-                item = ahb_transaction::type_id::create("item");
-                item.htrans = new[1];
-                item.haddr = new[1];
-                item.hwdata = new[1];
+                
+                if (vif.m_cb.htrans == NONSEQ) begin
+                    item = create_item(burst_t'(vif.m_cb.hburst));
+                end
                 begin
-                //bus signals
                 item.hbusreq =  vif.m_cb.hbusreq;
                 item.hlock =  vif.m_cb.hlock ;
                 //address and control signals
-                item.haddr[0] =  vif.m_cb.haddr ;
+                item.haddr[i] =  vif.m_cb.haddr ;
                 item.hburst =  burst_t'(vif.m_cb.hburst);
-                item.htrans[0] =  transfer_t'(vif.m_cb.htrans);
+                item.htrans[i] =  transfer_t'(vif.m_cb.htrans);
                 item.hsize =   size_t'(vif.m_cb.hsize) ;
                 item.hwrite =  rw_t'(vif.m_cb.hwrite);   
                 item.id = agent_config.agent_id;
-                
+                i++;
                 end
-                `uvm_info(get_type_name(), $sformatf("haddr is (addr_phase)  : %h ", item.haddr[0]), UVM_MEDIUM)
+                //`uvm_info(get_type_name(), $sformatf("haddr is (addr_phase)  : %h ", item.haddr[0]), UVM_MEDIUM)
                 @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
-                `uvm_info(get_type_name(), $sformatf("haddr is data_phase : %h ", item.haddr[0]), UVM_MEDIUM)
+                //`uvm_info(get_type_name(), $sformatf("haddr is data_phase : %h ", item.haddr[0]), UVM_MEDIUM)
 
                 mbx.put(item);
                 
@@ -99,17 +116,22 @@ class ahb_master_monitor extends uvm_monitor;
             mbx.get(item);
 
             if(item.hwrite == WRITE) begin
-                item.hwdata[0] = vif.m_cb.hwdata;
+                item.hwdata[j] = vif.m_cb.hwdata;
             end else if (item.hwrite == READ) begin
                 item.hrdata = vif.m_cb.hrdata;
             end
             // slave response
             item.hready = vif.m_cb.hready;
             item.hresp = resp_t'(vif.m_cb.hresp);
-            
-            `uvm_info(get_type_name(), $sformatf("Item received by Master Monitor is : %s ", item.convert2string()), UVM_MEDIUM)
+            j++;
+            if (j==transfer_size) begin
+                i=0;
+                j=0;
+                `uvm_info(get_type_name(), $sformatf("Item received by Master Monitor is : %s ", item.convert2string()), UVM_MEDIUM)
+                master_transaction_port.write(item);
 
-            master_transaction_port.write(item);
+            end
+
         end
     endtask
     

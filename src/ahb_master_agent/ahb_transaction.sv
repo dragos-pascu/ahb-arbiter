@@ -62,6 +62,23 @@ class ahb_transaction extends uvm_sequence_item;
                 return s;
         endfunction 
 
+        virtual function void do_copy(uvm_object rhs);
+                ahb_transaction tx_rhs;
+                if(!$cast(tx_rhs,rhs))
+                        `uvm_fatal(get_type_name(),"Illegal rhs argument")
+                //haddr = rhs.haddr;
+                //hwdata = rhs.hwdata;
+                hburst = tx_rhs.hburst;
+                //htrans = rhs.htrans;
+                hsize = tx_rhs.hsize;
+                hready = tx_rhs.hready;
+                hresp = tx_rhs.hresp;
+                hrdata = tx_rhs.hrdata;
+
+
+                
+        endfunction
+
         virtual function bit do_compare(uvm_object rhs, uvm_comparer comparer);
                 bit res;
                 ahb_transaction tx_rhs;

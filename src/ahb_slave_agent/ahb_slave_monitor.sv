@@ -8,6 +8,10 @@ class ahb_slave_monitor extends uvm_monitor;
     virtual salve_if vif;
     ahb_sagent_config agent_config;
 
+    int transfer_size = 1;
+    int i = 0;
+    int j = 0;
+
     mailbox mbx = new();
     
     function new(string name, uvm_component parent);
@@ -54,6 +58,23 @@ class ahb_slave_monitor extends uvm_monitor;
         
     endtask
 
+    function ahb_transaction create_item(burst_t hburst);
+        ahb_transaction item;
+        case (hburst)
+            SINGLE : transfer_size = 1;
+            WRAP4, INCR4 : transfer_size = 4;
+            WRAP8, INCR8 : transfer_size = 4;
+            WRAP16, WRAP16 : transfer_size = 16;
+        endcase
+        item = ahb_transaction::type_id::create("item");
+        item.htrans = new[transfer_size];
+        item.haddr = new[transfer_size];
+        item.hwdata = new[transfer_size];
+
+        return item;
+
+    endfunction
+
     task monitor_addr_phase();
         ahb_transaction item;
         forever begin
@@ -61,15 +82,14 @@ class ahb_slave_monitor extends uvm_monitor;
 
             if ( (vif.s_cb.htrans == NONSEQ || vif.s_cb.htrans == SEQ )  && vif.s_cb.hsel == 1 && vif.s_cb.hready == 1 && vif.hreset == 1) begin
 
-                item = ahb_transaction::type_id::create("item");
-                item.htrans = new[1];
-                item.haddr = new[1];
-                item.hwdata = new[1];
+                if (vif.s_cb.htrans == NONSEQ) begin
+                    item = create_item(burst_t'(vif.s_cb.hburst));
+                end
 
                 //address and control signals
-                item.haddr[0] =  vif.s_cb.haddr ;
+                item.haddr[i] =  vif.s_cb.haddr ;
                 item.hburst =  burst_t'(vif.s_cb.hburst);
-                item.htrans[0] =  transfer_t'(vif.s_cb.htrans);
+                item.htrans[i] =  transfer_t'(vif.s_cb.htrans);
                 item.hsize =   size_t'(vif.s_cb.hsize) ;
                 item.hwrite =  rw_t'(vif.s_cb.hwrite);   
                 // slave response
@@ -78,8 +98,8 @@ class ahb_slave_monitor extends uvm_monitor;
                 item.id = agent_config.agent_id;
                 item.hsel = vif.s_cb.hsel;
 
-                
-                reactive_transaction_port.write(item);
+                i++;
+                //reactive_transaction_port.write(item);
 
                 // put item for data phase
                 @(vif.s_cb iff(vif.s_cb.hready && vif.hreset));
@@ -98,15 +118,20 @@ class ahb_slave_monitor extends uvm_monitor;
         forever begin
             mbx.get(item);
             if(item.hwrite == WRITE) begin
-                item.hwdata[0] = vif.s_cb.hwdata;
+                item.hwdata[j] = vif.s_cb.hwdata;
             end
             else if (item.hwrite == READ) begin
                 item.hrdata = vif.s_cb.hrdata;
             end
-
+            j++;
  
-            `uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_MEDIUM);
-            slave_transaction_port.write(item);
+            if (j==transfer_size) begin
+                i=0;
+                j=0;
+                `uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_MEDIUM);
+                slave_transaction_port.write(item);
+
+            end
             
         end
     endtask
