@@ -11,7 +11,7 @@ class ahb_master_monitor extends uvm_monitor;
 
     ahb_magent_config agent_config;
 
-    int transfer_size = 1;
+    int transfer_size = 100;
     int i = 0;
     int j = 0;
     
@@ -96,6 +96,9 @@ class ahb_master_monitor extends uvm_monitor;
                 item.id = agent_config.agent_id;
                 i++;
                 end
+                if (i==transfer_size) begin
+                    i=0;
+                end
                 //`uvm_info(get_type_name(), $sformatf("haddr is (addr_phase)  : %h ", item.haddr[0]), UVM_MEDIUM)
                 @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
                 //`uvm_info(get_type_name(), $sformatf("haddr is data_phase : %h ", item.haddr[0]), UVM_MEDIUM)
@@ -125,7 +128,6 @@ class ahb_master_monitor extends uvm_monitor;
             item.hresp = resp_t'(vif.m_cb.hresp);
             j++;
             if (j==transfer_size) begin
-                i=0;
                 j=0;
                 `uvm_info(get_type_name(), $sformatf("Item received by Master Monitor is : %s ", item.convert2string()), UVM_MEDIUM)
                 master_transaction_port.write(item);

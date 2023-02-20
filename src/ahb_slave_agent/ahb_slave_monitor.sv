@@ -8,7 +8,7 @@ class ahb_slave_monitor extends uvm_monitor;
     virtual salve_if vif;
     ahb_sagent_config agent_config;
 
-    int transfer_size = 1;
+    int transfer_size = 100;
     int i = 0;
     int j = 0;
 
@@ -99,6 +99,11 @@ class ahb_slave_monitor extends uvm_monitor;
                 item.hsel = vif.s_cb.hsel;
 
                 i++;
+                
+                if (i==transfer_size) begin
+                i=0;
+                end
+
                 //reactive_transaction_port.write(item);
 
                 // put item for data phase
@@ -126,7 +131,6 @@ class ahb_slave_monitor extends uvm_monitor;
             j++;
  
             if (j==transfer_size) begin
-                i=0;
                 j=0;
                 `uvm_info(get_type_name(), $sformatf("Received from slave monitor : \n %s",item.convert2string()), UVM_MEDIUM);
                 slave_transaction_port.write(item);
