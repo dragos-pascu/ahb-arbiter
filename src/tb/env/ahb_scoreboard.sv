@@ -75,25 +75,13 @@ class ahb_scoreboard extends uvm_scoreboard;
                     previours_tag = current_tag;
                     current_tag = temp_tx1.tag;
                     if (slave_item.compare(temp_tx1)) begin
-                        
                         coverage_queue.push_back(temp_tx1);
-                        //`uvm_info(get_type_name(), $sformatf("MATCH : \n %s",slave_item.convert2string()),UVM_MEDIUM);
-                        //match++;
-                        // if (enable_coverage) begin
-                        //     coverage_port.write(temp_tx1);
-
-                        // end
                     end
                     else begin
                         flag_mismatch = 1;
                         `uvm_error(get_type_name(),"MISMATCH : ")
                         `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_tx1.convert2string()));
                         `uvm_error(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()));
-                        // mismatch++;
-                        // `uvm_error(get_type_name(),"MISMATCH : ")
-                        // `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_tx1.convert2string()));
-                        // `uvm_error(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()));
-
                     end
                     //this means that a new transaction came and I can send to coverage.
                     if (current_tag!=previours_tag) begin
