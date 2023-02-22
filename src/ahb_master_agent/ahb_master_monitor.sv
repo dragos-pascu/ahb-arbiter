@@ -11,7 +11,9 @@ class ahb_master_monitor extends uvm_monitor;
 
     ahb_magent_config agent_config;
 
-
+    int transfer_size;
+    int tag;
+    int i=0;
     
 
     function new(string name, uvm_component parent);
@@ -56,12 +58,29 @@ class ahb_master_monitor extends uvm_monitor;
         
     endtask
 
+    function int return_size(burst_t hburst);
+        int size;
+        case (hburst)
+        SINGLE : size = 1;
+        INCR4, WRAP4 : size = 4;
+        INCR8, WRAP8 : size = 4;
+        INCR16 , WRAP16 : size = 16;
+            
+        endcase
+        return size;
+    endfunction
+
     task monitor_addr_phase();
         ahb_transaction item;
 
         forever begin
             
             if ( ( vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ ) /*&& vif.m_cb.hgrant*/ && vif.m_cb.hready && vif.hreset) begin
+                if (vif.m_cb.htrans == NONSEQ) begin
+                    transfer_size = return_size(vif.m_cb.hburst);
+                    randomize(tag);
+                end
+                
                 item = ahb_transaction::type_id::create("item");
                 item.htrans = new[1];
                 item.haddr = new[1];
@@ -77,7 +96,7 @@ class ahb_master_monitor extends uvm_monitor;
                 item.hsize =   size_t'(vif.m_cb.hsize) ;
                 item.hwrite =  rw_t'(vif.m_cb.hwrite);   
                 item.id = agent_config.agent_id;
-                
+                item.tag = tag;
                 end
                 `uvm_info(get_type_name(), $sformatf("haddr is (addr_phase)  : %h ", item.haddr[0]), UVM_MEDIUM)
                 @(vif.m_cb iff(vif.m_cb.hready && vif.hreset));
@@ -108,6 +127,7 @@ class ahb_master_monitor extends uvm_monitor;
             item.hresp = resp_t'(vif.m_cb.hresp);
             
             `uvm_info(get_type_name(), $sformatf("Item received by Master Monitor is : %s ", item.convert2string()), UVM_MEDIUM)
+
 
             master_transaction_port.write(item);
         end

@@ -3,6 +3,8 @@
 class ahb_transaction extends uvm_sequence_item;
         `uvm_object_utils(ahb_transaction)
 
+        //signifies from which transfer the beat is part of
+        int tag;
         //id of the coresponding agent
         int id; 
         //haddr, control and data
@@ -44,6 +46,7 @@ class ahb_transaction extends uvm_sequence_item;
         virtual function string convert2string();
                 string s = super.convert2string();
                 $sformat (s, "%s\n   ahb_transaction with id = %0d :", s,id);
+                $sformat (s, "%S\n   tag  = %0d", s, tag);
                 $sformat (s, "%s\n   hbusreq = %0d", s, hbusreq);
                 $sformat (s, "%s\n   hlock   = %0d", s, hlock);
                 $sformat (s, "%s\n   lock_duration   = %0d", s, lock_duration);
@@ -59,6 +62,7 @@ class ahb_transaction extends uvm_sequence_item;
                 $sformat (s, "%S\n   no_of_waits  = %p", s, no_of_waits);
                 $sformat (s, "%S\n   busy_pos  = %0d", s, busy_pos);
                 $sformat (s, "%S\n   no_of_busy  = %0d", s, no_of_busy);
+
                 return s;
         endfunction 
 
