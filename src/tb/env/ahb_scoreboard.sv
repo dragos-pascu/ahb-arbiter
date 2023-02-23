@@ -47,11 +47,14 @@ class ahb_scoreboard extends uvm_scoreboard;
     function void write_predictor(ahb_transaction master_item);
         int i;
         
+        if (master_item.htrans[0] == NONSEQ) begin
+                    predictor_transactions++;
+        end
+
         for (i=0; i<slave_number; ++i) begin
             if((master_item.haddr[0] >= slave_low_address[i]) && (master_item.haddr[0] <= slave_high_address[i] )) begin
-                master_item.hsel = 1;
                 expected_transactions[i].push_back(master_item); // i represents the slave number.
-                predictor_transactions++;
+                
                 `uvm_info(get_type_name(), $sformatf("Received from master[%0d] : \n %s", master_item.id,master_item.convert2string()), UVM_MEDIUM);
 
                 break;
@@ -85,6 +88,9 @@ class ahb_scoreboard extends uvm_scoreboard;
                     end
                     //this means that a new transaction came and I can send to coverage.
                     if (current_tag!=previours_tag) begin
+                        
+                        evaluator_transactions++;
+
                         if (flag_mismatch) begin
                             //flush quueue and increment mismatch;
                             coverage_queue.delete();
@@ -110,7 +116,6 @@ class ahb_scoreboard extends uvm_scoreboard;
             end
         join_none
 
-        evaluator_transactions++;
     endfunction
 
     
