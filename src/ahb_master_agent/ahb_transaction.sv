@@ -76,10 +76,7 @@ class ahb_transaction extends uvm_sequence_item;
                 res = super.do_compare(rhs,comparer) &&
                         //the master that initiates the transaction
                         //data that was sent by master vs received by slave
-                        (haddr    === tx_rhs.haddr ) &&
-                        (hwdata   === tx_rhs.hwdata) &&
                         (hburst   === tx_rhs.hburst) &&
-                        (htrans   === tx_rhs.htrans) &&
                         (hsize    === tx_rhs.hsize ) &&
                         (hwrite   === tx_rhs.hwrite) &&
                         //the slave response vs what master received
@@ -87,7 +84,41 @@ class ahb_transaction extends uvm_sequence_item;
                         (hresp   === tx_rhs.hresp) &&
                         //(hsel   === tx_rhs.hsel) &&
                         (hrdata   === tx_rhs.hrdata);
-                return res;
+
+                if (haddr.size() == tx_rhs.haddr.size()) begin
+                        for (int i = 0; i < haddr.size(); i++) begin
+                                if (haddr[i] !== tx_rhs.haddr[i]) begin
+                                res = 0;
+                                break;
+                        end
+                end
+                end else begin
+                res = 0;
+                end
+                if (htrans.size() == tx_rhs.htrans.size()) begin
+                        for (int i = 0; i < htrans.size(); i++) begin
+                                if (htrans[i] !== tx_rhs.htrans[i]) begin
+                                res = 0;
+                                break;
+                        end
+                end
+                end else begin
+                res = 0;
+                end
+                if (hwdata.size() == tx_rhs.hwdata.size()) begin
+                        for (int i = 0; i < hwdata.size(); i++) begin
+                                if (hwdata[i] !== tx_rhs.hwdata[i]) begin
+                                res = 0;
+                                break;
+                        end
+                end
+                end else begin
+                res = 0;
+                end
+        
+        return res;
+                
+
                 
         endfunction
 
