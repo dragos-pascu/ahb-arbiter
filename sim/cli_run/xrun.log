@@ -1,0 +1,742 @@
+xrun: 20.09-s009: (c) Copyright 1995-2021 Cadence Design Systems, Inc.
+TOOL:	xrun	20.09-s009: Started on Mar 23, 2023 at 17:47:01 EET
+xrun
+	-f ../run.f
+		-uvm
+		-access +rwc
+		-clean
+		-timescale 1ns/1ns
+		-cov_cgsample
+		-coverage all
+		-covoverwrite
+		-svseed random
+		+UVM_VERBOSITY=UVM_HIGH
+		+UVM_TESTNAME=incr_read_4_test
+		-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src
+		-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent
+		-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent
+		-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent
+		-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env
+		-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/
+		-incdir /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tests
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/integration_pkg_lucian.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/master_pkg.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/slave_pkg.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent/reset_pkg.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_env_pkg.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tests/tests_pkg.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent/reset_if.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/request_if.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/data_transfer_if.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_comb.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/test_harness.sv
+		/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tb_top.sv
+
+   User defined plus("+") options:
+	+UVM_VERBOSITY=UVM_HIGH
+
+xrun: *N,CLEAN: Removing existing directory ./xcelium.d.
+Compiling UVM packages (uvm_pkg.sv cdns_uvm_pkg.sv) using uvmhome location /sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/integration_pkg_lucian.sv
+	package worklib.integration_pkg:sv
+		errors: 0, warnings: 0
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/master_pkg.sv
+                    std::randomize(tag);
+                                  |
+xmvlog: *W,FUNTSK (/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv,85|34): function called as a task without void'().
+(`include file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv line 85, file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/master_pkg.sv line 13)
+	package worklib.master_pkg:sv
+		errors: 0, warnings: 1
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/slave_pkg.sv
+	package worklib.slave_pkg:sv
+		errors: 0, warnings: 0
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent/reset_pkg.sv
+	package worklib.reset_pkg:sv
+		errors: 0, warnings: 0
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_env_pkg.sv
+	package worklib.ahb_env_pkg:sv
+		errors: 0, warnings: 0
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tests/tests_pkg.sv
+	package worklib.tests_pkg:sv
+		errors: 0, warnings: 0
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent/reset_if.sv
+	interface worklib.reset_if:sv
+		errors: 0, warnings: 0
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/request_if.sv
+	interface worklib.request_if:sv
+		errors: 0, warnings: 0
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/data_transfer_if.sv
+	interface worklib.master_if:sv
+		errors: 0, warnings: 0
+	interface worklib.salve_if:sv
+		errors: 0, warnings: 0
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_comb.sv
+	module worklib.generic_arbiter_full:sv
+		errors: 0, warnings: 0
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/test_harness.sv
+	interface worklib.test_harness:sv
+		errors: 0, warnings: 0
+file: /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tb_top.sv
+	module worklib.top:sv
+		errors: 0, warnings: 0
+xmvlog: *W,SPDUSD: Include directory /home/dragos.pascu/Projects/ahb-arbiter-project/src given but not used.
+xmvlog: *W,SPDUSD: Include directory /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/ given but not used.
+	Total errors/warnings found outside modules and primitives:
+		errors: 0, warnings: 2
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		uvm_pkg
+		cdns_uvmapi
+		cdns_assert2uvm_pkg
+		cdns_uvm_pkg
+		integration_pkg
+		master_pkg
+		slave_pkg
+		reset_pkg
+		ahb_env_pkg
+		tests_pkg
+		top
+xmelab: *W,DSEMEL: This SystemVerilog design will be simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+
+	Extracting FSMs for coverage:
+		worklib.generic_arbiter_full
+		worklib.top
+	Total FSMs extracted = 0
+	Building instance overlay tables: .................... Done
+	Enabling instrumentation for coverage types: block expression FSM toggle functional
+xmelab: *W,COVDCL: By default expression coverage is scored only for Verilog logical operators (|| and &&) and VHDL logical operators (OR, AND, NOR, and NAND), and is scored only in condition expressions. To score coverage for other operators and for expressions in other statements, use the "set_expr_coverable_operators" and "set_expr_coverable_statements" coverage configuration file commands with suitable options at elaboration.
+	Generating native compiled code:
+		worklib.generic_arbiter_full:sv <0x2afe7de6>
+			streams:  29, words: 12946
+		worklib.uvm_pkg:sv <0x17f3c070>
+			streams:   8, words:  5962
+		worklib.uvm_pkg:sv <0x4e4367f5>
+			streams:   8, words:  5734
+		worklib.uvm_pkg:sv <0x402a0e69>
+			streams:   7, words:  5295
+		worklib.uvm_pkg:sv <0x51f7edc5>
+			streams:   7, words:  1511
+		worklib.uvm_pkg:sv <0x77865168>
+			streams:   8, words:  2150
+		worklib.uvm_pkg:sv <0x025a6ef2>
+			streams:  22, words: 42539
+		worklib.uvm_pkg:sv <0x64c248a8>
+			streams:   7, words:  1511
+		worklib.uvm_pkg:sv <0x00c65cfd>
+			streams:  28, words: 20843
+		worklib.uvm_pkg:sv <0x00d843e4>
+			streams:  27, words: 19748
+		worklib.uvm_pkg:sv <0x78f58ee4>
+			streams:  23, words: 19275
+		worklib.uvm_pkg:sv <0x3011648a>
+			streams:  14, words:  4946
+		worklib.uvm_pkg:sv <0x6526fb89>
+			streams:  26, words: 27869
+		worklib.uvm_pkg:sv <0x179f40c9>
+			streams:   7, words:  1950
+		worklib.uvm_pkg:sv <0x7e823fde>
+			streams:  14, words: 13820
+		worklib.uvm_pkg:sv <0x00894cf7>
+			streams:  26, words: 23556
+		worklib.uvm_pkg:sv <0x7e6f8d48>
+			streams:  25, words: 44742
+		worklib.uvm_pkg:sv <0x22da7e32>
+			streams:  27, words: 25615
+		worklib.uvm_pkg:sv <0x5aaf2b63>
+			streams:  26, words: 37601
+		worklib.uvm_pkg:sv <0x3cca9696>
+			streams:  27, words: 27787
+		worklib.uvm_pkg:sv <0x57b6487a>
+			streams:  25, words: 40840
+		worklib.uvm_pkg:sv <0x643651d3>
+			streams:  27, words: 29353
+		worklib.uvm_pkg:sv <0x0aa9ea22>
+			streams:  25, words: 46265
+		worklib.uvm_pkg:sv <0x6a74c0d8>
+			streams:  27, words: 32672
+		worklib.uvm_pkg:sv <0x7f3b5291>
+			streams:  25, words: 40815
+		worklib.uvm_pkg:sv <0x5fb68c70>
+			streams:  25, words: 42997
+		worklib.uvm_pkg:sv <0x6996196d>
+			streams:  27, words: 27114
+		worklib.uvm_pkg:sv <0x6ed0fe1f>
+			streams:  25, words: 40121
+		worklib.uvm_pkg:sv <0x5e49f632>
+			streams:  28, words: 66805
+		worklib.uvm_pkg:sv <0x53d3e656>
+			streams:  59, words: 64070
+		worklib.cdns_uvm_pkg:sv <0x08de697d>
+			streams:  27, words: 28554
+		worklib.cdns_uvm_pkg:sv <0x1c04a36a>
+			streams:   8, words:  3193
+		worklib.cdns_uvm_pkg:sv <0x6f794f0c>
+			streams:  10, words:  7082
+		worklib.uvm_pkg:sv <0x3e2640fe>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x26ceed6c>
+			streams:  26, words: 42531
+		worklib.uvm_pkg:sv <0x2dc18471>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x753e3f56>
+			streams:  26, words: 21150
+		worklib.uvm_pkg:sv <0x0cd75bae>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x43b27637>
+			streams:  26, words: 21150
+		worklib.uvm_pkg:sv <0x114fa042>
+			streams:  25, words: 22283
+		worklib.uvm_pkg:sv <0x49ca6929>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x76b439cf>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x7e635509>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x5214e9f5>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x68457d72>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x0c0cc6de>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x74261c3b>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x71cc386e>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x0df0d0a6>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x100f1172>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x74400200>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x43030019>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x695ed7a3>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x248e4444>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x060beba4>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x577a1236>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x69e374a9>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x4e75b4ef>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x4a6145a8>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x3806cc2c>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x69aa8025>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x30a864e1>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x6015da66>
+			streams:  26, words: 21150
+		worklib.uvm_pkg:sv <0x6ec0fc8e>
+			streams:  25, words: 22283
+		worklib.uvm_pkg:sv <0x36d49d54>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x430470f4>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x260f4e5b>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x2a988cfd>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x68f1c08d>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x0b2fa7f8>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x105ed1af>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x65684fba>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x1142f0c0>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x63ede65e>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x40eda221>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x288cddb5>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x763fcb32>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x72c93c86>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x24167b95>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x15bfd7f3>
+			streams:  24, words: 14995
+		worklib.uvm_pkg:sv <0x3af41874>
+			streams:  29, words: 22984
+		worklib.uvm_pkg:sv <0x36d5d269>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x1a2ff71b>
+			streams:  24, words: 14995
+		worklib.tests_pkg:sv <0x43b269fa>
+			streams:  31, words: 31537
+		worklib.uvm_pkg:sv <0x5626a258>
+			streams:   7, words:  2522
+		worklib.uvm_pkg:sv <0x5d26b142>
+			streams:  90, words: 100543
+		worklib.uvm_pkg:sv <0x2a6c6629>
+			streams:  24, words: 16539
+		worklib.ahb_env_pkg:sv <0x3c46d760>
+			streams:  41, words: 46227
+		worklib.uvm_pkg:sv <0x7859cbf0>
+			streams: 112, words: 97738
+		worklib.uvm_pkg:sv <0x76b51535>
+			streams:   7, words:  2522
+		worklib.uvm_pkg:sv <0x7c576180>
+			streams:  41, words: 28066
+		worklib.uvm_pkg:sv <0x29a48943>
+			streams:  40, words: 23985
+		worklib.uvm_pkg:sv <0x467d8bd2>
+			streams:  24, words: 15447
+		worklib.uvm_pkg:sv <0x7212825f>
+			streams:  24, words: 16464
+		worklib.uvm_pkg:sv <0x4cd20d37>
+			streams:  46, words: 35341
+		worklib.uvm_pkg:sv <0x680a90a5>
+			streams: 123, words: 115482
+		worklib.uvm_pkg:sv <0x7526c1eb>
+			streams:  24, words: 18388
+		worklib.uvm_pkg:sv <0x57bd974f>
+			streams:  24, words: 18048
+		worklib.uvm_pkg:sv <0x31a2a313>
+			streams:   9, words:  3690
+		worklib.uvm_pkg:sv <0x4b00b750>
+			streams:  30, words: 36502
+		worklib.uvm_pkg:sv <0x121b91ed>
+			streams:  54, words: 70487
+		worklib.uvm_pkg:sv <0x262eae5f>
+			streams:  25, words: 28290
+		worklib.slave_pkg:sv <0x5fcaee3d>
+			streams:  26, words: 19815
+		worklib.uvm_pkg:sv <0x03652fc6>
+			streams:  25, words: 19187
+		worklib.uvm_pkg:sv <0x604001bb>
+			streams: 207, words: 174161
+		worklib.uvm_pkg:sv <0x063c5d02>
+			streams:  24, words: 16656
+		worklib.uvm_pkg:sv <0x36906fa6>
+			streams:  29, words: 22984
+		worklib.ahb_env_pkg:sv <0x792e7ecd>
+			streams:  28, words: 21865
+		worklib.uvm_pkg:sv <0x67efb022>
+			streams:  22, words: 13803
+		worklib.uvm_pkg:sv <0x11a93f6a>
+			streams:  38, words: 21371
+		worklib.uvm_pkg:sv <0x47c1ce8d>
+			streams:  25, words: 21461
+		worklib.uvm_pkg:sv <0x23246284>
+			streams:  34, words: 29674
+		worklib.top:sv <0x0e936c39>
+			streams:  73, words: 77576
+		worklib.tests_pkg:sv <0x35d5a12e>
+			streams:   0, words:     0
+		worklib.ahb_env_pkg:sv <0x327c92b2>
+			streams:   0, words:     0
+		worklib.reset_pkg:sv <0x67ba854a>
+			streams:   0, words:     0
+		worklib.test_harness:sv <0x2ba9c10c>
+			streams: 226, words: 87648
+		worklib.uvm_pkg:sv <0x18815c87>
+			streams: 163, words: 196270
+		worklib.uvm_pkg:sv <0x37e164f5>
+			streams:  24, words: 16464
+		worklib.slave_pkg:sv <0x0bb3867e>
+			streams:   0, words:     0
+		worklib.uvm_pkg:sv <0x3f6d81ef>
+			streams: 165, words: 189275
+		worklib.uvm_pkg:sv <0x2e6784f0>
+			streams: 164, words: 198519
+		worklib.uvm_pkg:sv <0x28d0a21f>
+			streams:   7, words:  2522
+		worklib.uvm_pkg:sv <0x18fb6e33>
+			streams: 298, words: 267995
+		worklib.uvm_pkg:sv <0x44d37e8d>
+			streams:  27, words: 33220
+		worklib.uvm_pkg:sv <0x4b79a49b>
+			streams:  24, words: 16464
+		worklib.uvm_pkg:sv <0x182ecf97>
+			streams:  25, words: 19531
+		worklib.master_pkg:sv <0x24dfd669>
+			streams:   0, words:     0
+		worklib.cdns_uvm_pkg:sv <0x1dd32396>
+			streams: 134, words: 202441
+		worklib.cdns_uvmapi:svp <0x11b0dfd7>
+			streams:  27, words: 25747
+		worklib.cdns_assert2uvm_pkg:sv <0x0def7463>
+			streams:   3, words:  1869
+		worklib.uvm_pkg:sv <0x74bb5130>
+			streams: 4439, words: 5713551
+		worklib.master_if:sv <0x2ab0f014>
+			streams:  72, words: 47691
+		worklib.master_if:sv <0x1becd3e8>
+			streams:  72, words: 47691
+		worklib.salve_if:sv <0x2b3b2b8d>
+			streams:  42, words: 21539
+		worklib.salve_if:sv <0x682957a8>
+			streams:  42, words: 21539
+		worklib.request_if:sv <0x4b658e1f>
+			streams:  28, words: 13894
+		worklib.request_if:sv <0x124cb82b>
+			streams:  28, words: 13894
+		worklib.integration_pkg:sv <0x23f1a286>
+			streams:   0, words:     0
+		worklib.reset_if:sv <0x4d85ee18>
+			streams:   3, words:  1429
+    int interface_number;
+                       |
+xmelab: *W,COVUTA (/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/request_if.sv,4|23): Toggle coverage is not supported for SystemVerilog integer, real, string, dynamic array, sparse memory and reference ports. It is also not supported for VHDL multi-dimensional array and array of record. There may also be other such objects in the design.
+    logic[size_out-1:0] master_phase[3];//0 - arbitration, 1 - address, 2 - data
+                                   |
+xmelab: *W,COVMDD (/home/dragos.pascu/Projects/ahb-arbiter-project/src/rtl/generic_arbiter_comb.sv,40|35): Toggle coverage for bit, logic, reg, wire, enum and struct multi-dimensional static arrays and vectors is not supported by default. To enable toggle coverage for enum multi-dimensional static arrays specify 'set_toggle_scoring -sv_enum enable_mda' and for other multi-dimensional static arrays, specify 'set_toggle_scoring -sv_mda [<max_bit_base2_exponent>] [-sv_mda_of_struct]' ccf command in the coverage configuration file.
+	Building instance specific data structures.
+xmelab: *W,CGPIDF: Covergroup "per_instance" option , by default, is set as 0.
+xmelab: *N,COVCGN: Coverage configuration file command "set_covergroup -new_instance_reporting" can be specified to improve the scoping and naming of covergroup instances. It may be noted that subsequent merging of a coverage database saved with this command and a coverage database saved without this command is not allowed.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                       Instances  Unique
+		Modules:                       2       2
+		Interfaces:                   27       5
+		Verilog packages:             10      10
+		Registers:                 21476   11885
+		Scalar wires:                129       -
+		Expanded wires:              886      59
+		Vectored wires:              110       -
+		Named events:                  4      12
+		Always blocks:               987     117
+		Initial blocks:              881     272
+		Clocking blocks:              26       4
+		Clocking items:              238      30
+		Parallel blocks:              53      54
+		Cont. assignments:           282      50
+		Pseudo assignments:            2       2
+		Assertions:                  158      20
+		Covergroup Instances:          0       3
+		SV Class declarations:       277     389
+		SV Class specializations:    593     593
+		Simulation timescale:        1ns
+	Writing initial simulation snapshot: worklib.top:sv
+Loading snapshot worklib.top:sv .................... Done
+SVSEED set randomly from command line: -1104281312
+xmsim: *W,RNDXCELON: A newer version of the SystemVerilog constraint solver is being used which has better support for array-solving, new solve-order mechanism, and seed stability enhancements..
+xmsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+xcelium> source /sw/cadence/XCELIUM2009/tools/xcelium/files/xmsimrc
+xcelium> source /sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/additions/sv/files/tcl/uvm_sim.tcl
+xcelium> run
+----------------------------------------------------------------
+CDNS-UVM-1.1d (20.09-s009)
+(C) 2007-2013 Mentor Graphics Corporation
+(C) 2007-2013 Cadence Design Systems, Inc.
+(C) 2006-2013 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+  See http://www.eda.org/svdb/view.php?id=3313 for more details.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+  See http://www.eda.org/svdb/view.php?id=3770 for more details.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO @ 0: reporter [RNTST] Running test incr_read_4_test...
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/tests/base_test.sv(35) @ 0: uvm_test_top [incr_read_4_test] Build phase of test is executing
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/ahb_slave_monitor.sv(36) @ 0: uvm_test_top.env.slave[6].ahb_smonitor [ahb_slave_monitor] Slave monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/ahb_slave_monitor.sv(36) @ 0: uvm_test_top.env.slave[5].ahb_smonitor [ahb_slave_monitor] Slave monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/ahb_slave_monitor.sv(36) @ 0: uvm_test_top.env.slave[4].ahb_smonitor [ahb_slave_monitor] Slave monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/ahb_slave_monitor.sv(36) @ 0: uvm_test_top.env.slave[3].ahb_smonitor [ahb_slave_monitor] Slave monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/ahb_slave_monitor.sv(36) @ 0: uvm_test_top.env.slave[2].ahb_smonitor [ahb_slave_monitor] Slave monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/ahb_slave_monitor.sv(36) @ 0: uvm_test_top.env.slave[1].ahb_smonitor [ahb_slave_monitor] Slave monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/ahb_slave_monitor.sv(36) @ 0: uvm_test_top.env.slave[0].ahb_smonitor [ahb_slave_monitor] Slave monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent/reset_driver.sv(38) @ 0: uvm_test_top.env.reset_agent_h.driver_h [reset_driver] Reset driver run_phase : 
+ 
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_request_monitor.sv(33) @ 0: uvm_test_top.env.master[8].req_monitor [ahb_request_monitor] Request monitor run phase.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv(43) @ 0: uvm_test_top.env.master[8].ahb_mmonitor [ahb_master_monitor] Master monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_request_monitor.sv(33) @ 0: uvm_test_top.env.master[7].req_monitor [ahb_request_monitor] Request monitor run phase.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv(43) @ 0: uvm_test_top.env.master[7].ahb_mmonitor [ahb_master_monitor] Master monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_request_monitor.sv(33) @ 0: uvm_test_top.env.master[6].req_monitor [ahb_request_monitor] Request monitor run phase.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv(43) @ 0: uvm_test_top.env.master[6].ahb_mmonitor [ahb_master_monitor] Master monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_request_monitor.sv(33) @ 0: uvm_test_top.env.master[5].req_monitor [ahb_request_monitor] Request monitor run phase.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv(43) @ 0: uvm_test_top.env.master[5].ahb_mmonitor [ahb_master_monitor] Master monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_request_monitor.sv(33) @ 0: uvm_test_top.env.master[4].req_monitor [ahb_request_monitor] Request monitor run phase.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv(43) @ 0: uvm_test_top.env.master[4].ahb_mmonitor [ahb_master_monitor] Master monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_request_monitor.sv(33) @ 0: uvm_test_top.env.master[3].req_monitor [ahb_request_monitor] Request monitor run phase.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv(43) @ 0: uvm_test_top.env.master[3].ahb_mmonitor [ahb_master_monitor] Master monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_request_monitor.sv(33) @ 0: uvm_test_top.env.master[2].req_monitor [ahb_request_monitor] Request monitor run phase.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv(43) @ 0: uvm_test_top.env.master[2].ahb_mmonitor [ahb_master_monitor] Master monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_request_monitor.sv(33) @ 0: uvm_test_top.env.master[1].req_monitor [ahb_request_monitor] Request monitor run phase.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv(43) @ 0: uvm_test_top.env.master[1].ahb_mmonitor [ahb_master_monitor] Master monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_request_monitor.sv(33) @ 0: uvm_test_top.env.master[0].req_monitor [ahb_request_monitor] Request monitor run phase.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_monitor.sv(43) @ 0: uvm_test_top.env.master[0].ahb_mmonitor [ahb_master_monitor] Master monitor run phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/virtual_sequences_lib.sv(322) @ 0: uvm_test_top.env.vsequencer@@vseq_h [virtual_incr_read_4sequence] Executing virtual_incr_read_4sequence
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(207) @ 0: uvm_test_top.env.master[8].sequencer@@incr_read_4sequence [incr_read_4sequence] Inside body of incr_read_4sequence.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(207) @ 0: uvm_test_top.env.master[7].sequencer@@incr_read_4sequence [incr_read_4sequence] Inside body of incr_read_4sequence.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(207) @ 0: uvm_test_top.env.master[6].sequencer@@incr_read_4sequence [incr_read_4sequence] Inside body of incr_read_4sequence.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(207) @ 0: uvm_test_top.env.master[5].sequencer@@incr_read_4sequence [incr_read_4sequence] Inside body of incr_read_4sequence.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(207) @ 0: uvm_test_top.env.master[4].sequencer@@incr_read_4sequence [incr_read_4sequence] Inside body of incr_read_4sequence.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(207) @ 0: uvm_test_top.env.master[3].sequencer@@incr_read_4sequence [incr_read_4sequence] Inside body of incr_read_4sequence.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(207) @ 0: uvm_test_top.env.master[2].sequencer@@incr_read_4sequence [incr_read_4sequence] Inside body of incr_read_4sequence.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(207) @ 0: uvm_test_top.env.master[1].sequencer@@incr_read_4sequence [incr_read_4sequence] Inside body of incr_read_4sequence.
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(207) @ 0: uvm_test_top.env.master[0].sequencer@@incr_read_4sequence [incr_read_4sequence] Inside body of incr_read_4sequence.
+xmsim: *E,ASRTST (/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/request_if.sv,61): (time 15 NS) Assertion top.th.req_if[8].bus_req.HMASTLOCK_TIMING has failed 
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_driver.sv(80) @ 35: uvm_test_top.env.master[8].ahb_mdriver [ahb_master_driver] Master Driver item : 
+ 
+   ahb_transaction with id = 8 :
+   tag  = 0
+   hbusreq = 1
+   hlock   = 0
+   lock_duration   = -270619002
+   haddr   = '{'h14, 'h18, 'h1c, 'h20}
+   hwdata  = '{'hf97053c5, 'h48f8df19, 'h2557fef1, 'hfd96b914}
+   hburst  = 3
+   htrans  = '{NONSEQ, SEQ, BUSY, BUSY, BUSY, BUSY, SEQ, SEQ}
+   hsize   = 2
+   hready  = 0
+   hsel  = x
+   hresp   = 1
+   hrdata  = a4b9bc59
+   no_of_waits  = '{'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h1}
+   busy_pos  = 2
+   no_of_busy  = 4
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_driver.sv(80) @ 35: uvm_test_top.env.master[7].ahb_mdriver [ahb_master_driver] Master Driver item : 
+ 
+   ahb_transaction with id = 7 :
+   tag  = 0
+   hbusreq = 1
+   hlock   = 0
+   lock_duration   = 850353690
+   haddr   = '{'hc8, 'hca, 'hcc, 'hce}
+   hwdata  = '{'h9be3a414, 'h3e58cb09, 'h88f00cea, 'h7f05e5cd}
+   hburst  = 3
+   htrans  = '{NONSEQ, SEQ, BUSY, SEQ, SEQ}
+   hsize   = 1
+   hready  = 0
+   hsel  = x
+   hresp   = 2
+   hrdata  = 5604fd4e
+   no_of_waits  = '{'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h1}
+   busy_pos  = 2
+   no_of_busy  = 1
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_driver.sv(80) @ 35: uvm_test_top.env.master[6].ahb_mdriver [ahb_master_driver] Master Driver item : 
+ 
+   ahb_transaction with id = 6 :
+   tag  = 0
+   hbusreq = 1
+   hlock   = 0
+   lock_duration   = 2063280810
+   haddr   = '{'h107, 'h108, 'h109, 'h10a}
+   hwdata  = '{'h2dea3a69, 'h2569198, 'h28c0852d, 'h9feba40}
+   hburst  = 3
+   htrans  = '{NONSEQ, BUSY, BUSY, BUSY, SEQ, SEQ, SEQ}
+   hsize   = 0
+   hready  = 0
+   hsel  = x
+   hresp   = 3
+   hrdata  = da5c95c8
+   no_of_waits  = '{'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h1}
+   busy_pos  = 1
+   no_of_busy  = 3
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_driver.sv(80) @ 35: uvm_test_top.env.master[5].ahb_mdriver [ahb_master_driver] Master Driver item : 
+ 
+   ahb_transaction with id = 5 :
+   tag  = 0
+   hbusreq = 1
+   hlock   = 0
+   lock_duration   = -484950434
+   haddr   = '{'hb4, 'hb8, 'hbc, 'hc0}
+   hwdata  = '{'h5cf77af1, 'hb144ee6d, 'h9a891685, 'h8d6484a3}
+   hburst  = 3
+   htrans  = '{NONSEQ, BUSY, SEQ, SEQ, SEQ}
+   hsize   = 2
+   hready  = 1
+   hsel  = x
+   hresp   = 1
+   hrdata  = 5a38c94b
+   no_of_waits  = '{'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h1}
+   busy_pos  = 1
+   no_of_busy  = 1
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_driver.sv(80) @ 35: uvm_test_top.env.master[4].ahb_mdriver [ahb_master_driver] Master Driver item : 
+ 
+   ahb_transaction with id = 4 :
+   tag  = 0
+   hbusreq = 1
+   hlock   = 1
+   lock_duration   = 3
+   haddr   = '{'h130, 'h132, 'h134, 'h136}
+   hwdata  = '{'h4a9d8cb3, 'h4403964a, 'hf964c477, 'hdfef4e26}
+   hburst  = 3
+   htrans  = '{NONSEQ, BUSY, BUSY, SEQ, SEQ, SEQ}
+   hsize   = 1
+   hready  = 1
+   hsel  = x
+   hresp   = 2
+   hrdata  = fb80c837
+   no_of_waits  = '{'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h1}
+   busy_pos  = 1
+   no_of_busy  = 2
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_driver.sv(80) @ 35: uvm_test_top.env.master[3].ahb_mdriver [ahb_master_driver] Master Driver item : 
+ 
+   ahb_transaction with id = 3 :
+   tag  = 0
+   hbusreq = 1
+   hlock   = 1
+   lock_duration   = 1
+   haddr   = '{'h12f, 'h130, 'h131, 'h132}
+   hwdata  = '{'hf8b13bf5, 'haa02bc41, 'h6de1427, 'hdec0d77d}
+   hburst  = 3
+   htrans  = '{NONSEQ, SEQ, BUSY, BUSY, SEQ, SEQ}
+   hsize   = 0
+   hready  = 1
+   hsel  = x
+   hresp   = 3
+   hrdata  = 5570fabc
+   no_of_waits  = '{'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h1}
+   busy_pos  = 2
+   no_of_busy  = 2
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_driver.sv(80) @ 35: uvm_test_top.env.master[2].ahb_mdriver [ahb_master_driver] Master Driver item : 
+ 
+   ahb_transaction with id = 2 :
+   tag  = 0
+   hbusreq = 1
+   hlock   = 0
+   lock_duration   = 195096173
+   haddr   = '{'h76, 'h77, 'h78, 'h79}
+   hwdata  = '{'h61120b25, 'h2c49f053, 'h8b8754bd, 'head363ae}
+   hburst  = 3
+   htrans  = '{NONSEQ, BUSY, BUSY, SEQ, SEQ, SEQ}
+   hsize   = 0
+   hready  = 1
+   hsel  = x
+   hresp   = 3
+   hrdata  = fd65b763
+   no_of_waits  = '{'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h1}
+   busy_pos  = 1
+   no_of_busy  = 2
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_driver.sv(80) @ 35: uvm_test_top.env.master[1].ahb_mdriver [ahb_master_driver] Master Driver item : 
+ 
+   ahb_transaction with id = 1 :
+   tag  = 0
+   hbusreq = 1
+   hlock   = 0
+   lock_duration   = -1688600602
+   haddr   = '{'h76, 'h77, 'h78, 'h79}
+   hwdata  = '{'hf3bb806c, 'hd5b80d89, 'hf4daf3e6, 'h8e78e8a8}
+   hburst  = 3
+   htrans  = '{NONSEQ, SEQ, BUSY, BUSY, SEQ, SEQ}
+   hsize   = 0
+   hready  = 0
+   hsel  = x
+   hresp   = 3
+   hrdata  = 4935ff16
+   no_of_waits  = '{'h0, 'h1}
+   busy_pos  = 2
+   no_of_busy  = 2
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/ahb_master_driver.sv(80) @ 35: uvm_test_top.env.master[0].ahb_mdriver [ahb_master_driver] Master Driver item : 
+ 
+   ahb_transaction with id = 0 :
+   tag  = 0
+   hbusreq = 1
+   hlock   = 0
+   lock_duration   = 352971868
+   haddr   = '{'h74, 'h78, 'h7c, 'h80}
+   hwdata  = '{'h3044eec2, 'h20a17c1e, 'h30811560, 'he19f497a}
+   hburst  = 3
+   htrans  = '{NONSEQ, SEQ, BUSY, BUSY, SEQ, SEQ}
+   hsize   = 2
+   hready  = 0
+   hsel  = x
+   hresp   = 1
+   hrdata  = fcbb5c38
+   no_of_waits  = '{'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h0, 'h1}
+   busy_pos  = 2
+   no_of_busy  = 2
+xmsim: *E,ASRTST (/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/request_if.sv,61): (time 55 NS) Assertion top.th.req_if[0].bus_req.HMASTLOCK_TIMING has failed 
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(221) @ 615: uvm_test_top.env.master[0].sequencer@@incr_read_4sequence [incr_read_4sequence] INCR4 read sequence finished
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(221) @ 615: uvm_test_top.env.master[1].sequencer@@incr_read_4sequence [incr_read_4sequence] INCR4 read sequence finished
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(221) @ 615: uvm_test_top.env.master[2].sequencer@@incr_read_4sequence [incr_read_4sequence] INCR4 read sequence finished
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(221) @ 615: uvm_test_top.env.master[3].sequencer@@incr_read_4sequence [incr_read_4sequence] INCR4 read sequence finished
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(221) @ 615: uvm_test_top.env.master[4].sequencer@@incr_read_4sequence [incr_read_4sequence] INCR4 read sequence finished
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(221) @ 615: uvm_test_top.env.master[5].sequencer@@incr_read_4sequence [incr_read_4sequence] INCR4 read sequence finished
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(221) @ 615: uvm_test_top.env.master[6].sequencer@@incr_read_4sequence [incr_read_4sequence] INCR4 read sequence finished
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(221) @ 615: uvm_test_top.env.master[7].sequencer@@incr_read_4sequence [incr_read_4sequence] INCR4 read sequence finished
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/sequence_lib.sv(221) @ 615: uvm_test_top.env.master[8].sequencer@@incr_read_4sequence [incr_read_4sequence] INCR4 read sequence finished
+UVM_INFO @ 2595: uvm_test_top.env.master[8].sequencer [Sequencer] Dropping response for sequence 10, sequence not found.  Probable cause: sequence exited or has been killed
+UVM_INFO @ 2595: uvm_test_top.env.master[7].sequencer [Sequencer] Dropping response for sequence 11, sequence not found.  Probable cause: sequence exited or has been killed
+UVM_INFO @ 2595: uvm_test_top.env.master[6].sequencer [Sequencer] Dropping response for sequence 12, sequence not found.  Probable cause: sequence exited or has been killed
+UVM_INFO @ 2595: uvm_test_top.env.master[5].sequencer [Sequencer] Dropping response for sequence 13, sequence not found.  Probable cause: sequence exited or has been killed
+UVM_INFO @ 2595: uvm_test_top.env.master[4].sequencer [Sequencer] Dropping response for sequence 14, sequence not found.  Probable cause: sequence exited or has been killed
+UVM_INFO @ 2595: uvm_test_top.env.master[3].sequencer [Sequencer] Dropping response for sequence 15, sequence not found.  Probable cause: sequence exited or has been killed
+UVM_INFO @ 2595: uvm_test_top.env.master[2].sequencer [Sequencer] Dropping response for sequence 16, sequence not found.  Probable cause: sequence exited or has been killed
+UVM_INFO @ 2595: uvm_test_top.env.master[1].sequencer [Sequencer] Dropping response for sequence 17, sequence not found.  Probable cause: sequence exited or has been killed
+UVM_INFO @ 2595: uvm_test_top.env.master[0].sequencer [Sequencer] Dropping response for sequence 18, sequence not found.  Probable cause: sequence exited or has been killed
+UVM_INFO /sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/base/uvm_objection.svh(1268) @ 54170: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/arbitration_scoreboard.sv(195) @ 54170: uvm_test_top.env.arbitration_scoreboard_h [arbitration_scoreboard] BUSREQ SCB: 
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/arbitration_scoreboard.sv(196) @ 54170: uvm_test_top.env.arbitration_scoreboard_h [arbitration_scoreboard] Matches: 5407 
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/arbitration_scoreboard.sv(197) @ 54170: uvm_test_top.env.arbitration_scoreboard_h [arbitration_scoreboard] Mismatches: 0 
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_scoreboard.sv(136) @ 54170: uvm_test_top.env.transaction_scoreboard_h [ahb_scoreboard] Scb recived 0 transactions .
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_scoreboard.sv(139) @ 54170: uvm_test_top.env.transaction_scoreboard_h [ahb_scoreboard] Matches: 0 
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_scoreboard.sv(140) @ 54170: uvm_test_top.env.transaction_scoreboard_h [ahb_scoreboard] Mismatches: 0 
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/aribtration_coverage.sv(40) @ 54170: uvm_test_top.env.arbitration_coverage_h [arbitration_coverage] Arbitration coverage is: 61.111111
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_coverage.sv(80) @ 54170: uvm_test_top.env.coverage_h [ahb_coverage] Master data coverage is: 0.000000
+UVM_INFO /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_coverage.sv(81) @ 54170: uvm_test_top.env.coverage_h [ahb_coverage] Slave data coverage is: 0.000000
+
+--- UVM Report catcher Summary ---
+
+
+Number of demoted UVM_FATAL reports  :    0
+Number of demoted UVM_ERROR reports  :    0
+Number of demoted UVM_WARNING reports:    0
+Number of caught UVM_FATAL reports   :    0
+Number of caught UVM_ERROR reports   :    0
+Number of caught UVM_WARNING reports :    0
+
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :   75
+UVM_WARNING :    0
+UVM_ERROR :    0
+UVM_FATAL :    0
+** Report counts by id
+[RNTST]     1
+[Sequencer]     9
+[TEST_DONE]     1
+[ahb_coverage]     2
+[ahb_master_driver]     9
+[ahb_master_monitor]     9
+[ahb_request_monitor]     9
+[ahb_scoreboard]     3
+[ahb_slave_monitor]     7
+[arbitration_coverage]     1
+[arbitration_scoreboard]     3
+[incr_read_4_test]     1
+[incr_read_4sequence]    18
+[reset_driver]     1
+[virtual_incr_read_4sequence]     1
+Simulation complete via $finish(1) at time 54170 NS + 45
+/sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/base/uvm_root.svh:457     $finish;
+xcelium> exit
+xmsim: *N,COVCGN: Coverage configuration file command "set_covergroup -new_instance_reporting" can be specified to improve the scoping and naming of covergroup instances. It may be noted that subsequent merging of a coverage database saved with this command and a coverage database saved without this command is not allowed.
+xmsim: *W,CGDEFN: Default name "worklib.uvm_pkg::.arbitration_cg" will be generated for covergroup instance "arbitration_cg" as the name of the covergroup instance is not specified explicitly: /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/aribtration_coverage.sv, 10.
+xmsim: *W,CGDEFN: Default name "worklib.uvm_pkg::.ahb_master_cg" will be generated for covergroup instance "ahb_master_cg" as the name of the covergroup instance is not specified explicitly: /home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_coverage.sv, 8.
+xmsim: *W,CGPIZE: Instance coverage for covergroup instance "ahb_slave_cg" will not be dumped to database as per_instance option value is set to 0:/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_coverage.sv, 45.
+xmsim: *W,CGPIZE: Instance coverage for covergroup instance "ahb_slave_cg" will not be dumped to database as per_instance option value is set to 0:/home/dragos.pascu/Projects/ahb-arbiter-project/src/tb/env/ahb_coverage.sv, 45.
+
+coverage setup:
+  workdir  :  ./cov_work
+  dutinst  :  top(top)
+  scope    :  scope
+  testname :  test_sv-1104281312
+
+coverage files:
+  model(design data) :  ./cov_work/scope/icc_156371f7_5b75fb80.ucm (reused)
+  data               :  ./cov_work/scope/test_sv-1104281312/icc_156371f7_5b75fb80.ucd
+TOOL:	xrun	20.09-s009: Exiting on Mar 23, 2023 at 17:47:10 EET  (total: 00:00:09)

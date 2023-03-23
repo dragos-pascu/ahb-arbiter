@@ -1,0 +1,47 @@
+csi-xmsim - CSI: Command line:
+xmsim
+    -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run/xcelium.d/run.lnx86.20.09.d/dragos.pascu_9090/xmsim.args
+        -INPUT @source /sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/additions/sv/files/tcl/uvm_sim.tcl
+        +UVM_VERBOSITY=UVM_MEDIUM
+        -uvmhome /sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d
+        -sv_lib /sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/additions/sv/lib/libuvmpli.so
+        -COVOVERWRITE
+        -SVSEED 3
+        +UVM_TESTNAME=incr_write_4_test
+        -gui
+        -TCL
+        -MESSAGES
+        -SV_LIB /sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/additions/sv/lib/libuvmdpi.so
+        +EMGRLOG xrun.log
+        -XLSTIME 1667580170
+        -XLKEEP
+        -XLMODE ./xcelium.d/run.lnx86.20.09.d
+        -RUNMODE
+        -CDSLIB ./xcelium.d/run.lnx86.20.09.d/cds.lib
+        -HDLVAR ./xcelium.d/run.lnx86.20.09.d/hdl.var
+        -XLNAME xrun
+        -XLVERSION TOOL:	xrun	20.09-s009
+        -XLNAME ./xcelium.d/run.lnx86.20.09.d/dragos.pascu_9090
+    -CHECK_VERSION TOOL:	xrun	20.09-s009
+    -LOG_FD 4
+    -LOG_FD_NAME xrun.log
+    -cmdnopsim
+    -runlock /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run/xcelium.d/run.lnx86.20.09.d/.xmlib.lock
+    -runscratch /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run/xcelium.d/run.lnx86.20.09.d/dragos.pascu_9090
+
+csi-xmsim - CSI: *F,INTERR: INTERNAL EXCEPTION
+Observed simulation time : 0 FS + 0
+-----------------------------------------------------------------
+The tool has encountered an unexpected condition and must exit.
+Contact Cadence Design Systems customer support about this
+problem and provide enough information to help us reproduce it,
+including the logfile that contains this error message.
+  TOOL:	xmsim	20.09-s009
+  HOSTNAME: dragos.pascu
+  OPERATING SYSTEM: Linux 3.10.0-1160.el7.x86_64 #1 SMP Mon Oct 19 16:18:59 UTC 2020 x86_64
+  MESSAGE: sv_seghandler - trapno -1 addr(0x18)
+-----------------------------------------------------------------
+
+csi-xmsim - CSI: Cadence Support Investigation, recording details
+Error: Error processing callstack!
+csi-xmsim - CSI: investigation complete took 0.000 secs, send this file to Cadence Support

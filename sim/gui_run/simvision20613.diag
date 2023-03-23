@@ -1,0 +1,88 @@
+*** Message Type: info ***
+When: Mon Nov 28 05:11:06 PM EET 2022
+SimVision started.
+Version: TOOL:  simvision       20.09-s009
+User: dragos.pascu
+Host: dragos.pascu
+Platform: Linux/x86_64/3.10.0-1160.el7.x86_64
+Started: Mon Nov 28 05:11:06 PM EET 2022
+Command: /sw/cadence/XCELIUM2009/tools.lnx86/simvision/bin/simvision.exe -connect dc:dragos.pascu:36189 -nocopyright
+Work Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+ 
+*** Message Type: info ***
+When: Mon Nov 28 05:11:07 PM EET 2022
+Create browser window: "Design Browser 1"
+ 
+*** Message Type: info ***
+When: Mon Nov 28 05:11:11 PM EET 2022
+Create console window: "Console"
+ 
+*** Message Type: info ***
+When: Mon Nov 28 05:11:15 PM EET 2022
+Connect to Simulator
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:   xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Mon Nov 28 05:11:05 PM EET 2022
+  Process ID: 20450
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+     Command: xrun -f ../run.f -gui
+
+ 
+*** Message Type: info ***
+When: Mon Nov 28 05:11:18 PM EET 2022
+Create utility window: "Properties"
+ 
+*** Message Type: info ***
+When: Mon Nov 28 05:11:30 PM EET 2022
+Create waveform window: "Waveform 1"
+ 
+*** Message Type: info ***
+When: Mon Nov 28 05:44:16 PM EET 2022
+Exit XM-Sim: user
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:   xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Mon Nov 28 05:43:14 PM EET 2022
+  Process ID: 24130
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+     Command: xrun -f ../run.f -gui -s
+
+ 
+*** Message Type: error ***
+When: Mon Nov 28 05:44:25 PM EET 2022
+XM-Sim Crashed:
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:   xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Mon Nov 28 05:43:14 PM EET 2022
+  Process ID: 24130
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+     Command: xrun -f ../run.f -gui -s
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:       xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Mon Nov 28 05:43:14 PM EET 2022
+  Process ID: 24130
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+     Command: xrun -f ../run.f -gui -s
+
+Outstanding STRAP Requests:
+        strap::report enable out
+ 
+*** Message Type: info ***
+When: Mon Nov 28 05:45:36 PM EET 2022
+SimVision Exit.
+ 

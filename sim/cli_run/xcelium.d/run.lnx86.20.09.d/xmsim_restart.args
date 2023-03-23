@@ -1,0 +1,37 @@
+//
+// File created by:  xrun
+// Do not modify this file
+//
+-INPUT
+"@source /sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/additions/sv/files/tcl/uvm_sim.tcl"
++UVM_VERBOSITY=UVM_HIGH
+-uvmhome
+/sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d
+-sv_lib
+/sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/additions/sv/lib/libuvmpli.so
+-COVOVERWRITE
+-SVSEED
+random
++UVM_TESTNAME=incr_read_4_test
+-MESSAGES
+-RUN
+-SV_LIB
+/sw/cadence/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/additions/sv/lib/libuvmdpi.so
++EMGRLOG
+xrun.log
+-XLSTIME
+1679586421
+-XLKEEP
+-XLMODE
+./xcelium.d/run.lnx86.20.09.d
+-RUNMODE
+-CDSLIB
+./xcelium.d/run.lnx86.20.09.d/cds.lib
+-HDLVAR
+./xcelium.d/run.lnx86.20.09.d/hdl.var
+-XLNAME
+xrun
+-XLVERSION
+"TOOL:	xrun	20.09-s009"
+-XLNAME
+./xcelium.d/run.lnx86.20.09.d/dragos.pascu_14598

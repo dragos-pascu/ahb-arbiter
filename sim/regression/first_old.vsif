@@ -1,0 +1,345 @@
+session "block_level.dragos.pascu.22_11_21_15_04_20_6200" {
+	abort_dependent_jobs_on_nonzero_exit: true;
+	abort_dependent_runs_on_failure: false;
+	bundling_policy: disabled;
+	collect_xlmbd_data_vmgr: FALSE;
+	complete: 0;
+	create_debug_logs: false;
+	create_optimized_coverage_data: NONE;
+	drm: SERIAL LOCAL;
+	free_hosts: true;
+	host_lock_timeout: 0;
+	id: 1;
+	incremental_merge_slice_size_vmgr: 10;
+	incremental_merge_timeout_to_merge_vmgr: 300;
+	incremental_merge_type_vmgr: NONE;
+	is_sflow: FALSE;
+	master_submission_policy: <text>execute_locally</text>;
+	max_runs_in_parallel: 1;
+	model_dir: <text>$DIR(session)/model_dir</text>;
+	output_mode: <text>terminal</text>;
+	owner: <text>dragos.pascu</text>;
+	queuing_policy: vsif_order;
+	resubmit_failed_submission_vmgr: 0;
+	resubmit_removed_drm_jobs_vmgr: 0;
+	run_mode: <text>batch</text>;
+	session_type: runner;
+	top_dir: <text>/home/dragos.pascu/regression_results/block_level.dragos.pascu.22_11_21_15_04_20_6200/..</text>;
+	use_incremental_merged_model_for_analysis_vmgr: true;
+	use_weak_dependency_vmgr: false;
+	verification_scope: <text>default</text>;
+	vsof: <text>/home/dragos.pascu/regression_results/block_level.dragos.pascu.22_11_21_15_04_20_6200/block_level.vsof</text>;
+};
+group "tests" {
+	e_seed: random;
+	engine: <text>xmsim</text>;
+	exit_on: <text>all</text>;
+	fully_directed: false;
+	ida_recording_window: <text>1000FS</text>;
+	owner: <text>dragos.pascu</text>;
+	run_mode: <text>batch</text>;
+	scan_script: <text>vm_scan.pl ius.flt vm.flt shell.flt uvm.flt</text>;
+	seed: random;
+	seed_domain: 0;
+	simulator: <text>xmvlog</text>;
+	sv_seed: random;
+	test_command: <text>test</text>;
+	timeout: 900;
+	verification_scope: <text>default</text>;
+	test "random_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>1@1</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=random_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "random_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>2@2</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=random_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "random_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>3@3</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=random_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "random_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>4@4</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=random_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "random_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>5@5</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=random_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "single_write_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>7@7</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=single_write_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "single_read_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>8@8</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=single_read_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "single_read_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>9@9</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=single_read_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_write_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>10@10</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_write_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_write_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>11@11</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_write_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_read_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>12@12</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_read_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_read_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>13@13</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_read_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_write_4_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>14@14</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_write_4_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_write_4_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>15@15</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_write_4_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_write_8_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>16@16</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_write_8_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_write_8_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>17@17</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_write_8_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_write_16_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>18@18</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_write_16_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_write_16_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>19@19</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_write_16_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_read_4_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>20@20</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_read_4_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_read_4_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>21@21</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_read_4_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_read_8_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>22@22</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_read_8_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_read_8_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>23@23</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_read_8_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_read_16_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>24@24</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_read_16_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "incr_read_16_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>25@25</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=incr_read_16_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_write_4_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>26@26</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_write_4_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_write_4_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>27@27</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_write_4_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_write_8_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>28@28</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_write_8_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_write_8_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>29@29</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_write_8_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_write_16_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>30@30</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_write_16_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_write_16_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>31@31</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_write_16_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_read_4_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>32@32</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_read_4_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_read_4_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>33@33</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_read_4_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_read_8_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>34@34</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_read_8_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_read_8_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>35@35</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_read_8_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_read_16_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>36@36</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_read_16_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "wrap_read_16_test" {
+		iteration: 0;
+		model_dir: <text>$DIR(session)/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>37@37</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=wrap_read_16_test</text>;
+		sim_args: <text>$RUN_ENV(BRUN_SIM_ARGS)</text>;
+	};
+	test "single_write_test" {
+		iteration: 0;
+		model_dir: <text>$BRUN_SESSION_DIR/model_dir</text>;
+		primary_run: false;
+		rerun_id: <text>6@38</text>;
+		run_script: <text>xrun -f /home/dragos.pascu/Projects/ahb-arbiter-project/sim/run.f +UVM_TESTNAME=single_write_test</text>;
+		sim_args: <text>$BRUN_SIM_ARGS</text>;
+	};
+};

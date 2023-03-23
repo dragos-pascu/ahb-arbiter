@@ -1,0 +1,7 @@
+Cadence vManager(64): 20.09-s003: (c) Copyright 1995-2021 Cadence Design Systems Inc - Simulator version: 20.09-s009 - Coverage engine version: 20.09-s009
+Starting gui mode
+vmanager: *I,runner.startingSession: Starting session /home/dragos.pascu/Projects/ahb-arbiter-project/sim/regression/first.vsif
+vmanager: *W,runner.deprecationMsg: Runner: deprecation: The $ env. variable reference(s) must be replaced by $ENV(variable name) at line 2 in /home/dragos.pascu/Projects/ahb-arbiter-project/sim/regression/first.vsif:     top_dir                     : /home/$USER/regression_results; suggestion: In order to port the vSif to the latest syntax, please run the vSif porting tool. 
+In your shell, type:   /sw/cadence/VMANAGER2009/tools/vmgr/runner/bin/vsif_port.pl --file /home/dragos.pascu/Projects/ahb-arbiter-project/sim/regression/first.vsif
+vmanager: *I,session.delete.completed: "Deletion of session dir for session 'block_level.dragos.pascu.22_11_21_15_04_20_6200' has completed.
+vmanager: *I,runner.sessionStarted: Session block_level.dragos.pascu.22_11_21_15_46_24_1682 started.

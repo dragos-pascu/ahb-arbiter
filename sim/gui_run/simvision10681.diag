@@ -1,0 +1,151 @@
+*** Message Type: info ***
+When: Thu Nov 10 06:12:14 PM EET 2022
+SimVision started.
+Version: TOOL:  simvision       20.09-s009
+User: dragos.pascu
+Host: dragos.pascu
+Platform: Linux/x86_64/3.10.0-1160.el7.x86_64
+Started: Thu Nov 10 06:12:14 PM EET 2022
+Command: /sw/cadence/XCELIUM2009/tools.lnx86/simvision/bin/simvision.exe -connect dc:dragos.pascu:44621 -nocopyright
+Work Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+ 
+*** Message Type: info ***
+When: Thu Nov 10 06:12:15 PM EET 2022
+Create browser window: "Design Browser 1"
+ 
+*** Message Type: info ***
+When: Thu Nov 10 06:12:23 PM EET 2022
+Create console window: "Console"
+ 
+*** Message Type: info ***
+When: Thu Nov 10 06:12:29 PM EET 2022
+Connect to Simulator
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:   xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Thu Nov 10 06:12:12 PM EET 2022
+  Process ID: 10496
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+     Command: xrun -f ../run.f -gui
+
+ 
+*** Message Type: info ***
+When: Thu Nov 10 06:12:31 PM EET 2022
+Create utility window: "Properties"
+ 
+*** Message Type: info ***
+When: Thu Nov 10 06:12:45 PM EET 2022
+Create waveform window: "Waveform 1"
+ 
+*** Message Type: info ***
+When: Thu Nov 10 07:07:22 PM EET 2022
+Exit XM-Sim: user
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:   xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Thu Nov 10 06:34:40 PM EET 2022
+  Process ID: 12957
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+     Command: xrun -f ../run.f -gui -s
+
+ 
+*** Message Type: info ***
+When: Mon Nov 14 12:04:16 PM EET 2022
+Exit XM-Sim: abnormal
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:   xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Mon Nov 14 11:56:33 AM EET 2022
+  Process ID: 23432
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+     Command: xrun -f ../run.f -gui -s
+
+ 
+*** Message Type: error ***
+When: Mon Nov 14 02:51:38 PM EET 2022
+XM-Sim Crashed:
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:   xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Mon Nov 14 11:56:33 AM EET 2022
+  Process ID: 23432
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+     Command: xrun -f ../run.f -gui -s
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:       xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Mon Nov 14 11:56:33 AM EET 2022
+  Process ID: 23432
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+     Command: xrun -f ../run.f -gui -s
+
+Outstanding STRAP Requests:
+        strap::reinvoke start {ARGSTR 5 4 xrun 2 -f 8 ../run.f 4 -gui 2 -s}
+ 
+*** Message Type: info ***
+When: Mon Nov 14 02:52:38 PM EET 2022
+Recall Simulator
+ 
+*** Message Type: error ***
+When: Mon Nov 14 02:52:39 PM EET 2022
+slave "@public@56" doesn't exist
+    while executing
+"error "slave \"$name\" doesn't exist""
+    ("supports" arm line 13)
+    invoked from within
+"switch -- $option {
+        add {
+            if {[llength $args] < 1} {
+                error "wrong # args: should be \"slave add name ?-tags taglis..."
+    (object "::taskmaster" method "::stuff::TaskMaster::slave" body line 2)
+    invoked from within
+"# Compiled -- no source code available
+error "called a copy of a compiled script""
+    (procedure "util::simReinvoke" line 1)
+    invoked from within
+"util::simReinvoke @public@56 {ARGSTR 5 4 xrun 2 -f 8 ../run.f 4 -gui 2 -s}"
+    ("after" script)
+ 
+*** Message Type: error ***
+When: Mon Nov 14 02:52:40 PM EET 2022
+slave "" does not exist
+    while executing
+"error "slave \"$slave\" does not exist""
+    (object "::taskmaster" method "::stuff::TaskMaster::delegate" body line 12)
+    invoked from within
+"::taskmaster delegate $slave sim.terminate"
+    (object "::application" method "::Application::shutdown" body line 65)
+    invoked from within
+"application shutdown -force"
+    (while executing background task for duty "shutdown" in owner exit)
+ 
+*** Message Type: info ***
+When: Mon Nov 14 02:52:48 PM EET 2022
+Connect to Simulator
+      Design: worklib.top:sv
+   Languages: verilog assertion
+   Simulator: XM-Sim
+     Version: TOOL:   xmsim   20.09-s009
+        User: dragos.pascu
+        Host: dragos.pascu
+Time Started: Mon Nov 14 02:52:45 PM EET 2022
+  Process ID: 17056
+   Directory: /home/dragos.pascu/Projects/ahb-arbiter-project/sim/gui_run
+     Command: xrun -f ../run.f -tcl -nolog -nocopyright -neverwarn
+
+ 
