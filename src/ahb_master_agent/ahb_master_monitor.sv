@@ -15,6 +15,7 @@ class ahb_master_monitor extends uvm_monitor;
     int tag;
     int i=0;
     
+    ahb_transaction during_reset_item;
 
     function new(string name, uvm_component parent);
         super.new(name,parent);
@@ -54,7 +55,11 @@ class ahb_master_monitor extends uvm_monitor;
     
     task reset_monitor();
         
-        wait(vif.hreset==0);        
+        wait(vif.hreset==0); 
+        mbx.get(during_reset_item);
+        if (during_reset_item!=null) begin
+            `uvm_info(get_type_name(), $sformatf("Transfer lost during reset was : %s ", during_reset_item.convert2string()), UVM_MEDIUM)
+        end
         
     endtask
 
@@ -77,7 +82,7 @@ class ahb_master_monitor extends uvm_monitor;
             
             if ( ( vif.m_cb.htrans == NONSEQ || vif.m_cb.htrans == SEQ ) /*&& vif.m_cb.hgrant*/ && vif.m_cb.hready && vif.hreset) begin
                 if (vif.m_cb.htrans == NONSEQ) begin
-                    randomize(tag);
+                    std::randomize(tag);
                 end
                 
                 item = ahb_transaction::type_id::create("item");

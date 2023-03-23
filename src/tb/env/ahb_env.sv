@@ -82,7 +82,7 @@ class ahb_env extends uvm_env;
         //connect vsequencer handles to master sequencers and monitors to scoreboard
         for (int i=0; i<master_number; ++i) begin
             vsequencer.master_seqr[i] = m_agent[i].sequencer;
-            m_agent[i].ahb_mmonitor.master_transaction_port.connect(transaction_scoreboard_h.item_collect_predictor);
+            m_agent[i].ahb_mmonitor.master_transaction_port.connect(transaction_scoreboard_h.item_expected);
             // m_agent[i].req_monitor.request_collect_port.connect(arbitration_scoreboard_h.req_collect_predictor);
 
             //analysis fifo connect            
@@ -95,7 +95,7 @@ class ahb_env extends uvm_env;
         //connect vsequencer handles to slave sequencers and monitors to scoreboard
         for (int i=0; i<slave_number; ++i) begin
             vsequencer.slave_seqr[i] = s_agent[i].sequencer;
-            s_agent[i].ahb_smonitor.slave_transaction_port.connect(transaction_scoreboard_h.item_collect_evaluator);
+            s_agent[i].ahb_smonitor.slave_transaction_port.connect(transaction_scoreboard_h.item_collected);
         end
 
         //connect scoreboard analysis port to export of coverage.

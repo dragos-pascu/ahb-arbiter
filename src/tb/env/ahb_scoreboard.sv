@@ -1,11 +1,11 @@
 class ahb_scoreboard extends uvm_scoreboard;
     
     `uvm_component_utils(ahb_scoreboard)
-    `uvm_analysis_imp_decl(_predictor)
-    `uvm_analysis_imp_decl(_evaluator)
+    `uvm_analysis_imp_decl(_expected)
+    `uvm_analysis_imp_decl(_collected)
 
-    uvm_analysis_imp_predictor #(ahb_transaction,ahb_scoreboard) item_collect_predictor;
-    uvm_analysis_imp_evaluator #(ahb_transaction,ahb_scoreboard) item_collect_evaluator;
+    uvm_analysis_imp_expected #(ahb_transaction,ahb_scoreboard) item_expected;
+    uvm_analysis_imp_collected #(ahb_transaction,ahb_scoreboard) item_collected;
 
     uvm_analysis_port #(ahb_transaction) coverage_port;
     bit enable_coverage;
@@ -19,8 +19,8 @@ class ahb_scoreboard extends uvm_scoreboard;
     ahb_transaction temp_tx;
     ahb_transaction temp_tx1;
     int match, mismatch;
-    int predictor_transactions;
-    int evaluator_transactions;
+    int expected_transactions_counter;
+    int collected_transactions_counter;
 
     int current_tag;
     int previours_tag;
@@ -29,12 +29,12 @@ class ahb_scoreboard extends uvm_scoreboard;
 
     function new(string name = "ahb_scoreboard", uvm_component parent);
         super.new(name, parent);
-        item_collect_predictor = new("item_collect_predictor",this);
-        item_collect_evaluator =  new("item_collect_evaluator",this);
+        item_expected = new("item_expected",this);
+        item_collected =  new("item_collected",this);
         match = 0;
         mismatch = 0;
-        predictor_transactions = 0;
-        evaluator_transactions = 0;
+        expected_transactions_counter = 0;
+        collected_transactions_counter = 0;
     endfunction 
 
     function void build_phase(uvm_phase phase);
@@ -44,11 +44,11 @@ class ahb_scoreboard extends uvm_scoreboard;
         end
     endfunction
 
-    function void write_predictor(ahb_transaction master_item);
+    function void write_expected(ahb_transaction master_item);
         int i;
         
         if (master_item.htrans[0] == NONSEQ) begin
-                    predictor_transactions++;
+                    expected_transactions_counter++;
         end
 
         for (i=0; i<slave_number; ++i) begin
@@ -66,7 +66,7 @@ class ahb_scoreboard extends uvm_scoreboard;
         
     endfunction
 
-    function void write_evaluator(ahb_transaction slave_item);
+    function void write_collected(ahb_transaction slave_item);
         `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_DEBUG);
         fork 
             begin
@@ -89,7 +89,7 @@ class ahb_scoreboard extends uvm_scoreboard;
                     //this means that a new transaction came and I can send to coverage.
                     if (current_tag!=previours_tag) begin
                         
-                        evaluator_transactions++;
+                        collected_transactions_counter++;
 
                         if (flag_mismatch) begin
                             //flush quueue and increment mismatch;
@@ -130,10 +130,10 @@ class ahb_scoreboard extends uvm_scoreboard;
         end
         
 
-        if (predictor_transactions!=evaluator_transactions) begin
-            `uvm_error(get_type_name(),$sformatf(" Number of master/slave transactions mismatch; nr of master_tx = [%0d] , nr of slave_tx = [%0d] ",predictor_transactions, evaluator_transactions));
+        if (expected_transactions_counter!=collected_transactions_counter) begin
+            `uvm_error(get_type_name(),$sformatf(" Number of master/slave transactions mismatch; nr of master_tx = [%0d] , nr of slave_tx = [%0d] ",expected_transactions_counter, collected_transactions_counter));
         end else begin
-            `uvm_info(get_type_name(),$sformatf("Scb recived %0d transactions .",predictor_transactions),UVM_MEDIUM);
+            `uvm_info(get_type_name(),$sformatf("Scb recived %0d transactions .",expected_transactions_counter),UVM_MEDIUM);
         end
 
         `uvm_info(get_type_name(),$sformatf("Matches: %0d ",match),UVM_MEDIUM);
