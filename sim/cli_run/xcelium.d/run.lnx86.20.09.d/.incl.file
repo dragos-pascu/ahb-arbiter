@@ -162,6 +162,11 @@
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/reset_agent.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/reset_agent.sv
+./circular_buffer.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/circular_buffer.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/circular_buffer.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_slave_agent/circular_buffer.sv
+/home/dragos.pascu/Projects/ahb-arbiter-project/src/reset_agent/circular_buffer.sv
 ./env_config.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/env_config.sv
 /home/dragos.pascu/Projects/ahb-arbiter-project/src/ahb_master_agent/env_config.sv

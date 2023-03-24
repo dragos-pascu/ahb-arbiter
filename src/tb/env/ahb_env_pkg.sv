@@ -10,6 +10,7 @@ package ahb_env_pkg;
     import slave_pkg::*;
     import reset_pkg::*;
     
+    `include "circular_buffer.sv"
     `include "env_config.sv"
     `include "ahb_scoreboard.sv"
 

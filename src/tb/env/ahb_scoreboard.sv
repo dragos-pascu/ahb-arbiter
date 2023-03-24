@@ -26,6 +26,7 @@ class ahb_scoreboard extends uvm_scoreboard;
     int previours_tag;
     int flag_mismatch= 0 ;
 
+    CircularBuffer circular_buffer;
 
     function new(string name = "ahb_scoreboard", uvm_component parent);
         super.new(name, parent);
@@ -35,6 +36,7 @@ class ahb_scoreboard extends uvm_scoreboard;
         mismatch = 0;
         expected_transactions_counter = 0;
         collected_transactions_counter = 0;
+        circular_buffer = new;
     endfunction 
 
     function void build_phase(uvm_phase phase);
@@ -68,53 +70,51 @@ class ahb_scoreboard extends uvm_scoreboard;
 
     function void write_collected(ahb_transaction slave_item);
         `uvm_info(get_type_name(), $sformatf("Received from slave : \n %s",slave_item.convert2string()), UVM_DEBUG);
-        fork 
-            begin
-                #1;
-                if (expected_transactions[slave_item.id].size == 0) begin
-                    `uvm_error(get_type_name(),"Queue is empty")
+        
+        //record when the collected came to SCB
+        slave_item.sampled_at = $time;
+        circular_buffer.add_transaction(slave_item);
+
+
+        if (expected_transactions[slave_item.id].size == 0) begin
+            `uvm_error(get_type_name(),"Queue is empty")
+        end else begin
+            temp_tx1 =  expected_transactions[slave_item.id].pop_front();
+            previours_tag = current_tag;
+            current_tag = temp_tx1.tag;
+            if (slave_item.compare(temp_tx1)) begin
+                coverage_queue.push_back(temp_tx1);
+            end
+            else begin
+                flag_mismatch = 1;
+                `uvm_error(get_type_name(),"MISMATCH : ")
+                `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_tx1.convert2string()));
+                `uvm_error(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()));
+            end
+            //this means that a new transaction came and I can send to coverage.
+            if (current_tag!=previours_tag) begin
+                
+                collected_transactions_counter++;
+                if (flag_mismatch) begin
+                    //flush quueue and increment mismatch;
+                    coverage_queue.delete();
+                    mismatch++;
+                    `uvm_info(get_type_name(), $sformatf("MISMATCH for tag : \n %d",previours_tag),UVM_MEDIUM);
                 end else begin
-                    temp_tx1 =  expected_transactions[slave_item.id].pop_front();
-                    previours_tag = current_tag;
-                    current_tag = temp_tx1.tag;
-                    if (slave_item.compare(temp_tx1)) begin
-                        coverage_queue.push_back(temp_tx1);
-                    end
-                    else begin
-                        flag_mismatch = 1;
-                        `uvm_error(get_type_name(),"MISMATCH : ")
-                        `uvm_error(get_type_name(), $sformatf("Expected : \n %s",temp_tx1.convert2string()));
-                        `uvm_error(get_type_name(), $sformatf(" Received : \n %s",slave_item.convert2string()));
-                    end
-                    //this means that a new transaction came and I can send to coverage.
-                    if (current_tag!=previours_tag) begin
-                        
-                        collected_transactions_counter++;
-
-                        if (flag_mismatch) begin
-                            //flush quueue and increment mismatch;
-                            coverage_queue.delete();
-                            mismatch++;
-                            `uvm_info(get_type_name(), $sformatf("MISMATCH for tag : \n %d",previours_tag),UVM_MEDIUM);
-
-                        end else begin
-                            //send the coverage queue to coverage and increment match.
-                            match++;
-                            `uvm_info(get_type_name(), $sformatf("MATCH for tag : \n %d",previours_tag),UVM_MEDIUM);
-                            if (enable_coverage) begin
-                                while (coverage_queue.size > 0) begin
-                                    temp_cov = coverage_queue.pop_front();
-                                    coverage_port.write(temp_cov);
-
-                                end
-
-                            end
+                    //send the coverage queue to coverage and increment match.
+                    match++;
+                    `uvm_info(get_type_name(), $sformatf("MATCH for tag : \n %d",previours_tag),UVM_MEDIUM);
+                    if (enable_coverage) begin
+                        while (coverage_queue.size > 0) begin
+                            temp_cov = coverage_queue.pop_front();
+                            coverage_port.write(temp_cov);
                         end
-                        flag_mismatch = 0;
                     end
                 end
+                flag_mismatch = 0;
             end
-        join_none
+        end
+        
 
     endfunction
 
@@ -138,6 +138,18 @@ class ahb_scoreboard extends uvm_scoreboard;
 
         `uvm_info(get_type_name(),$sformatf("Matches: %0d ",match),UVM_MEDIUM);
         `uvm_info(get_type_name(),$sformatf("Mismatches: %0d ",mismatch),UVM_MEDIUM);
+
+    endfunction
+
+    virtual function void report_phase(uvm_phase phase);
+        `uvm_info(get_type_name(),"Inside report_phase, flushing the collected transaction buffer",UVM_MEDIUM);
+
+        
+        for (int i = 0; i < circular_buffer.get_size(); i++) begin
+            ahb_transaction transaction = circular_buffer.get_transaction(i);
+            `uvm_info(get_type_name(),$sformatf("collected transaction %0d at time %0d .",transaction, transaction.sampled_at),UVM_MEDIUM);
+        end
+
 
     endfunction
 endclass

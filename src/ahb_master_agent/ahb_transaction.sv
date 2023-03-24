@@ -3,6 +3,8 @@
 class ahb_transaction extends uvm_sequence_item;
         `uvm_object_utils(ahb_transaction)
 
+        //simulation time it was sampled at
+        int sampled_at;
         //signifies from which transfer the beat is part of
         int tag;
         //id of the coresponding agent
