@@ -26,6 +26,8 @@ waves.shm
 
 vmgr_db
 
+run.d
+
 cov_work
 
 *.err
