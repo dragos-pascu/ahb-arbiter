@@ -1,0 +1,35 @@
+# ignore all logs
+*.log
+
+#ignore key files
+*.key
+
+#ignore history files
+*.history
+
+#ignore d files
+*.d
+
+#ignore more artifacts
+waves.shm
+
+#ignore xcelium.shm
+*.shm
+
+.simvision
+
+*.diag
+
+/tb/.bpad
+
+/sim
+
+vmgr_db
+
+run.d
+
+cov_work
+
+*.err
+
+/.bpad
