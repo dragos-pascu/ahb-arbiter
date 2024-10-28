@@ -1,10 +1,35 @@
-# AHB Arbiter UVM Verification Environment
+# AHB Arbiter Verification Environment
 
-Description:
+## Description
 
-Comprehensive UVM-compliant verification environment for robust testing of an Advanced High-Performance Bus (AHB) arbiter. 
-Key focuses include priority-based master selection, AHB protocol adherence, and data integrity verification. 
-The verification plan encompasses a high-level overview, detailed architecture, checkers plan, coverage metrics, and a diverse test suite comprising basic, random, stress, error, and direct tests.
-Inside the bachelor thesis file the file structure along with code snippets, diagrams and tabeles from verification plan are explained in romanian.
+This repository contains a comprehensive UVM-compliant verification environment designed for robust testing of an Advanced High-Performance Bus (AHB) arbiter. Our key focuses include:
 
-Change directory to sim/cli_run or sim/gui_run and use ./run.sh or ./gui_run.sh in the comand line to start simulation.
+- **Priority-Based Master Selection**: Ensures the arbiter selects the correct master based on priority.
+- **AHB Protocol Adherence**: Verifies compliance with the AHB protocol standards.
+- **Data Integrity Verification**: Ensures data is accurately transmitted and received without errors.
+
+## Verification Plan
+
+The verification plan is detailed and includes:
+
+- **High-Level Overview**: A summary of the verification objectives and strategies.
+- **Detailed Architecture**: Insights into the structural design of the verification environment.
+- **Checkers Plan**: A list of checkers used to ensure protocol compliance and data integrity.
+- **Coverage Metrics**: Metrics to evaluate the thoroughness of the testing process.
+- **Diverse Test Suite**: A variety of tests, including:
+  - Basic Tests
+  - Random Tests
+  - Error Tests
+  - Direct Tests
+
+For more in-depth information, including file structure, code snippets, diagrams, and tables from the verification plan, please refer to the bachelor's thesis document, which is presented in Romanian.
+
+## How to Run Simulations
+
+To start the simulation, navigate to the desired directory and execute the appropriate script:
+
+### Command-Line Interface (CLI):
+
+```bash
+cd sim/cli_run
+./run.sh
