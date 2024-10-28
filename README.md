@@ -28,8 +28,14 @@ For more in-depth information, including file structure, code snippets, diagrams
 
 To start the simulation, navigate to the desired directory and execute the appropriate script:
 
-### Command-Line Interface (CLI):
+### Command-Line Interface (CLI) & Graphical User Interface (GUI):
 
 ```bash
 cd sim/cli_run
 ./run.sh
+#
+cd sim/gui_run
+./gui_run.sh
+
+
+
